@@ -33,39 +33,59 @@ export default {
     <div class="header-content">
         <div class="header-logo">
             <div class="logo">
-                <img src="/img/logo.svg" alt="logo"/>
+                <RouterLink :to="{name: 'main_page'}" :active-class="active">
+                    <img src="/img/logo.svg" alt="logo"/>
+                </RouterLink>
             </div>
             <div class="logo-text">
-                энергия<br>
-                признания
+                <RouterLink :to="{name: 'main_page'}" :active-class="active">
+                    энергия<br>
+                    признания
+                </RouterLink>
             </div>
         </div>
         <div class="header-block-link">
             <div class="header-link">
-                Виды наград
+                <RouterLink :to="{name: 'types_of_awards_page'}" :active-class="active">
+                    Виды наград
+                </RouterLink>
             </div>
             <div class="header-link hover_link">
-                Победители и лауреаты
+                <RouterLink :to="{name: 'team_track_winners'}" :active-class="active">
+                    Победители и лауреаты
+                </RouterLink>
                 <div class="header-hover-menu">
                     <div class="hover-link">
-                        Победители командного трека
+                        <RouterLink :to="{name: 'corporate_winners'}" :active-class="active_h">
+                            Победители командного трека
+                        </RouterLink>
                     </div>
                     <div class="hover-link">
-                        Лауреаты ведомственных наград
+                        <RouterLink :to="{name: 'corporate_rewards'}" :active-class="active_h">
+                            Лауреаты ведомственных наград
+                        </RouterLink>
                     </div>
                     <div class="hover-link">
-                        Лучшие корпоративные тренеры
+                        <RouterLink :to="{name: 'corporate_trainer'}" :active-class="active_h">
+                            Лучшие корпоративные тренеры
+                        </RouterLink>
                     </div>
                     <div class="hover-link">
-                        Лучшие производственные наставники
+                        <RouterLink :to="{name: 'corporate_mentor'}" :active-class="active_h">
+                            Лучшие производственные наставники
+                        </RouterLink>
                     </div>
                 </div>
             </div>
             <div class="header-link">
-                Фотогаллерея
+                <RouterLink :to="{name: 'photo_gallery'}" :active-class="active">
+                    Фотогаллерея
+                </RouterLink>
             </div>
             <div class="header-link">
-                Сертификаты
+                <RouterLink :to="{name: 'certificates'}" :active-class="active">
+                    Сертификаты
+                </RouterLink>
             </div>
         </div>
     </div>
@@ -95,6 +115,13 @@ export default {
     width: 50px;
     height: 50px;
 }
+.logo a{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .logo-text{
     margin: 0 0 0 5px;
     line-height: 87.1%;
@@ -107,6 +134,9 @@ export default {
 .header-link:first-child{
     margin: 0;
 }
+
+
+
 .header-link{
     margin: 0 0 0 72px;
     color: var(--nipigasColorMain);
@@ -164,7 +194,6 @@ export default {
     line-height: 150%;
     white-space: nowrap;
     margin: 0 0 5px 0;
-    text-decoration: underline;
     transition: all 0.25s ease;
     cursor: pointer;
 }
@@ -172,4 +201,43 @@ export default {
     left: -12px;
     opacity: 1;
 }
+
+
+
+
+
+
+a:active{
+    color: var(--nipigasColorAdditional);
+}
+
+a:visited{
+    color: var(--nipigasColorMain);
+}
+.router-link-active:visited{
+    color: var(--nipigasColorAdditional);
+}
+
+a{
+    color: var(--nipigasColorMain);
+}
+.router-link{
+    color: var(--nipigasColorMain);
+}
+
+.router-link-active{
+    color: var(--nipigasColorAdditional);
+}
+.router-link-active{
+    color: var(--nipigasColorAdditional);
+}
+.hover-link a{
+    text-decoration: underline;
+}
+
+
+
+
+
+
 </style>

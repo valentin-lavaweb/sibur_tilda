@@ -13,10 +13,14 @@
 
 
   --nipigasColorMain: rgb(0, 140, 149);
+  --nipigasColorMain-hover: rgb(1, 102, 109);
   --nipigasColorAdditional: rgb(252, 120, 110);
+  --nipigasColorAdditional-hover: rgba(252, 120, 110, 0.7);
   --textColorBlack: rgb(78, 78, 78);
+  --textColorBlack-hover: rgb(50, 50, 50);
   --textColorWhite: rgb(255, 255, 255);
   --filterColor: rgb(0, 141, 252);
+  --filterColor-hover: rgb(2, 115, 201);
 
 }
 

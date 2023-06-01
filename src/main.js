@@ -6,6 +6,7 @@ import toaster from "./toaster/index";
 
 import "./assets/main.css";
 
+import router from './router.js';
 
 
 window.global = window;
@@ -19,7 +20,7 @@ const app = createApp(App);
 
 app.use(pinia);
 app.use(toaster);
-
+app.use(router);
 
 
 
