@@ -1,0 +1,175 @@
+<script>
+import { useGameStore } from '@/stores/interface-interaction.js';
+
+export default {
+  name: "header",
+  data() {
+    let interaction = useGameStore();
+    return{
+        interaction: interaction,
+    }
+  },
+  components:{
+
+  },
+  methods(){
+
+  },
+  mounted() {
+
+  },
+  computed:{
+    
+  },
+  watch:{
+
+  },
+};
+</script>
+
+
+<template>
+  <div class="header">
+    <div class="header-content">
+        <div class="header-logo">
+            <div class="logo">
+                <img src="/img/logo.svg" alt="logo"/>
+            </div>
+            <div class="logo-text">
+                энергия<br>
+                признания
+            </div>
+        </div>
+        <div class="header-block-link">
+            <div class="header-link">
+                Виды наград
+            </div>
+            <div class="header-link hover_link">
+                Победители и лауреаты
+                <div class="header-hover-menu">
+                    <div class="hover-link">
+                        Победители командного трека
+                    </div>
+                    <div class="hover-link">
+                        Лауреаты ведомственных наград
+                    </div>
+                    <div class="hover-link">
+                        Лучшие корпоративные тренеры
+                    </div>
+                    <div class="hover-link">
+                        Лучшие производственные наставники
+                    </div>
+                </div>
+            </div>
+            <div class="header-link">
+                Фотогаллерея
+            </div>
+            <div class="header-link">
+                Сертификаты
+            </div>
+        </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.header{
+    position: fixed;
+    width: 1326px;
+    height: 100px;
+    background-color: #F6F6F6;
+    border-radius: 250px;
+    top: 30px;
+    z-index: 5 ;
+}
+.header-content{
+    width: 970px;
+    height: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.header-logo{
+    flex-direction: row;
+}
+.logo{
+    width: 50px;
+    height: 50px;
+}
+.logo-text{
+    margin: 0 0 0 5px;
+    line-height: 87.1%;
+    color: var(--nipigasColorMain);
+}
+
+.header-block-link{
+    flex-direction: row;
+}   
+.header-link:first-child{
+    margin: 0;
+}
+.header-link{
+    margin: 0 0 0 72px;
+    color: var(--nipigasColorMain);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.header-link.hover_link::before{
+    content: "";
+    position: absolute;
+    display: block;
+    height: 0;
+    width: 0;
+    border: 6px solid transparent;
+    border-top-color: var(--nipigasColor);
+    bottom: -10px;
+    left: calc(50% - 6px);
+    transition: all 0.25s ease;
+}
+.header-link.hover_link:hover .header-hover-menu{
+    pointer-events: auto;
+    opacity: 1;
+}
+
+
+.header-hover-menu{
+    position: absolute;
+    top: calc(100% + 10px);
+    width: fit-content;
+    height: fit-content;
+    align-items: flex-start;
+    padding: 22px 15px 17px 30px;
+    background-color: rgba(246, 246, 246, 1);
+    border: 1px solid rgba(0, 140, 149, 0.2);
+    border-radius: 5px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+.hover-link::before{
+    content: "";
+    position: absolute;
+    left: -8px;
+    display: block;
+    height: 0;
+    width: 0;
+    border: 7px solid transparent;
+    border-top-color: var(--nipigasColorAdditional);
+    transform: rotate(-90deg);
+    opacity: 0;
+    transition: all 0.25s ease;
+}
+.hover-link{
+    font-size: 14px;
+    line-height: 150%;
+    white-space: nowrap;
+    margin: 0 0 5px 0;
+    text-decoration: underline;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.hover-link:hover::before{
+    left: -12px;
+    opacity: 1;
+}
+</style>

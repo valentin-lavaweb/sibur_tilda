@@ -1,0 +1,121 @@
+<script>
+import { useGameStore } from '@/stores/interface-interaction.js';
+
+export default {
+  name: "popup_slider",
+  data() {
+    let interaction = useGameStore();
+    return{
+        sliderIndex: (9995 + interaction.enableSlide),
+        interaction: interaction,
+    }
+  },
+  components:{
+
+  },
+  methods:{
+    backSlide(){
+      this.sliderIndex--;
+    },
+    nextSlide(){
+      this.sliderIndex++;
+    },
+  },
+  mounted() {
+
+  },
+  computed:{
+    selectedSlide:{
+      get(){
+          return this.interaction.imges[this.sliderIndex % this.interaction.imges.length];
+      },
+      set(value){
+          let imgIndex = this.interaction.imges.indexOf(value);
+          let resultIndex = imgIndex + 1000*this.interaction.imges.length;
+          this.interaction.imges = resultIndex;
+      }
+    },
+  },
+  watch:{
+
+  },
+};
+</script>
+
+
+<template>
+  <div class="popup_slider">
+    <div class="slider-container">
+        <div class="slider-close" @click="interaction.popupSlider = false">
+            Закрыть
+        </div>
+        <div class="slider-arrow left" @click="backSlide()">
+            <img src="/img/arrow.svg" alt="arrow"/>
+        </div>
+        <div class="slider">
+            <img :src="`/img/slider/img`+selectedSlide.id+`.svg`" alt="img"/>
+        </div>
+        <div class="slider-arrow" @click="nextSlide()">
+            <img src="/img/arrow.svg" alt="arrow"/>
+        </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.popup_slider{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(9, 89, 95, 0.84);
+    z-index: 6;
+}
+
+.slider-container{
+    width: 1280px;
+    height: 580px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.slider-close{
+    position: absolute;
+    top: -36px;
+    right: calc(1280px - 1130px - 80px + 5px);
+    color: rgba(255, 255, 255, 1);
+    font-size: 16px;
+    z-index: 3;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.slider-close:hover{
+    color: rgb(204, 204, 204);
+}
+
+.slider{
+    width: 1130px;
+    height: 580px;
+    overflow: hidden;
+}
+.slider img{
+    object-fit: cover;
+}
+.slider-arrow.left{
+    transform: rotate(180deg);
+}
+.slider-arrow{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--nipigasColorAdditional);
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.slider-arrow img{
+    width: 12px;
+    transition: all 0.25s ease;
+}
+</style>
