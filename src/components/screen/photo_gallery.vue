@@ -181,7 +181,7 @@ export default {
     width: 70vw;
   }
   .item-img{
-    width: 22.3vw;
+    width: 22.0vw;
     height: 17vw;
     margin: 0 1vw 1vw 0;
   }
@@ -191,7 +191,7 @@ export default {
     width: 80vw;
   }
   .item-img{
-    width: 39vw;
+    width: 38vw;
     height: 29vw;
     margin: 0 1vw 1vw 0;
   }
