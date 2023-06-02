@@ -84,6 +84,7 @@ export default {
 
 .title{
   font-size: 48px;
+  font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 75px 0 0 0;
 }
@@ -112,6 +113,7 @@ export default {
   background-color: rgba(246, 246, 246, 1);
   color: var(--nipigasColorMain);
   font-size: 16px;
+  font-weight: 500;
   transition: all 0.25s ease;
   cursor: pointer;
 }
@@ -131,7 +133,9 @@ export default {
   height: fit-content;
   flex-direction: row;
   flex-wrap: wrap;
+  align-content: flex-start;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 

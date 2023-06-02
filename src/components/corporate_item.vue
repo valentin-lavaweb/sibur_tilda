@@ -56,12 +56,12 @@ export default {
 
 <style scoped>
 .corporate-item{
-  width: calc(20% - 30px);
+  width: calc(20% - 20px);
   height: fit-content;
   min-height: 240px;
   color: var(--textColorBlack);
   padding: 5px 5px 30px 5px;
-  margin: 0 30px 0 0;
+  margin: 0 20px 0 0;
   justify-content: flex-start;
 }
 .corporate-item_img img{
@@ -74,6 +74,7 @@ export default {
     width: 100%;
     color: var(--nipigasColorMain);
     font-size: 16px;
+    font-weight: 700;
     margin: 0 0 10px 0;
 }
 
@@ -81,13 +82,18 @@ export default {
     width: 100%;
     display: block;
 }
+.corporate-item_filter{
+    font-weight: 600;
+}
 .corporate-item_post span{
-
+    font-weight: 600;
 }
 .corporate-item_reward span{
+    font-weight: 600;
     color: var(--nipigasColorMain);
 }
 .corporate-item_date span{
+    font-weight: 600;
     color: var(--nipigasColorMain);
 }
 </style>

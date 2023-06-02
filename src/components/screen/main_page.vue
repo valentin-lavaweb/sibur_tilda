@@ -86,6 +86,7 @@ export default {
 }
 .title{
   font-size: 96px;
+  font-weight: 700;
   color: var(--nipigasColorAdditional);
   line-height: 100%;
 }
@@ -96,6 +97,7 @@ export default {
 }
 .pinata{
   font-size: 16px;
+  font-weight: 700;
   color: var(--nipigasColorAdditional);
 }
 

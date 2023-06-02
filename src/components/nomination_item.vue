@@ -37,7 +37,7 @@ export default {
             {{ item.title }}
         </h3>
         <span class="text">
-            {{ item.subTitle }}
+          {{ item.subTitle }}
         </span>
         <span class="autorText">
             <span class="autorBlock">
@@ -64,6 +64,7 @@ export default {
   width: 100%;
   align-items: flex-start;
   font-size: 20px;
+  font-weight: 700;
   color: var(--nipigasColorMain);
   margin: 0 0 25px 0;
 }
@@ -78,10 +79,12 @@ export default {
   width: 100%;
   height: fit-content;
   font-size: 16px;
+  font-weight: 500;
   color: var(--textColorBlack);
 }
 .autorBlock{
   font-size: 16px;
+  font-weight: 700;
   color: var(--nipigasColorAdditional);
 }
 </style>

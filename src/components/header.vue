@@ -2,7 +2,7 @@
 import { useGameStore } from '@/stores/interface-interaction.js';
 
 export default {
-  name: "header",
+  name: "header_comp",
   data() {
     let interaction = useGameStore();
     return{
@@ -33,12 +33,12 @@ export default {
     <div class="header-content">
         <div class="header-logo">
             <div class="logo">
-                <RouterLink :to="{name: 'main_page'}" :active-class="active">
+                <RouterLink :to="{name: 'main_page'}" active-class="active">
                     <img src="/img/logo.svg" alt="logo"/>
                 </RouterLink>
             </div>
             <div class="logo-text">
-                <RouterLink :to="{name: 'main_page'}" :active-class="active">
+                <RouterLink :to="{name: 'main_page'}" active-class="active">
                     энергия<br>
                     признания
                 </RouterLink>
@@ -46,44 +46,44 @@ export default {
         </div>
         <div class="header-block-link">
             <div class="header-link">
-                <RouterLink :to="{name: 'types_of_awards_page'}" :active-class="active">
+                <RouterLink :to="{name: 'types_of_awards_page'}" active-class="active">
                     Виды наград
                 </RouterLink>
             </div>
             <div class="header-link hover_link">
-                <RouterLink :to="{name: 'team_track_winners'}" :active-class="active">
+                <RouterLink :to="{name: 'team_track_winners'}" active-class="active">
                     Победители и лауреаты
                 </RouterLink>
                 <div class="header-hover-menu">
                     <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_winners'}" :active-class="active_h">
+                        <RouterLink :to="{name: 'corporate_winners'}" active-class="active">
                             Победители командного трека
                         </RouterLink>
                     </div>
                     <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_rewards'}" :active-class="active_h">
+                        <RouterLink :to="{name: 'corporate_rewards'}" active-class="active">
                             Лауреаты ведомственных наград
                         </RouterLink>
                     </div>
                     <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_trainer'}" :active-class="active_h">
+                        <RouterLink :to="{name: 'corporate_trainer'}" active-class="active">
                             Лучшие корпоративные тренеры
                         </RouterLink>
                     </div>
                     <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_mentor'}" :active-class="active_h">
+                        <RouterLink :to="{name: 'corporate_mentor'}" active-class="active">
                             Лучшие производственные наставники
                         </RouterLink>
                     </div>
                 </div>
             </div>
             <div class="header-link">
-                <RouterLink :to="{name: 'photo_gallery'}" :active-class="active">
+                <RouterLink :to="{name: 'photo_gallery'}" active-class="active">
                     Фотогаллерея
                 </RouterLink>
             </div>
             <div class="header-link">
-                <RouterLink :to="{name: 'certificates'}" :active-class="active">
+                <RouterLink :to="{name: 'certificates'}" active-class="active">
                     Сертификаты
                 </RouterLink>
             </div>
@@ -140,6 +140,7 @@ export default {
 .header-link{
     margin: 0 0 0 72px;
     color: var(--nipigasColorMain);
+    font-weight: 700;
     transition: all 0.25s ease;
     cursor: pointer;
 }
@@ -197,6 +198,9 @@ export default {
     transition: all 0.25s ease;
     cursor: pointer;
 }
+.hover-link a{
+    font-weight: 400;
+}
 .hover-link:hover::before{
     left: -12px;
     opacity: 1;
@@ -220,14 +224,13 @@ a:visited{
 
 a{
     color: var(--nipigasColorMain);
+    font-weight: 700;
 }
 .router-link{
     color: var(--nipigasColorMain);
+    
 }
 
-.router-link-active{
-    color: var(--nipigasColorAdditional);
-}
 .router-link-active{
     color: var(--nipigasColorAdditional);
 }

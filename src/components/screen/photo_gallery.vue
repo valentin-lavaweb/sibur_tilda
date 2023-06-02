@@ -104,6 +104,7 @@ export default {
   background-color: rgba(246, 246, 246, 1);
   color: var(--nipigasColorMain);
   font-size: 16px;
+  font-weight: 500;
   transition: all 0.25s ease;
   cursor: pointer;
 }

@@ -122,6 +122,7 @@ export default {
 
 .title{
   font-size: 96px;
+  font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 0 0 20px 0;
 }
@@ -132,6 +133,7 @@ export default {
 }
 .subTitle{
   font-size: 36px;
+  font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 0 0 20px 0;
 }
@@ -140,9 +142,11 @@ export default {
 }
 .miniTitle{
   font-size: 24px;
+  font-weight: 700;
   color: var(--nipigasColorMain);
 }
 .nipigas{
+  font-weight: 700;
   color: var(--nipigasColorMain);
 }
 

@@ -2,7 +2,7 @@
 import { useGameStore } from '@/stores/interface-interaction.js';
 
 export default {
-  name: "footer",
+  name: "footer_comp",
   data() {
     let interaction = useGameStore();
     return{
@@ -90,13 +90,18 @@ export default {
     content: "Сделаем успех видимым для каждого!";
     font-size: 14px;
     margin: 10px 0 0 0;
+    font-weight: 600;
 }
 
 .footer-block-link{
     align-items: flex-start;
 }
 .link{
+    font-weight: 400;
     font-size: 14px;
+}
+.link a{
+    font-weight: 400;
 }
 .link.underline{
     text-decoration: underline;

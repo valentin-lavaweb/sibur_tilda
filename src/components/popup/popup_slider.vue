@@ -87,6 +87,7 @@ export default {
     right: calc(1280px - 1130px - 80px + 5px);
     color: rgba(255, 255, 255, 1);
     font-size: 16px;
+    font-weight: 500;
     z-index: 3;
     transition: all 0.25s ease;
     cursor: pointer;

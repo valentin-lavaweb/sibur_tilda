@@ -95,6 +95,7 @@ export default {
 .title{
     margin: 66px 0 0 0;
     font-size: 96px;
+    font-weight: 700;
     color: var(--nipigasColorAdditional);
 }
 
@@ -115,6 +116,8 @@ export default {
 }
 .certificates-block:nth-child(2)::before{
     content: "*Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.";
+    width: 100%;
+    padding: 0 30px;
     font-size: 12px;
     color: var(--textColorBlack);
     position: absolute;
@@ -126,12 +129,14 @@ export default {
 
 .titleBlock{
     font-size: 36px;
+    font-weight: 600;
     margin: 0 0 25px 0;
     color: var(--nipigasColorMain);
 }
 
 .download{
     font-size: 15px;
+    font-weight: 600;
     color: var(--white);
     background-color: var(--nipigasColorAdditional);
     border: none;
@@ -145,6 +150,7 @@ export default {
 }
 .text{
     font-size: 16px;
+    font-weight: 500;
     color: var(--textColorBlack);
 }
 

@@ -32,7 +32,7 @@ export default {
 </script>
 <template>
     <router-view  v-slot="{ Component }">
-      <transition name="fadePageWrapper" mode="out-in">
+      <transition name="openPage" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
