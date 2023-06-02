@@ -3,7 +3,7 @@ import { useGameStore } from '@/stores/interface-interaction.js';
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 
-
+import gsap from "gsap";
 
 export default {
   name: "certificates",
@@ -21,7 +21,30 @@ export default {
 
   },
   mounted() {
-
+    gsap.from(".img-animate-gsap", {
+    opacity: 0,
+    scale: 0.5,
+    duration: 0.5,
+    delay: 0.25,
+    ease: "sine",
+    });
+    gsap.from(".text-animate-gsap", {
+    x: -100,
+    opacity: 0,
+    duration: 0.25,
+    stagger: 0.15,
+    delay: 0.25,
+    });
+    gsap.from(".text-subTitle-animate-gsap", {
+    opacity: 0,
+    duration: 0.5,
+    delay: 0.5,
+    });
+    gsap.from(".text-text-animate-gsap", {
+    opacity: 0,
+    duration: 0.5,
+    delay: 0.75,
+    });
   },
   computed:{
     
@@ -36,16 +59,16 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp/>
-    <div class="bg-element">
+    <div class="bg-element img-animate-gsap">
       <img src="/img/background_page/certificates.svg" alt=""/>
     </div>
     <div class="wrapper-block">
-        <h1 class="title">
+        <h1 class="title text-animate-gsap">
             СЕРТИФИКАТЫ
         </h1>
         <div class="certificates-container">
             <div class="certificates-block">
-                <h3 class="titleBlock">
+                <h3 class="titleBlock text-subTitle-animate-gsap">
                     сертификат
                 </h3>
                 <div class="block-img">
@@ -54,12 +77,12 @@ export default {
                 <button class="download">
                     Скачать сертификат
                 </button>
-                <span class="text">
+                <span class="text text-text-animate-gsap">
                     Уважаемые коллеги, вы можете скачать сертификат участника наградной кампании«Энергия признания СИБУР» 2022.
                 </span>
             </div>
             <div class="certificates-block">
-                <h3 class="titleBlock">
+                <h3 class="titleBlock text-subTitle-animate-gsap">
                     Рамка для соц. сетей
                 </h3>
                 <div class="block-img">
@@ -68,7 +91,7 @@ export default {
                 <button class="download">
                     Скачать рамку
                 </button>
-                <span class="text">
+                <span class="text text-text-animate-gsap">
                     Вы можете скачать рамку для социальных сетей и поделиться своими профессиональными достижениями с друзьями.
                 </span>
             </div>
@@ -157,7 +180,13 @@ export default {
 .bg-element{
     position: absolute;
     top: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
 }
+.bg-element img{
+    position: absolute;
+}
+
 
 </style>

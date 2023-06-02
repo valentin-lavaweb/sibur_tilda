@@ -4,13 +4,14 @@ import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 import nomination_item from "@/components/nomination_item.vue";
 
-
+import gsap from "gsap";
 
 export default {
   name: "team_track_winners",
   data() {
     let interaction = useGameStore();
     return{
+        yearPhoto: '2023',
         interaction: interaction,
     }
   },
@@ -23,7 +24,21 @@ export default {
 
   },
   mounted() {
-
+    gsap.from(".text-animate-gsap", {
+    x: - 100,
+    opacity: 0,
+    duration: 0.25,
+    delay: 0.25,
+    ease: "sine",
+    });
+    gsap.from(".img-animate-gsap", {
+    x: - 100,
+    opacity: 0,
+    scale: 0.5,
+    duration: 0.25,
+    delay: 0.5,
+    ease: "sine",
+    });
   },
   computed:{
     
@@ -38,29 +53,42 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp/>
+    <div class="bg-element img-animate-gsap">
+      <img src="/img/background_page/team_track_winners.svg" alt=""/>
+    </div>
     <div class="wrapper-block">
-      <h1 class="title">
+      <h1 class="title text-animate-gsap">
         Лауреаты ведомственных наград
       </h1>
       <div class="years-container">
-        <button class="year">
+        <button class="year"
+        @click="yearPhoto = '2020'"
+        :class="{active: yearPhoto == '2020'}">
           2020
         </button>
-        <button class="year">
+        <button class="year"
+        @click="yearPhoto = '2021'"
+        :class="{active: yearPhoto == '2021'}">
           2021
         </button>
-        <button class="year">
+        <button class="year"
+        @click="yearPhoto = '2022'"
+        :class="{active: yearPhoto == '2022'}">
           2022
         </button>
-        <button class="year active">
+        <button class="year"
+        @click="yearPhoto = '2023'"
+        :class="{active: yearPhoto == '2023'}">
           2023
         </button>
       </div>
       <div class="nomination-container">
-        <nomination_item v-for="item in interaction.nominationArray"
-          :key="item.id"
-          :item = "item"
-        />
+        <transition-group name="nominationFade" appear>
+          <nomination_item v-for="item in interaction.nominationArray"
+            :key="item.id"
+            :item = "item"
+          />
+        </transition-group>
       </div>
     </div>
     <footer_comp/>
@@ -71,10 +99,6 @@ export default {
 .wrapper{
   width: 100%;
   height: 100%;
-  background-image: url(/img/background_page/team_track_winners.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
 }
 .wrapper-block{
    width: 1160px;
@@ -143,7 +167,16 @@ export default {
 
 
 
-
+.bg-element{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+.bg-element img{
+    position: absolute;
+}
 
 
 

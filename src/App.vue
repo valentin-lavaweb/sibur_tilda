@@ -32,10 +32,61 @@ export default {
 </script>
 <template>
     <router-view  v-slot="{ Component }">
-      <transition name="openPage" mode="out-in">
+      <transition name="openPage" mode="out-in" appear>
         <component :is="Component" />
       </transition>
     </router-view>
 </template>
 
-<style scoped></style>
+<style>
+.openPage-enter-active {
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+.openPage-enter-active .header{
+  transform: translateY(0px);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+
+
+
+.openPage-leave-active .header, .openPage-enter-from .header, .openPage-leave-to .header {
+  transform: translateY(-100%) scale(0.9);
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+
+.openPage-leave-active, .openPage-enter-from, .openPage-leave-to {
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+
+
+.nominationFade-enter-active {
+  transform: scale(1.0);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+.nominationFade-leave-active, .nominationFade-enter-from, .nominationFade-leave-to {
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+.openPopup-enter-active {
+  transform: scale(1.0);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+.openPopup-leave-active, .openPopup-enter-from, .openPopup-leave-to {
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+
+
+</style>

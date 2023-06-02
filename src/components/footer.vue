@@ -36,30 +36,46 @@ export default {
         </div>
         <div class="footer-block-link">
             <div class="link">
-                Главная
+                <RouterLink :to="{name: 'main_page'}" active-class="active">
+                    Главная
+                </RouterLink>
             </div>
             <div class="link">
-                Виды наград
+                <RouterLink :to="{name: 'types_of_awards_page'}" active-class="active">
+                    Виды наград
+                </RouterLink>                
             </div>
             <div class="link">
-                Фотогаллерея
+                <RouterLink :to="{name: 'photo_gallery'}" active-class="active">
+                    Фотогаллерея
+                </RouterLink>                
             </div>
             <div class="link">
-                Сертификаты
+                <RouterLink :to="{name: 'certificates'}" active-class="active">
+                    Сертификаты
+                </RouterLink>                
             </div>
         </div>
         <div class="footer-block-link">
             <div class="link underline">
-                Победители командного трека
+                <RouterLink :to="{name: 'corporate_winners'}" active-class="active">
+                    Победители командного трека
+                </RouterLink>                
             </div>
             <div class="link underline">
-                Лауреаты ведомственных наград
+                <RouterLink :to="{name: 'corporate_rewards'}" active-class="active">
+                    Лауреаты ведомственных наград
+                </RouterLink>                
             </div>
             <div class="link underline">
-                Лучшие корпоративные тренеры
+                <RouterLink :to="{name: 'corporate_trainer'}" active-class="active">
+                    Лучшие корпоративные тренеры
+                </RouterLink>                
             </div>
             <div class="link underline">
-                Лучшие производственные наставники
+                <RouterLink :to="{name: 'corporate_mentor'}" active-class="active">
+                    Лучшие производственные наставники
+                </RouterLink>                
             </div>
         </div>
     </div>
@@ -106,4 +122,38 @@ export default {
 .link.underline{
     text-decoration: underline;
 }
+
+
+
+
+
+a:active{
+    color: var(--white);
+}
+
+a:visited{
+    color: var(--white);
+}
+.router-link-active:visited{
+    color: var(--white);
+}
+
+a{
+    color: var(--white);
+    font-weight: 700;
+}
+.router-link{
+    color: var(--white);
+    
+}
+
+.router-link-active{
+    color: var(--white);
+}
+.hover-link a{
+    text-decoration: underline;
+}
+
+
+
 </style>

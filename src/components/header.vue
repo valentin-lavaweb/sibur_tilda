@@ -50,7 +50,7 @@ export default {
                     Виды наград
                 </RouterLink>
             </div>
-            <div class="header-link hover_link">
+            <div class="header-link hover_link" :class="{active: this.$route.name == 'team_track_winners'}">
                 <RouterLink :to="{name: 'team_track_winners'}" active-class="active">
                     Победители и лауреаты
                 </RouterLink>
@@ -99,6 +99,7 @@ export default {
     height: 100px;
     background-color: #F6F6F6;
     border-radius: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     top: 30px;
     z-index: 5 ;
 }
@@ -144,6 +145,9 @@ export default {
     transition: all 0.25s ease;
     cursor: pointer;
 }
+.header-link.active.hover_link::before{
+    border-top-color: var(--nipigasColorAdditional);
+}
 .header-link.hover_link::before{
     content: "";
     position: absolute;
@@ -155,6 +159,16 @@ export default {
     bottom: -10px;
     left: calc(50% - 6px);
     transition: all 0.25s ease;
+}
+.header-link.hover_link::after{
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    height: 10px;
+}
+.header-link.hover_link:hover::before{
+    transform: translateY(-5px) rotateX(180deg);
 }
 .header-link.hover_link:hover .header-hover-menu{
     pointer-events: auto;
@@ -177,6 +191,7 @@ export default {
     pointer-events: none;
     transition: all 0.25s ease;
 }
+
 .hover-link::before{
     content: "";
     position: absolute;
@@ -202,7 +217,7 @@ export default {
     font-weight: 400;
 }
 .hover-link:hover::before{
-    left: -12px;
+    transform: translateX(-5px) rotate(-90deg);
     opacity: 1;
 }
 
@@ -229,6 +244,9 @@ a{
 .router-link{
     color: var(--nipigasColorMain);
     
+}
+a.active{
+    color: var(--nipigasColorAdditional);
 }
 
 .router-link-active{

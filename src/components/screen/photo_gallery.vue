@@ -5,11 +5,14 @@ import footer_comp from "@/components/footer.vue";
 
 import popup_slider from "@/components/popup/popup_slider.vue";
 
+import gsap from "gsap";
+
 export default {
   name: "photo_gallery",
   data() {
     let interaction = useGameStore();
     return{
+        yearPhoto: '2023',
         interaction: interaction,
     }
   },
@@ -22,7 +25,13 @@ export default {
 
   },
   mounted() {
-
+    gsap.from(".img-animate-gsap", {
+    x: -20,
+    opacity: 0,
+    duration: 0.5,
+    delay: 0.25,
+    ease: "back",
+    });
   },
   computed:{
     
@@ -39,19 +48,30 @@ export default {
     <teleport to="body">
       <popup_slider v-if="interaction.popupSlider"/>
     </teleport>  
+    <div class="bg-element img-animate-gsap">
+      <img src="/img/background_page/photo_gallery.svg" alt=""/>
+    </div>
     <header_comp/>
     <div class="wrapper-block">
       <div class="years-container">
-        <button class="year">
+        <button class="year" 
+        @click="yearPhoto = '2020'"
+        :class="{active: yearPhoto == '2020'}">
           2020
         </button>
-        <button class="year">
+        <button class="year" 
+        @click="yearPhoto = '2021'"
+        :class="{active: yearPhoto == '2021'}">
           2021
         </button>
-        <button class="year">
+        <button class="year" 
+        @click="yearPhoto = '2022'"
+        :class="{active: yearPhoto == '2022'}">
           2022
         </button>
-        <button class="year active">
+        <button class="year" 
+        @click="yearPhoto = '2023'"
+        :class="{active: yearPhoto == '2023'}">
           2023
         </button>
       </div>
@@ -70,6 +90,7 @@ export default {
 </template>
 
 <style scoped>
+
 .wrapper{
   width: 100%;
   height: 100%;
@@ -130,7 +151,7 @@ export default {
   z-index: 2;
 }
 .item-img{
-  width: 360px;
+  width: 364px;
   height: 260px;
   margin: 0 20px 20px 0;
   transition: all 0.25s ease;
@@ -138,5 +159,18 @@ export default {
 }
 .item-img:hover{
   filter: brightness(0.5);
+}
+
+
+
+
+
+
+.bg-element{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1400px;
+  height: 100%;
 }
 </style>

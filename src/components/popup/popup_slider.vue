@@ -71,6 +71,7 @@ export default {
     height: 100vh;
     background-color: rgba(9, 89, 95, 0.84);
     z-index: 6;
+    transition: all 0.25s ease;
 }
 
 .slider-container{
@@ -78,6 +79,7 @@ export default {
     height: 580px;
     flex-direction: row;
     justify-content: space-between;
+    transition: all 0.25s ease;
 }
 
 

@@ -4,12 +4,14 @@ import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 import corporate_item from "@/components/corporate_item.vue";
 
+import gsap from "gsap";
 
 export default {
   name: "corporate",
   data() {
     let interaction = useGameStore();
     return{
+        yearPhoto: '2023',
         filterHoverStatus: false,
         interaction: interaction,
     }
@@ -23,7 +25,21 @@ export default {
 
   },
   mounted() {
-
+    gsap.from(".text-animate-gsap", {
+    x: - 100,
+    opacity: 0,
+    duration: 0.25,
+    delay: 0.25,
+    ease: "sine",
+    });
+    gsap.from(".img-animate-gsap", {
+    x: - 100,
+    opacity: 0,
+    scale: 0.5,
+    duration: 0.25,
+    delay: 0.5,
+    ease: "sine",
+    });
   },
   computed:{
     
@@ -38,28 +54,36 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp/>
-    <div class="bg-element">
+    <div class="bg-element img-animate-gsap">
       <img src="/img/background_page/team_track_winners.svg" alt=""/>
     </div>
     <div class="wrapper-block">
-        <h1 class="title">
-            {{ this.$route.meta.title}}
+        <h1 class="title text-animate-gsap">
+            {{ this.$route.meta.title }}
         </h1>
         <div class="years-container">
-            <button class="year">
+            <button class="year"
+            @click="yearPhoto = '2020'"
+            :class="{active: yearPhoto == '2020'}">
                 2020
             </button>
-            <button class="year">
+            <button class="year"
+            @click="yearPhoto = '2021'"
+            :class="{active: yearPhoto == '2021'}">
                 2021
             </button>
-            <button class="year">
+            <button class="year"
+            @click="yearPhoto = '2022'"
+            :class="{active: yearPhoto == '2022'}">
                 2022
             </button>
-            <button class="year active">
+            <button class="year"
+            @click="yearPhoto = '2023'"
+            :class="{active: yearPhoto == '2023'}">
                 2023
             </button>
         </div>
-        <div class="years-container name">
+        <div class="years-container name" v-if="this.$route.name == 'corporate_rewards'">
             <button class="year name">
                 РСХ
             </button>
@@ -68,6 +92,39 @@ export default {
             </button>
             <button class="year name">
                 МИНПРОМТОРГ
+            </button>
+        </div>
+        <div class="years-container name" v-else-if="this.$route.name == 'corporate_winners'">
+            <button class="year name">
+                Степень 1
+            </button>
+            <button class="year name">
+                Степень 2
+            </button>
+            <button class="year name">
+                Степень 3
+            </button>
+        </div>
+        <div class="years-container name" v-else-if="this.$route.name == 'corporate_trainer'">
+            <button class="year name">
+                Степень 1
+            </button>
+            <button class="year name">
+                Степень 2
+            </button>
+            <button class="year name">
+                Степень 3
+            </button>
+        </div>
+        <div class="years-container name" v-else>
+            <button class="year name">
+                Степень 1
+            </button>
+            <button class="year name">
+                Степень 2
+            </button>
+            <button class="year name">
+                Степень 3
             </button>
         </div>
         <div class="filter_AND_search-block">
@@ -106,10 +163,12 @@ export default {
             </div>
         </div>
         <div class="corporate-container_content">
-            <corporate_item v-for="item in interaction.testCorporateArray"
-            :key = "item.id"
-            :item = "item"
-            />
+            <transition-group name="nominationFade" appear>
+                <corporate_item v-for="item in interaction.testCorporateArray"
+                :key = "item.id"
+                :item = "item"
+                />
+            </transition-group>
         </div>
     </div>
     <footer_comp/>
@@ -352,7 +411,7 @@ export default {
     border: none;
     border-bottom: 1px solid #D6D6D6;
     font-size: 14px;
-    color: #D9D9D9;
+    color: var(--nipigasColorMain);
     font-style: italic;
 }
 .search_panel input::placeholder{

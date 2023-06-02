@@ -3,6 +3,8 @@ import { useGameStore } from '@/stores/interface-interaction.js';
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 
+import gsap from "gsap";
+
 export default {
   name: "types_of_awards_page",
   data() {
@@ -19,7 +21,19 @@ export default {
 
   },
   mounted() {
-
+    gsap.from(".text-animate-gsap", {
+      x: -100,
+      opacity: 0,
+      duration: 0.25,
+      stagger: 0.15,
+      delay: 0.25,
+    }),
+    gsap.from(".video-animate-gsap", {
+      y: -50,
+      opacity: 0,
+      duration: 0.5,
+      delay: 0.35,
+    });
   },
   computed:{
     
@@ -38,66 +52,66 @@ export default {
     </div>
     <header_comp/>
     <div class="wrapper-block">
-      <h1 class="title">
+      <h1 class="title text-animate-gsap">
         ВИДЫ НАГРАД
       </h1>
-      <span class="text description_title">
+      <span class="text description_title text-animate-gsap">
         Каждая награда — это способ выразить благодарность за ключевые достижения и мотивировать вас на дальнейшее развитие,
         профессиональный рост. СИБУР поощряет сотрудников сразу на нескольких уровнях.
       </span>
       <video 
-        class="videoBlock" 
+        class="videoBlock video-animate-gsap" 
         src="/video/video.mp4"
         poster="https://static.tildacdn.com/tild3264-6339-4339-a463-323162643665/photo.jpg"
         controls
       >
 
       </video>
-      <h2 class="subTitle">
+      <h2 class="subTitle text-animate-gsap">
         ВЕДОМСТВЕННЫЕ
       </h2>
-      <span class="text description_subTitle">
+      <span class="text description_subTitle text-animate-gsap">
         Награды вручаются за весомый вклад в развитие компании и индустрии в целом. Достижения подчеркиваются 
         орденами, благодарностями и дипломами от Минпромторга, Минэнерго, Российского союза химиков, 
         а также органов местного самоуправления.
       </span>
-      <h2 class="subTitle m_top-60">
+      <h2 class="subTitle m_top-60 text-animate-gsap">
         КОРПОРАТИВНЫЕ
       </h2>
       <div class="text-container">
         <div class="text-block">
-          <h3 class="miniTitle">
+          <h3 class="miniTitle text-animate-gsap">
             Командные
           </h3>
-          <span class="text">
+          <span class="text text-animate-gsap">
             Поощрение значимых командных достижений
             и вклад участников в развитие отрасли.
           </span>
-          <span class="text nipigas">
+          <span class="text nipigas text-animate-gsap">
             Номинация «Производственное решение года»
           </span>
-          <span class="text nipigas">
+          <span class="text nipigas text-animate-gsap">
             Номинация «Решение в области по работе 
             с клиентами»
           </span>
-          <span class="text nipigas">
+          <span class="text nipigas text-animate-gsap">
             Номинация «Организационное решение»
           </span>
         </div>
         <div class="text-block">
-          <h3 class="miniTitle">
+          <h3 class="miniTitle text-animate-gsap">
             Индивидуальные
           </h3>
-          <span class="text">
+          <span class="text text-animate-gsap">
             За личные достижения и высокую квалификацию.
           </span>
-          <span class="text">
+          <span class="text text-animate-gsap">
             1 степень. Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника, которые сделали уникальный вклад в развитие компании и отрасли, продемонстрировали достижения, выходящие за рамки занимаемой должности.
           </span>
-          <span class="text">
+          <span class="text text-animate-gsap">
             2 степень. Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды2 степени.
           </span>
-          <span class="text">
+          <span class="text text-animate-gsap">
             3 степень. Награду получают как опытные специалисты, так и новички – те сотрудники, которые внесли значимый вклад в развитие своего предприятия и получили признание в коллективе.
           </span>
         </div>
