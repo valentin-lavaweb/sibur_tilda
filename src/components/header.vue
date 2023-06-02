@@ -6,6 +6,7 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
+        statusMobileMenu: false,
         interaction: interaction,
     }
   },
@@ -87,6 +88,63 @@ export default {
                     Сертификаты
                 </RouterLink>
             </div>
+        </div>
+        <div class="header-mobile-menu" @click="statusMobileMenu = true">
+            <img src="/img/menu_grey.svg" alt="menu"/>
+        </div>
+        <div class="header-block-link-mobile" :class="{active: statusMobileMenu == true}">
+            <div class="header-logo mobile">
+                <div class="logo">
+                    <RouterLink :to="{name: 'main_page'}" active-class="active">
+                        <img src="/img/logo.svg" alt="logo"/>
+                    </RouterLink>
+                </div>
+                <div class="logo-text">
+                    <RouterLink :to="{name: 'main_page'}" active-class="active">
+                        энергия<br>
+                        признания
+                    </RouterLink>
+                </div>
+            </div>
+            <div class="header-mobile-close" @click="statusMobileMenu = false">
+                <img src="/img/close_grey.svg" alt="close"/>
+            </div>
+            <RouterLink :to="{name: 'types_of_awards_page'}" active-class="active">
+                    Виды наград
+            </RouterLink>
+            <RouterLink :to="{name: 'team_track_winners'}" active-class="active">
+                    Победители и лауреаты
+            </RouterLink>
+            <RouterLink class="sub_a" 
+                        @click="statusMobileMenu = false"
+                        :to="{name: 'corporate_winners'}" active-class="active">
+                            Победители командного трека
+            </RouterLink>
+            <RouterLink class="sub_a" 
+                        @click="statusMobileMenu = false"
+                        :to="{name: 'corporate_rewards'}" active-class="active">
+                            Лауреаты ведомственных наград
+            </RouterLink>
+            <RouterLink class="sub_a" 
+                        @click="statusMobileMenu = false"
+                        :to="{name: 'corporate_trainer'}" active-class="active">
+                            Лучшие корпоративные тренеры
+            </RouterLink>
+            <RouterLink class="sub_a" 
+                        @click="statusMobileMenu = false"
+                        :to="{name: 'corporate_mentor'}" active-class="active">
+                            Лучшие производственные наставники
+            </RouterLink>
+            <RouterLink :to="{name: 'photo_gallery'}" active-class="active">
+                    Фотогаллерея
+            </RouterLink>
+            <RouterLink :to="{name: 'certificates'}" active-class="active">
+                    Сертификаты
+            </RouterLink>
+        </div>
+        <div class="bg-header-mobile" 
+            @click="statusMobileMenu = false"
+            :class="{active: statusMobileMenu == true}">
         </div>
     </div>
   </div>
@@ -256,9 +314,117 @@ a.active{
     text-decoration: underline;
 }
 
+.header-mobile-menu{
+    display: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.header-mobile-close{
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.header-block-link-mobile.active{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0%);
+    transition: all 0.25s ease;
+}
+.header-block-link-mobile{
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 50px 20px 0 20px;
+    width: 320px;
+    height: 100%;
+    z-index: 3;
+    background-color: var(--white);
+    align-items: flex-start;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+    transition: all 0.25s ease;
+}
+.header-logo.mobile{
+    position: fixed;
+    top: 40px;
+    left: 20px;
+}
+.header-block-link-mobile a{
+    margin: 0 0 20px 0;
+
+}
+.bg-header-mobile.active{
+    opacity: 1;
+    pointer-events: auto;
+}
+.bg-header-mobile{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(9, 89, 95, 0.84);
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
 
 
+@media (max-width: 1440px) {
+    .header{
+        width: 90vw;
+    }
+    .header-content{
+        width: 80vw;
+    }
+    .header-link:first-child{
+        margin: 0;
+    }
+    .header-link{
+        margin: 0 0 0 3.5vw;
+    }
+}
+@media (max-width: 1024px) {
+    .header{
+        width: 100vw;
+        top: 0;
+        border-radius: 0;
+    }
+    .header-content{
+        width: 90vw;
+    }
+    .header-block-link{
+        display: none;
+    }
+    .header-mobile-menu{
+        display: flex;
+    }
+}
+@media (max-width: 980px) {
 
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 640px) {
+
+}
+@media (max-width: 480px) {
+
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
+}
 
 
 </style>

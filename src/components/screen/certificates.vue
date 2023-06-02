@@ -105,6 +105,7 @@ export default {
 .wrapper{
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 }
 .wrapper-block{
    width: 1160px;
@@ -188,5 +189,90 @@ export default {
     position: absolute;
 }
 
+
+@media (max-width: 1440px) {
+    .wrapper-block{
+        width: 70vw;
+    }
+    .title {
+        font-size: 5.8vw;
+    }
+    .titleBlock {
+        font-size: 2.2vw;
+    }
+    .certificates-container{
+        width: 70vw;
+    }
+    .certificates-block{
+        width: 45%;
+        padding: 1.5vw;
+        justify-content: flex-start;
+    }
+    .certificates-block:nth-child(2)::before{
+        transform: translateY(5vw);
+        padding: 0 1.5vw;
+    }
+}
+@media (max-width: 1200px) {
+    .certificates-block:nth-child(2)::before{
+        transform: translateY(8vw);
+        padding: 0 1.5vw;
+    }
+}
+@media (max-width: 1024px) {
+    .title {
+        font-size: 48px;
+    }
+    .titleBlock {
+        font-size: 36px;
+    }
+    .certificates-container{
+        width: 80vw;
+        flex-direction: column;
+    }
+    .certificates-block{
+        width: 100%;
+        height: fit-content;
+        padding: 20px;
+    }
+    .certificates-block:nth-child(1){
+        margin: 0 0 50px 0;
+    }
+    .certificates-block:nth-child(2)::before{
+        transform: translateY(50px);
+        padding: 0 20px;
+    }
+}
+@media (max-width: 980px) {
+
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 640px) {
+    .certificates-block:nth-child(2)::before{
+        transform: translateY(70px);
+    }
+    .title {
+        font-size: 36px;
+    }
+    .titleBlock {
+        font-size: 24px;
+    }
+}
+@media (max-width: 480px) {
+    .certificates-block:nth-child(2)::before{
+        transform: translateY(100px);
+    }
+    .wrapper-block{
+        margin: 100px 0 100px 0;
+    }
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
+}
 
 </style>

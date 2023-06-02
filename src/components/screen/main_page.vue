@@ -167,4 +167,86 @@ export default {
       transform: translateX(1px)translateY(0px)rotate(0deg);
   }
 }
+
+
+
+
+@media (max-width: 1440px) {
+    .wrapper-block{
+        width: 80vw;
+    }
+    .img-block {
+      margin: 5vw 0 0 0;
+    }
+    .img-block img:first-child{
+      width: 50vw;
+    }
+    .wreath{
+      width: 11vw;
+      bottom: 9vw;
+    }
+    .content-block{
+      margin: 16vw 0 0 0;
+    }
+    .subTitle{
+      font-size: 2.8vw;
+    }
+    .title{
+      font-size: 6.8vw;
+    }
+    .text{
+      font-size: 1.1vw;
+    }
+}
+@media (max-width: 1024px) {
+    .subTitle{
+      font-size: 36px;
+    }
+    .title{
+      font-size: 96px;
+    }
+    .text{
+      font-size: 16px;
+    }
+    .img-block {
+      display: none;
+    }
+}
+@media (max-width: 980px) {
+
+}
+@media (max-width: 768px) {
+  .subTitle{
+      font-size: 24px;
+    }
+    .title{
+      font-size: 66px;
+    }
+    .text{
+      font-size: 16px;
+    }
+}
+@media (max-width: 640px) {
+
+}
+@media (max-width: 480px) {
+  .wrapper-block{
+    margin: 120px 0 50px 0;
+  }
+  .subTitle{
+    font-size: 20px;
+  }
+  .title{
+    font-size: 44px;
+  }
+  .text{
+    font-size: 16px;
+  }
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
+}
 </style>

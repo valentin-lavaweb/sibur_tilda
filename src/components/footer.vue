@@ -154,6 +154,43 @@ a{
     text-decoration: underline;
 }
 
+@media (max-width: 1024px) {
+    .footer-content{
+        width: 90vw;
+        flex-wrap: wrap;
+    }
+}
+@media (max-width: 980px) {
 
+}
+@media (max-width: 730px) {
+    .footer{
+        height: 340px;
+        padding: 20px 0;
+    }
+    .footer-content{
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .footer-block-link{
+        width: 100%;
+        align-items: center;
+    }
+    .footer-logo{
+        height: 112px;
+    }
+}
+@media (max-width: 640px) {
+
+}
+@media (max-width: 480px) {
+
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
+}
 
 </style>

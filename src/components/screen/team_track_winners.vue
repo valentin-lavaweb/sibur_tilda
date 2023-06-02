@@ -181,7 +181,92 @@ export default {
 
 
 
+@media (max-width: 1440px) {
+  .wrapper-block{
+    width: 80vw;
+  }
+  .title {
+    font-size: 3.8vw;
+  }
+  .nomination-container{
+    width: 70vw;
+  }
+  .nomination-item{
+    width: 34vw;
+    min-height: 220px;
+  }
+}
+@media (max-width: 1200px) {
+  .nomination-item{
+    min-height: 200px;
+  }
+}
+@media (max-width: 1024px) {
+  .wrapper-block{
+    width: 80vw;
+  }
+  .nomination-container{
+    width: 80vw;
+  }
+  .title {
+    margin: 20px 0 0 0;
+    font-size: 36px;
+    text-align: center;
+  }
+  .nomination-container{
+    flex-direction: column;
+  }
+  .nomination-item{
+    width: 100%;
+    min-height: fit-content;
+  }
+}
+@media (max-width: 980px) {
 
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 640px) {
+
+}
+@media (max-width: 480px) {
+  .years-container{
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .year{
+    width: calc(50% - 2vw);
+  }
+  .year:nth-child(1){
+    margin: 0 2vw 10px 0;
+  }
+  .year:nth-child(2){
+    margin: 0 0 10px 2vw;
+  }
+  .year:nth-child(3){
+    margin: 0 2vw 10px 0;
+  }
+  .year:nth-child(4){
+    margin: 0 0 10px 2vw;
+  }
+
+  .title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .nomination-container{
+    margin: 40px 0 50px 0;
+  }
+
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
+}
 
 
 </style>

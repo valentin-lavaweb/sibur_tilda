@@ -153,6 +153,18 @@ export default {
                         <input type="checkbox">
                         <span>АО “Воронежсинтезкаучук”</span>
                     </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox">
+                        <span>АО “Воронежсинтезкаучук”</span>
+                    </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox">
+                        <span>АО “Воронежсинтезкаучук”</span>
+                    </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox">
+                        <span>АО “Воронежсинтезкаучук”</span>
+                    </label>
                 </div>
             </div>
             <div class="search_panel">
@@ -387,7 +399,9 @@ export default {
   background-color: transparent;
 }
 
-
+.custom-checkbox{
+    margin: 0 0 20px 0;
+}
 
 
 
@@ -440,6 +454,116 @@ export default {
     position: absolute;
     top: 0;
     z-index: 0;
+}
+
+
+
+@media (max-width: 1440px) {
+    .wrapper-block{
+        width: 70vw;
+    }
+    .title {
+        font-size: 3.8vw;
+    }
+    .filter-block{
+        width: 70vw;
+        height: 50vh;
+    }
+    .filter-container_content{
+        padding: 20px;
+    }
+    .filter-block label{
+        width: 50%;
+    }
+    .corporate-container_content{
+        justify-content: space-between;
+    }
+}
+@media (max-width: 1024px) {
+    .wrapper-block{
+        width: 80vw;
+    }
+    .filter-block{
+        width: 70vw;
+    }
+    .title {
+        margin: 20px 0 20px 0;
+        font-size: 36px;
+        text-align: center;
+    }
+}
+@media (max-width: 980px) {
+
+}
+@media (max-width: 768px) {
+    .years-container{
+        width: 80vw;
+    }
+    .filter_AND_search-block{
+        justify-content: space-around;
+    }
+    .search_panel{
+        position: relative;
+        right: unset;
+    }
+    .filter-block label{
+        width: 100%;
+    }
+}
+@media (max-width: 640px) {
+
+}
+@media (max-width: 580px) {
+    .corporate-container_content{
+        justify-content: center;
+    }
+}
+@media (max-width: 480px) {
+    .years-container{
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    .year{
+        width: calc(50% - 2vw);
+    }
+    .year:nth-child(1){
+        margin: 0 2vw 10px 0;
+    }
+    .year:nth-child(2){
+        margin: 0 0 10px 2vw;
+    }
+    .year:nth-child(3){
+        margin: 0 2vw 10px 0;
+    }
+    .year:nth-child(4){
+        margin: 0 0 10px 2vw;
+    }
+
+    .year.name{
+        width: 100%;
+        margin: 0 0 10px 0;
+    }
+
+    .corporate-container_content{
+        margin: 0 0 50px 0;
+    }
+    .filter_AND_search-block{
+        flex-direction: column-reverse;
+    }
+    .search_panel{
+        margin: 0 0 20px 0;
+    }
+    .filter-block{
+        width: 90vw;
+    }
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 360px) {
+    .title{
+        font-size: 30px;
+    }
 }
 
 </style>

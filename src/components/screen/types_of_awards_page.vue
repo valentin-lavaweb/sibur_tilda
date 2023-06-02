@@ -125,6 +125,7 @@ export default {
 .wrapper{
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
 }
 .wrapper-block{
    width: 1160px;
@@ -237,5 +238,107 @@ export default {
   50%{
     transform: translateX(-30px) rotate(10deg);
   }
+}
+
+
+
+@media (max-width: 1440px) {
+  .wrapper-block, .text-container, .description_subTitle, .description_title {
+    width: 70vw;
+  }
+  .bg-element{
+    width: 40vw;
+    height: 55vw;
+    transform: translateX(25vw);
+  }
+  .bg-element img{
+    width: 30vw;
+  }
+  .videoBlock{
+    width: 45vw;
+  }
+  .title{
+    font-size: 4vw;
+  }
+  .subTitle, .miniTitle{
+    font-size: 1.8vw;
+  }
+  .text{
+    font-size: 1vw;
+  }
+}
+@media (max-width: 1024px) {
+  .wrapper-block, .text-container, .description_subTitle, .description_title {
+    width: 80vw;
+  }
+  .bg-element{
+    display: none;
+  }
+  .videoBlock{
+    width: 65vw;
+  }
+  .title{
+    font-size: 48px;
+  }
+  .subTitle, .miniTitle{
+    font-size: 32px;
+  }
+  .text{
+    font-size: 16px;
+  }
+  .text-block:first-child{
+    width: calc(50% - 30px);
+    margin: 0 15px 0 0;
+  }
+  .text-block:last-child{
+      width: calc(50% - 30px);
+      margin: 0 0 0 15px;
+  }
+}
+@media (max-width: 980px) {
+
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 640px) {
+  .text-container{
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .text-block:first-child{
+    width: 100%;
+    margin: 0 0 50px 0;
+  } 
+  .text-block:last-child{
+    width: 100%;
+    margin: 0;
+  }
+  .text {
+    text-align: left;
+  }
+}
+@media (max-width: 480px) {
+  .text-container{
+    margin: 40px 0 50px 0;
+  }
+  .videoBlock{
+    width: 80vw;
+  }
+  .title{
+    font-size: 32px;
+  }
+  .subTitle, .miniTitle{
+    font-size: 24px;
+  }
+  .text{
+    font-size: 16px;
+  }
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
 }
 </style>

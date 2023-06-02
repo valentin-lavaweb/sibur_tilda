@@ -87,4 +87,55 @@ export default {
   font-weight: 700;
   color: var(--nipigasColorAdditional);
 }
+
+
+
+@media (max-width: 1440px) {
+  .subTitle{
+    font-size: 1.2vw;
+  }
+  .text{
+    font-size: 1.1vw;
+  }
+  .autorText{
+    font-size: 1vw;
+  }
+  .autorBlock{
+    font-size: 1vw;
+  }
+}
+@media (max-width: 1024px) {
+  .subTitle{
+    font-size: 20px;
+  }
+  .text{
+    font-size: 18px;
+  }
+  .autorText{
+    font-size: 16px;
+  }
+  .autorBlock{
+    font-size: 16px;
+  }
+
+}
+@media (max-width: 980px) {
+
+}
+@media (max-width: 768px) {
+
+}
+@media (max-width: 640px) {
+
+}
+@media (max-width: 480px) {
+
+
+}
+@media (max-width: 420px) {
+
+}
+@media (max-width: 380px) {
+
+}
 </style>

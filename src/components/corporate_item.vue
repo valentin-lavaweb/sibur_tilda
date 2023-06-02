@@ -96,4 +96,18 @@ export default {
     font-weight: 600;
     color: var(--nipigasColorMain);
 }
+
+@media (max-width: 1440px) {
+    .corporate-item{
+        min-width: 212px;
+    }
+}
+@media (max-width: 580px) {
+    .corporate-item{
+        width: 100%;
+    }
+    .tempelBlock{
+        text-align: center;
+    }
+}
 </style>

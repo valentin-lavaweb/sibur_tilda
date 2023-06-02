@@ -121,4 +121,48 @@ export default {
     width: 12px;
     transition: all 0.25s ease;
 }
+
+@media (max-width: 1440px) {
+  .slider-container{
+    width: 90vw;
+  }
+  .slider{
+    width: calc(100% - 80px - 70px);
+    height: 80vh;
+  }
+  .slider-close{
+    top: 0vw;
+    transform: translateY(-220%);
+  }
+}
+@media (max-width: 1024px) {
+  .slider img{
+    width: 100%;
+    height: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .slider{
+    height: 50vw;
+  }
+  .slider-container{
+    height: 50vw;
+  }
+  .slider-close{
+    top: 0vw;
+    transform: translateY(-120%);
+  }
+}
+@media (max-width: 480px) {
+  .slider{
+    width: calc(100% - 60px - 20px);
+  }
+  .slider-arrow{
+    width: 30px;
+    height: 30px;
+  }
+  .slider-close{
+    right: calc(100% - 80vw);
+  }
+}
 </style>
