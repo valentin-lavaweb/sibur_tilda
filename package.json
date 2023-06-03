@@ -9,11 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@sentry/vue": "^7.31.1",
-    "@waxio/waxjs": "^1.2.0-beta.2",
-    "anchor-link": "^3.5.1",
-    "anchor-link-browser-transport": "^3.5.1",
-    "atomicassets": "^1.5.1",
+    "axios": "^1.4.0",
     "gsap": "^3.11.5",
     "nouislider": "^15.6.1",
     "pinia": "^2.0.28",
@@ -22,7 +18,6 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
-    "@sentry/vite-plugin": "^0.4.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/eslint-config-prettier": "^7.0.0",
     "eslint": "^8.22.0",
