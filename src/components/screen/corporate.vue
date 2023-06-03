@@ -1,5 +1,5 @@
 <script>
-import { useGameStore } from '@/stores/interface-interaction.js';
+import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 import corporate_item from "@/components/corporate_item.vue";
@@ -7,13 +7,17 @@ import corporate_item from "@/components/corporate_item.vue";
 import gsap from "gsap";
 
 export default {
-  name: "corporate",
+  name: "corporate_awards",
   data() {
     let interaction = useGameStore();
     return{
         yearPhoto: '2023',
         filterHoverStatus: false,
         interaction: interaction,
+        awardsList: [],
+        page: 1,
+        meta: null
+
     }
   },
   components:{
@@ -22,6 +26,37 @@ export default {
     corporate_item,
   },
   methods: {
+
+    toggleIssuerFilter(issuer){
+        if(!this.filterIssuers.includes(issuer)){
+            this.filterIssuers = [...this.filterIssuers, issuer];
+        }else{
+            this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
+        }
+    },
+    // toggleCompanyFilter(company){
+    //     if(!this.filterCompanies.includes(company)){
+    //         this.filterCompanies = [...this.filterCompanies, company];
+    //     }else{
+    //         this.filterCompanies = this.filterCompanies.filter(i => i != company);
+    //     }
+    // },
+
+    async updateAwardsList(){
+        let filter = {
+          ...this.queryFilter,
+          personal_award_section_id: this.thisSection.id
+        }
+        this.searching = true;
+
+        let res = await this.interaction.api.getPersonalAwards(filter, this.page);
+
+        let awards = res.data.data;
+        this.meta = res.data.meta;
+
+        this.awardsList = awards
+        this.searching = false;
+    }
 
   },
   mounted() {
@@ -42,10 +77,116 @@ export default {
     });
   },
   computed:{
-    
+    thisSection(){
+        let sectionId = this.$route.params.sectionId;
+        let section = this.interaction.personalSections.find(s => s.id == sectionId) ?? this.interaction.personalSections[0];
+        return section;
+    },
+    queryFilter(){
+        let query = this.$route.query;
+        let filter = {
+            name: query.name,
+            companies: query.companies,
+            issuers: query.issuers,
+            grade: query.grade,
+            year: query.year,
+        }
+        return filter;
+    },
+    filterYear:{
+        get(){
+            return this.$route.query.year ?? undefined;
+        },
+        set(value){
+            this.$router.replace({query:{...this.$route.query, year: value}})
+        }
+    },
+    filterName:{
+        get(){
+            return this.$route.query.name ?? undefined;
+        },
+        set(value){
+            this.$router.replace({query:{...this.$route.query, name: value}})
+        }
+    },
+    filterCompanies:{
+        get(){
+            let companies = this.$route.query.companies;
+            if(companies){
+                return String(companies).split(',');
+            }else{
+                return [];
+            }
+        },
+        set(companies){
+            let string = companies.length > 0 ? companies.join(',') : undefined;
+            this.$router.replace({query:{...this.$route.query, companies: string}})
+        },
+    },
+    filterIssuers:{
+        get(){
+            let issuers = this.$route.query.issuers;
+            if(issuers){
+                return String(issuers).split(',');
+            }else{
+                return [];
+            }
+        },
+        set(issuers){
+            let string = issuers.length > 0 ? issuers.join(',') : undefined;
+            this.$router.replace({query:{...this.$route.query, issuers: string}})
+        },
+    },
+    filterGrade:{
+        get(){
+            return this.$route.query.grade ?? undefined;
+        },
+        set(value){
+            this.$router.replace({query:{...this.$route.query, grade: value}})
+        }
+    },
+
+    availableYears(){
+        let list = this.thisSection.filters.year ?? [];
+        return list.sort();
+    },
+    availableGrades(){
+        //TODO если степень 0?
+        let list = this.thisSection.filters.grade ?? [];
+        return list.sort();
+    },
+    availableCompanies(){
+        let list = this.thisSection.filters.company ?? [];
+        return list.sort();
+    },
+    availableIssuers(){
+        let list = this.thisSection.filters.issued ?? [];
+        return list.sort();
+    },
+
+    gradeFilterEnabled(){
+        return Boolean(this.thisSection.grade_filter)
+    },
+    companyFilterEnabled(){
+        return Boolean(this.thisSection.company_filter)
+    },
+    issuerFilterEnabled(){
+        return Boolean(this.thisSection.issuer_filter)
+    },
+
+
   },
   watch:{
-
+    queryFilter(){
+        this.debouncedUpdateAwardsList();
+    }
+  },
+  created(){
+    this.debouncedUpdateAwardsList = debounce(this.updateAwardsList, 500);
+    this.updateAwardsList();
+  },
+  beforeRouteUpdate(){
+    this.awardsList = [];
   },
 };
 </script>
@@ -59,75 +200,39 @@ export default {
     </div>
     <div class="wrapper-block">
         <h1 class="title text-animate-gsap">
-            {{ this.$route.meta.title }}
+            {{ thisSection.title }}
         </h1>
         <div class="years-container">
             <button class="year"
-            @click="yearPhoto = '2020'"
-            :class="{active: yearPhoto == '2020'}">
-                2020
-            </button>
-            <button class="year"
-            @click="yearPhoto = '2021'"
-            :class="{active: yearPhoto == '2021'}">
-                2021
-            </button>
-            <button class="year"
-            @click="yearPhoto = '2022'"
-            :class="{active: yearPhoto == '2022'}">
-                2022
-            </button>
-            <button class="year"
-            @click="yearPhoto = '2023'"
-            :class="{active: yearPhoto == '2023'}">
-                2023
+            v-for="year in availableYears"
+            :key="year"
+
+            @click="filterYear == year ? filterYear = undefined : filterYear = year"
+            :class="{active: filterYear == year}">
+            {{year}}
             </button>
         </div>
-        <div class="years-container name" v-if="this.$route.name == 'corporate_rewards'">
-            <button class="year name">
-                РСХ
-            </button>
-            <button class="year name">
-                МИНЭНЕРГО
-            </button>
-            <button class="year name">
-                МИНПРОМТОРГ
-            </button>
-        </div>
-        <div class="years-container name" v-else-if="this.$route.name == 'corporate_winners'">
-            <button class="year name">
-                Степень 1
-            </button>
-            <button class="year name">
-                Степень 2
-            </button>
-            <button class="year name">
-                Степень 3
+        <div class="years-container name" v-if="issuerFilterEnabled">
+            <button class="year name"
+            v-for="issuer in availableIssuers"
+            :key="issuer"
+
+            @click="toggleIssuerFilter(issuer)"
+            :class="{active: filterIssuers.includes(issuer)}">
+                {{issuer}}
             </button>
         </div>
-        <div class="years-container name" v-else-if="this.$route.name == 'corporate_trainer'">
-            <button class="year name">
-                Степень 1
-            </button>
-            <button class="year name">
-                Степень 2
-            </button>
-            <button class="year name">
-                Степень 3
-            </button>
-        </div>
-        <div class="years-container name" v-else>
-            <button class="year name">
-                Степень 1
-            </button>
-            <button class="year name">
-                Степень 2
-            </button>
-            <button class="year name">
-                Степень 3
+        <div class="years-container name" v-if="gradeFilterEnabled">
+            <button class="year name"
+            v-for="grade in availableGrades"
+            :key="grade"
+
+            @click="filterGrade == grade ? filterGrade = undefined : filterGrade = grade"
+            :class="{active: filterGrade == grade}">
+                Степень {{grade}}
             </button>
         </div>
-        <div class="filter_AND_search-block">
+        <div class="filter_AND_search-block" v-if="companyFilterEnabled">
             <button class="filterButton" 
             :class="{active: filterHoverStatus}"
             @click="filterHoverStatus = !filterHoverStatus"
@@ -149,21 +254,12 @@ export default {
             </button>
             <div class="filter-block" :class="{active: filterHoverStatus}">
                 <div class="filter-container_content">
-                    <label class="custom-checkbox">
-                        <input type="checkbox">
-                        <span>АО “Воронежсинтезкаучук”</span>
-                    </label>
-                    <label class="custom-checkbox">
-                        <input type="checkbox">
-                        <span>АО “Воронежсинтезкаучук”</span>
-                    </label>
-                    <label class="custom-checkbox">
-                        <input type="checkbox">
-                        <span>АО “Воронежсинтезкаучук”</span>
-                    </label>
-                    <label class="custom-checkbox">
-                        <input type="checkbox">
-                        <span>АО “Воронежсинтезкаучук”</span>
+                    <label class="custom-checkbox"
+                    v-for="company in availableCompanies"
+                    :key="company"
+                    >
+                        <input type="checkbox" :value="company" v-model="filterCompanies">
+                        <span>{{company}}</span>
                     </label>
                 </div>
             </div>
@@ -171,12 +267,12 @@ export default {
                 <div class="search-img">
                     <img src="/img/search_grey.svg" alt="search"/>
                 </div>
-                <input type="text" placeholder="Введите запрос">
+                <input type="text" placeholder="Введите запрос" v-model="filterName">
             </div>
         </div>
         <div class="corporate-container_content">
             <transition-group name="nominationFade" appear>
-                <corporate_item v-for="item in interaction.testCorporateArray"
+                <corporate_item v-for="item in awardsList"
                 :key = "item.id"
                 :item = "item"
                 />

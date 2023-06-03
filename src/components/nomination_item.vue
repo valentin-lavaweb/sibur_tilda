@@ -6,44 +6,22 @@ export default {
     item: Object,
   },
   name: "nomination_item",
-  data() {
-    let interaction = useGameStore();
-    return{
-        interaction: interaction,
-    }
-  },
-  components:{
-
-  },
-  methods(){
-
-  },
-  mounted() {
-
-  },
-  computed:{
-    
-  },
-  watch:{
-
-  },
 };
 </script>
-
 
 <template>
     <div class="nomination-item">
         <h3 class="subTitle">
-            {{ item.title }}
+            {{ item.nomination }}
         </h3>
         <span class="text">
-          {{ item.subTitle }}
+          {{ item.description }}
         </span>
         <span class="autorText">
             <span class="autorBlock">
                 Авторы:
             </span>
-            {{ item.autors }}
+            {{ item.authors }}
         </span>  
     </div>
 </template>

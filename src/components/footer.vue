@@ -9,21 +9,12 @@ export default {
         interaction: interaction,
     }
   },
-  components:{
-
-  },
-  methods(){
-
-  },
-  mounted() {
-
-  },
   computed:{
-    
+    personalSections(){
+        return this.interaction.personalSections;
+    }
   },
-  watch:{
 
-  },
 };
 </script>
 
@@ -47,7 +38,7 @@ export default {
             </div>
             <div class="link">
                 <RouterLink :to="{name: 'photo_gallery'}" active-class="active">
-                    Фотогаллерея
+                    Фотогалерея
                 </RouterLink>                
             </div>
             <div class="link">
@@ -57,12 +48,15 @@ export default {
             </div>
         </div>
         <div class="footer-block-link">
-            <div class="link underline">
-                <RouterLink :to="{name: 'corporate_winners'}" active-class="active">
-                    Победители командного трека
+            <div class="link underline"
+            v-for="section in personalSections"
+            :key="section.id"
+            >
+                <RouterLink :to="{name: 'personal_awards', params:{sectionId: section.id, sectionTitle: section.title}}" active-class="active">
+                    {{section.title}}
                 </RouterLink>                
             </div>
-            <div class="link underline">
+            <!-- <div class="link underline">
                 <RouterLink :to="{name: 'corporate_rewards'}" active-class="active">
                     Лауреаты ведомственных наград
                 </RouterLink>                
@@ -76,7 +70,7 @@ export default {
                 <RouterLink :to="{name: 'corporate_mentor'}" active-class="active">
                     Лучшие производственные наставники
                 </RouterLink>                
-            </div>
+            </div> -->
         </div>
     </div>
   </div>

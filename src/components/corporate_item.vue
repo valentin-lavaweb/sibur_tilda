@@ -22,7 +22,10 @@ export default {
 
   },
   computed:{
-    
+    imagePath(){
+        // return import.meta.env.VITE_VUE_APP_API_URL + '/' + this.item.image;
+        return this.item.image;
+    }
   },
   watch:{
 
@@ -31,25 +34,39 @@ export default {
 </script>
 
 
+'id'    =>      $this->id,
+            'name' =>       $this->name,
+            'position' =>   $this->position,
+            'division' =>   $this->division,
+            'company' =>    $this->company,
+            'award' =>      $this->award,
+            'grade' =>      $this->grade,
+            'issued' =>     $this->issued,
+            'year' =>       $this->year,
+            'image' =>      $this->image,
+            'section' =>    new PersonalAwardSectionResource($this->section),
+
+
+
 <template>
     <div class="corporate-item">
         <div class="corporate-item_img">
-            <img :src="item.src" alt="item.src"/>
+            <img :src="imagePath" :alt="item.name"/>
         </div>
         <div class="corporate-item_name">
             {{ item.name }}
         </div>
         <div class="corporate-item_post tempelBlock">
-            <span>Должность: </span>{{ item.post }}
+            <span>Должность: </span>{{ item.position }}
         </div>
         <div class="corporate-item_filter tempelBlock">
-            {{ item.filter }}
+            {{ item.company }}
         </div>
         <div class="corporate-item_reward tempelBlock">
-            <span>Награда: </span>{{ item.reward }}
+            <span>Награда: </span>{{ item.award }}
         </div>
-        <div class="corporate-item_date tempelBlock">
-            <span>Выдана: </span>{{ item.date }}
+        <div class="corporate-item_date tempelBlock" v-if="item.issued">
+            <span>Выдана: </span>{{ item.issued }}
         </div>
     </div>
 </template>

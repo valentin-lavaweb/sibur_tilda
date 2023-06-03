@@ -4,34 +4,11 @@
  */
 
 import axios from "axios";
-import useStore from "@/stores/interface-interaction.js";
-const store = useStore();
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api",
   withCredentials: true, // required to handle the CSRF token
 });
-
-/*
- * Add a response interceptor
- */
-authClient.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    function (error) {
-      if (
-        error.response &&
-        [401, 419].includes(error.response.status) &&
-        Boolean(store.admin)
-      ) {
-        store.logout();
-      }
-      return Promise.reject(error);
-    }
-  );
-
-
 
 
 
@@ -70,19 +47,51 @@ authClient.interceptors.response.use(
    */
 
 
+  /**
+   * @typedef {Object} PersonalAwardFilter
+   * @property {?string} name 
+   * @property {?string} companies
+   * @property {?string} issuers
+   * @property {?numeric} grade 
+   * @property {?numeric} year
+   * @property {?numeric} personal_award_section_id
+   */
+
+
 
 export default {
-      getPersonalAwards() {
-        return apiClient.get("/personal_awards");
+
+
+
+      /**
+       * Description
+       * @param {PersonalAwardFilter} filter
+       * @param {?number} page
+       * @returns {any}
+       */
+      getPersonalAwards(filter, page = 0) {
+        for(let prop in filter){
+          if(filter[prop] === undefined){
+            delete filter[prop];
+          }
+        }
+
+        let searchParams = new URLSearchParams(filter);
+        
+        searchParams.append('page', page);
+
+        return apiClient.get("/personal_awards?" + searchParams);
       },
+
+
+
+
       getPersonalAwardSections() {
         return apiClient.get("/personal_award_sections");
       },
       getCommandAwards() {
         return apiClient.get("/command_awards");
       },
-
-
 
       
 

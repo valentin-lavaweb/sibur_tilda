@@ -11,7 +11,7 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
-        yearPhoto: '2023',
+        selectedYear: 2022,
         interaction: interaction,
     }
   },
@@ -41,11 +41,18 @@ export default {
     });
   },
   computed:{
-    
+    availableYears(){
+      const uniqueTable = {};
+      let years = this.interaction.commandAwards.map(a => a.year).filter((year) =>(!uniqueTable[year] && (uniqueTable[year] = 1)));
+      return years;
+    },
+    yearWinners(){
+      return this.interaction.commandAwards.filter(w => w.year == this.selectedYear);
+    }
   },
-  watch:{
-
-  },
+  created(){
+    this.selectedYear = this.availableYears[0];
+  }
 };
 </script>
 
@@ -58,15 +65,18 @@ export default {
     </div>
     <div class="wrapper-block">
       <h1 class="title text-animate-gsap">
-        Лауреаты ведомственных наград
+        Победители командного трека
       </h1>
       <div class="years-container">
         <button class="year"
-        @click="yearPhoto = '2020'"
-        :class="{active: yearPhoto == '2020'}">
-          2020
+        v-for="year in availableYears"
+        :key="year"
+
+        @click="selectedYear = year"
+        :class="{active: selectedYear == year}">
+          {{year}}
         </button>
-        <button class="year"
+        <!-- <button class="year"
         @click="yearPhoto = '2021'"
         :class="{active: yearPhoto == '2021'}">
           2021
@@ -80,11 +90,11 @@ export default {
         @click="yearPhoto = '2023'"
         :class="{active: yearPhoto == '2023'}">
           2023
-        </button>
+        </button> -->
       </div>
       <div class="nomination-container">
         <transition-group name="nominationFade" appear>
-          <nomination_item v-for="item in interaction.nominationArray"
+          <nomination_item v-for="item in yearWinners"
             :key="item.id"
             :item = "item"
           />
@@ -96,6 +106,10 @@ export default {
 </template>
 
 <style scoped>
+
+
+
+
 .wrapper{
   width: 100%;
   height: 100%;
