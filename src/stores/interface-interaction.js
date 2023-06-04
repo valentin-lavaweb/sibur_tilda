@@ -101,6 +101,7 @@ export const useGameStore = defineStore("interface", {
         year: 2023
       },
     ],
+    commandAwards: null,
     popupSlider: false,
     enableSlide: 1,
 
