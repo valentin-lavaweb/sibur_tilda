@@ -273,16 +273,20 @@ export default {
             </div>
         </div>
         <div class="corporate-container_content">
-            <transition-group name="nominationFade" appear v-if="!searching">
+            <div class="placeholder" v-if="searching">
+                Поиск...
+                <img src="/default.png" alt="крутилка">
+            </div>
+            <div class="placeholder" v-else-if="awardsList.length == 0">
+                Ничего не найдено
+            </div>
+            <transition-group name="nominationFade" appear v-else>
                 <corporate_item v-for="item in awardsList"
                 :key = "item.id"
                 :item = "item"
                 />
             </transition-group>
-            <div class="placeholder" v-else>Поиск...
-                <img src="/default.png" alt="крутилка">
-
-            </div>
+            
         </div>
     </div>
     <footer_comp/>
