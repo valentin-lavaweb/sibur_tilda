@@ -23,8 +23,9 @@ export default {
   },
   computed:{
     imagePath(){
+        let path = new URL(this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
         // return import.meta.env.VITE_VUE_APP_API_URL + '/' + this.item.image;
-        return this.item.image;
+        return path;
     }
   },
   watch:{

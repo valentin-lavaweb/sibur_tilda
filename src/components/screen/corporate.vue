@@ -16,7 +16,8 @@ export default {
         interaction: interaction,
         awardsList: [],
         page: 1,
-        meta: null
+        meta: null,
+        searching: false
 
     }
   },
@@ -179,14 +180,14 @@ export default {
   watch:{
     queryFilter(){
         this.debouncedUpdateAwardsList();
+    },
+    thisSection(){
+        this.updateAwardsList();
     }
   },
   created(){
     this.debouncedUpdateAwardsList = debounce(this.updateAwardsList, 500);
     this.updateAwardsList();
-  },
-  beforeRouteUpdate(){
-    this.awardsList = [];
   },
 };
 </script>
@@ -271,12 +272,16 @@ export default {
             </div>
         </div>
         <div class="corporate-container_content">
-            <transition-group name="nominationFade" appear>
+            <transition-group name="nominationFade" appear v-if="!searching">
                 <corporate_item v-for="item in awardsList"
                 :key = "item.id"
                 :item = "item"
                 />
             </transition-group>
+            <div class="placeholder" v-else>Поиск...
+                <img src="/default.png" alt="крутилка">
+
+            </div>
         </div>
     </div>
     <footer_comp/>
@@ -499,7 +504,9 @@ export default {
     margin: 0 0 20px 0;
 }
 
-
+.placeholder{
+    color: var(--nipigasColorMain);
+}
 
 
 
