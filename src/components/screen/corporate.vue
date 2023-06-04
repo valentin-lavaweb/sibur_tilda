@@ -430,11 +430,13 @@ export default {
     overflow-y: auto;
 }
 .filter-block label{
-    width: 32%;
+    width: calc(33% - 10px);
+    margin: 0 10px 0 0;
+    height: 50px;
     color: var(--textColorBlack);
     font-size: 16px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     overflow: hidden;
     cursor: pointer;
@@ -581,7 +583,7 @@ export default {
         padding: 20px;
     }
     .filter-block label{
-        width: 50%;
+        width: calc(50% - 10px);
     }
     .corporate-container_content{
         justify-content: space-between;
@@ -616,6 +618,7 @@ export default {
     }
     .filter-block label{
         width: 100%;
+        margin: 0;
     }
 }
 @media (max-width: 640px) {

@@ -84,24 +84,9 @@ export default {
         :class="{active: selectedYear == year}">
           {{year}}
         </button>
-        <!-- <button class="year"
-        @click="yearPhoto = '2021'"
-        :class="{active: yearPhoto == '2021'}">
-          2021
-        </button>
-        <button class="year"
-        @click="yearPhoto = '2022'"
-        :class="{active: yearPhoto == '2022'}">
-          2022
-        </button>
-        <button class="year"
-        @click="yearPhoto = '2023'"
-        :class="{active: yearPhoto == '2023'}">
-          2023
-        </button> -->
       </div>
       <div class="nomination-container">
-        <transition-group name="nominationFade" appear>
+        <transition-group name="win_Tracker" appear>
           <nomination_item v-for="item in yearWinners"
             :key="item.id"
             :item = "item"
@@ -192,8 +177,8 @@ export default {
 .bg-element{
     position: absolute;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 1920px;
+    height: 1200px;
     z-index: 0;
 }
 .bg-element img{

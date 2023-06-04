@@ -76,6 +76,32 @@ export default {
   transition: all 0.25s ease;
 }
 
+.win_Tracker-enter-active {
+  transform: scale(1.0);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+.win_Tracker-leave-active{
+  position: absolute;
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.0s ease;
+} 
+.win_Tracker-enter-from{
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.25s ease;
+} 
+.win_Tracker-leave-to {
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+
+
+
+
+
 .openPopup-enter-active {
   transform: scale(1.0);
   opacity: 1;
@@ -87,6 +113,8 @@ export default {
   transition: all 0.25s ease;
 }
 
-
+.wrapper{
+  overflow: hidden;
+}
 
 </style>

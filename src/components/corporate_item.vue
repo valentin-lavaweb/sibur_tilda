@@ -35,20 +35,6 @@ export default {
 </script>
 
 
-'id'    =>      $this->id,
-            'name' =>       $this->name,
-            'position' =>   $this->position,
-            'division' =>   $this->division,
-            'company' =>    $this->company,
-            'award' =>      $this->award,
-            'grade' =>      $this->grade,
-            'issued' =>     $this->issued,
-            'year' =>       $this->year,
-            'image' =>      $this->image,
-            'section' =>    new PersonalAwardSectionResource($this->section),
-
-
-
 <template>
     <div class="corporate-item">
         <div class="corporate-item_img">
@@ -94,6 +80,7 @@ export default {
     font-size: 16px;
     font-weight: 700;
     margin: 0 0 10px 0;
+    text-align: center;
 }
 
 .tempelBlock{
