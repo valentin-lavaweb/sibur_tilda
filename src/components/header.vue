@@ -33,6 +33,8 @@ export default {
 
 <template>
     <div class="header">
+        <div class="header-back_block"></div>
+        <div class="back_block"></div>
         <div class="header-content">
             <div class="header-logo">
                 <div class="logo">
@@ -164,11 +166,25 @@ export default {
     position: fixed;
     width: 1326px;
     height: 100px;
+    top: 30px;
+    z-index: 5;
+}
+.header-back_block{
+    position: absolute;
+    width: 100%;
+    height: 100%;
     background-color: #F6F6F6;
     border-radius: 250px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    top: 30px;
-    z-index: 5;
+    z-index: 3;
+}
+.back_block{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: translateY(-50%);
+    background-color: #fff;
+    z-index: 0;
 }
 
 .header-content {
@@ -176,6 +192,8 @@ export default {
     height: 100%;
     flex-direction: row;
     justify-content: space-between;
+    background-color: #F6F6F6;
+    z-index: 5;
 }
 
 .header-logo {
@@ -433,6 +451,8 @@ a.active {
         width: 100vw;
         top: 0;
         border-radius: 0;
+        background-color: #F6F6F6;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .header-content {
@@ -446,6 +466,8 @@ a.active {
     .header-mobile-menu {
         display: flex;
     }
+    .header-back_block{display: none;}
+    .back_block{display: none;}
 }
 
 @media (max-width: 980px) {}
