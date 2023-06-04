@@ -52,7 +52,7 @@ export default {
             v-for="section in personalSections"
             :key="section.id"
             >
-                <RouterLink :to="{name: 'personal_awards', params:{sectionId: section.id, sectionTitle: section.title}}" active-class="active">
+                <RouterLink :to="{name: 'personal_awards', params:{sectionId: section.id}}" active-class="active">
                     {{section.title}}
                 </RouterLink>                
             </div>

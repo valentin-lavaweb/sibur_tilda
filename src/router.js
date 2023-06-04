@@ -14,17 +14,18 @@ const certificates             = () => import("@/components/screen/certificates.
 
 
 const routes = [
-  { path: '/:pathMatch(.*)*',   redirect: { name: 'main_page' }},
+  // { path: '/:pathMatch(.*)*',   redirect: { name: 'main_page' }},
   { path: '/',                                      component: main_page,               name: 'main_page'},
-  { path: '/виды_наград',                           component: types_of_awards_page,    name: 'types_of_awards_page'},
-  { path: '/победители_и_лауреаты',                 component: team_track_winners,      name: 'team_track_winners'},
-  { path: '/personal/:sectionId/:sectionTitle',     component: corporate,               name: 'personal_awards'},
+  { path: '/awards',                                component: types_of_awards_page,    name: 'types_of_awards_page'},
+  { path: '/team_winners',                          component: team_track_winners,      name: 'team_track_winners'},
+  { path: '/personal/:sectionId',                   component: corporate,               name: 'personal_awards'},
+  // { path: '/personal/:sectionId/:sectionTitle',     component: corporate,               name: 'personal_awards'},
   // { path: '/Победители_командного_трека',           component: corporate,               name: 'corporate_winners',        meta:{title:'Победители командного трека'}},
   // { path: '/Лауреаты_ведомственных_наград',         component: corporate,               name: 'corporate_rewards',        meta:{title:'Лауреаты ведомственных наград'}},
   // { path: '/Лучшие_корпоративные_тренеры',          component: corporate,               name: 'corporate_trainer',        meta:{title:'Лучшие корпоративные тренеры'}},
   // { path: '/Лучшие_производственные_наставники',    component: corporate,               name: 'corporate_mentor',         meta:{title:'Лучшие производственные наставники'}},
-  { path: '/фотогалерея',                          component: photo_gallery,           name: 'photo_gallery'},
-  { path: '/сертификаты',                           component: certificates,            name: 'certificates'},
+  { path: '/gallery',                                component: photo_gallery,           name: 'photo_gallery'},
+  { path: '/sertificates',                           component: certificates,            name: 'certificates'},
   ]
 
 const router = createRouter({

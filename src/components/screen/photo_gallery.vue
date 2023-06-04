@@ -12,7 +12,7 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
-        yearPhoto: '2023',
+        selectedYear: 2022,
         interaction: interaction,
     }
   },
@@ -34,11 +34,32 @@ export default {
     });
   },
   computed:{
-    
+    availableYears(){
+      const uniqueTable = {};
+      let years = this.interaction.images.map(i => i.year).filter((year) =>(!uniqueTable[year] && (uniqueTable[year] = 1)));
+      return years.sort();
+    },
+    yearImages(){
+      return this.interaction.images.filter(i => i.year == this.selectedYear);
+    },
+    preparedImages(){
+      return this.yearImages.map(i=>{
+        i.src = new URL(i.image, import.meta.env.VITE_VUE_APP_API_URL);
+        return i;
+      })
+    }
   },
   watch:{
 
   },
+  async beforeRouteEnter(to, from, next){
+    let interaction = useGameStore();
+    if(!interaction.images){
+        await interaction.loadImages();
+        next();
+    }
+    next();
+  }
 };
 </script>
 
@@ -46,7 +67,7 @@ export default {
 <template>
   <div class="wrapper">
     <teleport to="body">
-      <popup_slider v-if="interaction.popupSlider"/>
+      <popup_slider v-if="interaction.popupSlider" :images="preparedImages"/>
     </teleport>  
     <div class="bg-element img-animate-gsap">
       <img src="/img/background_page/photo_gallery.svg" alt=""/>
@@ -54,30 +75,18 @@ export default {
     <header_comp/>
     <div class="wrapper-block">
       <div class="years-container">
-        <button class="year" 
-        @click="yearPhoto = '2020'"
-        :class="{active: yearPhoto == '2020'}">
-          2020
-        </button>
-        <button class="year" 
-        @click="yearPhoto = '2021'"
-        :class="{active: yearPhoto == '2021'}">
-          2021
-        </button>
-        <button class="year" 
-        @click="yearPhoto = '2022'"
-        :class="{active: yearPhoto == '2022'}">
-          2022
-        </button>
-        <button class="year" 
-        @click="yearPhoto = '2023'"
-        :class="{active: yearPhoto == '2023'}">
-          2023
+        <button class="year"
+        v-for="year in availableYears"
+        :key="year"
+
+        @click="selectedYear = year"
+        :class="{active: selectedYear == year}">
+          {{year}}
         </button>
       </div>
       <div class="content-block">
         <div class="item-img" 
-          v-for="img in interaction.imges"
+          v-for="img in preparedImages"
           :key="img.id"
           @click="interaction.openSlide(img.id)"
           >

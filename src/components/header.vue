@@ -60,7 +60,7 @@ export default {
                     <div class="header-hover-menu">
                         <div class="hover-link" v-for="section in personalSections" :key="section.id">
                             <RouterLink
-                                :to="{ name: 'personal_awards', params: { sectionId: section.id, sectionTitle: section.title } }"
+                                :to="{ name: 'personal_awards', params: { sectionId: section.id} }"
                                 active-class="active">
                                 {{section.title}}
                             </RouterLink>
@@ -126,7 +126,7 @@ export default {
                 </RouterLink>
                 <RouterLink class="sub_a" v-for="section in personalSections" :key="section.id"
                     @click="statusMobileMenu = false"
-                    :to="{ name: 'personal_awards', params: { sectionId: section.id, sectionTitle: section.title } }"
+                    :to="{ name: 'personal_awards', params: { sectionId: section.id } }"
                     active-class="active">
                     {{section.title}}
                 </RouterLink>

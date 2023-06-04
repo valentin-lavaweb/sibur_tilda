@@ -52,7 +52,5 @@ const store = useGameStore();
 
   });
 
-  
-  store.loadCommandAwards();
 
 app.mount("#app");

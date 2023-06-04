@@ -20,6 +20,7 @@ export const useGameStore = defineStore("interface", {
     admin: null,
     personalSections:null,
     // commandAwards: [],
+    images: null,
     imges:[
       {
         id: 1,
@@ -257,8 +258,13 @@ export const useGameStore = defineStore("interface", {
       this.personalSections = sections.data.data;
     },
     async loadCommandAwards(){
-      let awards =await this.api.getCommandAwards();
+      let awards = await this.api.getCommandAwards();
       this.commandAwards = awards.data.data;
+    },
+
+    async loadImages(){
+      let images = await this.api.getGallery();
+      this.images = images.data.data;
     },
 
 

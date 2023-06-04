@@ -44,7 +44,7 @@ export default {
     availableYears(){
       const uniqueTable = {};
       let years = this.interaction.commandAwards.map(a => a.year).filter((year) =>(!uniqueTable[year] && (uniqueTable[year] = 1)));
-      return years;
+      return years.sort();
     },
     yearWinners(){
       return this.interaction.commandAwards.filter(w => w.year == this.selectedYear);
@@ -52,6 +52,14 @@ export default {
   },
   created(){
     this.selectedYear = this.availableYears[0];
+  },
+  async beforeRouteEnter(to, from, next){
+    let interaction = useGameStore();
+    if(!interaction.commandAwards){
+        await interaction.loadCommandAwards();
+        next();
+    }
+    next();
   }
 };
 </script>

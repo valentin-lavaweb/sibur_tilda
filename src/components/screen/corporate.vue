@@ -11,7 +11,6 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
-        yearPhoto: '2023',
         filterHoverStatus: false,
         interaction: interaction,
         awardsList: [],
@@ -179,7 +178,9 @@ export default {
   },
   watch:{
     queryFilter(){
-        this.debouncedUpdateAwardsList();
+        if(!this.searching){
+            this.debouncedUpdateAwardsList();
+        }
     },
     thisSection(){
         this.updateAwardsList();

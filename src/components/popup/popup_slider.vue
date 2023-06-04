@@ -3,6 +3,9 @@ import { useGameStore } from '@/stores/interface-interaction.js';
 
 export default {
   name: "popup_slider",
+  props:{
+    images: Array
+  },
   data() {
     let interaction = useGameStore();
     return{
@@ -20,6 +23,9 @@ export default {
     nextSlide(){
       this.sliderIndex++;
     },
+    closeSlider(){
+      this.interaction.popupSlider = false;
+    }
   },
   mounted() {
 
@@ -27,12 +33,12 @@ export default {
   computed:{
     selectedSlide:{
       get(){
-          return this.interaction.imges[this.sliderIndex % this.interaction.imges.length];
+          return this.images[this.sliderIndex % this.images.length];
       },
       set(value){
-          let imgIndex = this.interaction.imges.indexOf(value);
-          let resultIndex = imgIndex + 1000*this.interaction.imges.length;
-          this.interaction.imges = resultIndex;
+          let imgIndex = this.images.indexOf(value);
+          let resultIndex = imgIndex + 1000*this.images.length;
+          this.sliderIndex = resultIndex;
       }
     },
   },
@@ -44,16 +50,16 @@ export default {
 
 
 <template>
-  <div class="popup_slider">
+  <div class="popup_slider" @click.self="closeSlider">
     <div class="slider-container">
-        <div class="slider-close" @click="interaction.popupSlider = false">
+        <div class="slider-close" @click="closeSlider">
             Закрыть
         </div>
         <div class="slider-arrow left" @click="backSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
         </div>
         <div class="slider">
-            <img :src="`/img/slider/img`+ selectedSlide.id + `.svg`" alt="img"/>
+            <img :src="selectedSlide.src" alt="img"/>
         </div>
         <div class="slider-arrow" @click="nextSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>

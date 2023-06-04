@@ -46,6 +46,12 @@ export const apiClient = axios.create({
    * @property {boolean} grade_filter 
    */
 
+  /**
+   * @typedef {Object} ImagePayload
+   * @property {File} image 
+   * @property {number} year
+   */
+
 
   /**
    * @typedef {Object} PersonalAwardFilter
@@ -91,6 +97,9 @@ export default {
       },
       getCommandAwards() {
         return apiClient.get("/command_awards");
+      },
+      getGallery() {
+        return apiClient.get("/gallery");
       },
 
       
@@ -208,6 +217,47 @@ export default {
       deletePersonalAwardSection(id) {
         return apiClient.delete("/personal_award_section/" + id);
       },
+
+
+
+
+
+      
+      /**
+       * Description
+       * @param {ImagePayload} data
+       * @returns {Promise}
+       */
+      createImage(data) {
+        let payload = new FormData();
+        for(let prop in data){
+          payload.append(prop, data[prop]);
+        }
+        return apiClient.post("/image", payload);
+      },
+      /**
+       * Description
+       * @param {number} id
+       * @param {ImagePayload} data
+       * @returns {Promise}
+       */
+      updateImage(id, data) {
+        let payload = new FormData();
+        for(let prop in data){
+          payload.append(prop, data[prop]);
+        }
+        return apiClient.put("/image/" + id, payload);
+      },
+
+      /**
+       * Description
+       * @param {number} id
+       * @returns {Promise}
+       */
+      deleteImage(id) {
+        return apiClient.delete("/image/" + id);
+      },
+
 
 
 
