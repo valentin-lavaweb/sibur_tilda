@@ -23,9 +23,17 @@ export default {
   },
   computed:{
     imagePath(){
-        let path = new URL(this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
-        // return import.meta.env.VITE_VUE_APP_API_URL + '/' + this.item.image;
-        return path;
+        if(this.item.image){
+            return new URL('storage/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
+        }else{
+            if(this.item.gender){
+                return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+            }else{
+                return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+            }
+            
+        }
+        
     }
   },
   watch:{

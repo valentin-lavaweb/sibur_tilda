@@ -17,7 +17,7 @@ export const apiClient = axios.create({
    * @typedef {Object} PersonalAwardPayload
    * @property {string} name 
    * @property {string} position
-   * @property {string} division
+  //  * @property {string} division
    * @property {string} company 
    * @property {string} award   
    * @property {number} grade   

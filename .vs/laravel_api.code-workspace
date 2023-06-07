@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../laravel_api"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../../tools/awards"
+		}
+	],
+	"settings": {}
+}
