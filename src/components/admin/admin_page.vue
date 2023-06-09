@@ -1,6 +1,9 @@
 <script>
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore } from '@/stores/interface-interaction.js';
 import login_comp from "@/components/admin/login.vue";
+
 
 export default {
   name: "admin_page",
@@ -8,10 +11,27 @@ export default {
     let interaction = useGameStore();
     return{
         interaction: interaction,
+        headers: [
+          { text: "PLAYER", value: "player" },
+          { text: "TEAM", value: "team"},
+          { text: "NUMBER", value: "number"},
+          { text: "POSITION", value: "position"},
+          { text: "HEIGHT", value: "indicator.height"},
+          { text: "WEIGHT (lbs)", value: "indicator.weight", sortable: true},
+          { text: "LAST ATTENDED", value: "lastAttended", width: 200},
+          { text: "COUNTRY", value: "country"},
+        ],
+        items: [
+          { player: "Stephen Curry", team: "GSW", number: 30, position: 'G', indicator: {"height": '6-2', "weight": 185}, lastAttended: "Davidson", country: "USA"},
+          { player: "Lebron James", team: "LAL", number: 6, position: 'F', indicator: {"height": '6-9', "weight": 250}, lastAttended: "St. Vincent-St. Mary HS (OH)", country: "USA"},
+          { player: "Kevin Durant", team: "BKN", number: 7, position: 'F', indicator: {"height": '6-10', "weight": 240}, lastAttended: "Texas-Austin", country: "USA"},
+          { player: "Giannis Antetokounmpo", team: "MIL", number: 34, position: 'F', indicator: {"height": '6-11', "weight": 242}, lastAttended: "Filathlitikos", country: "Greece"},
+        ],
     }
   },
   components:{
     login_comp,
+    Vue3EasyDataTable,
   },
   methods: {
 
@@ -72,7 +92,7 @@ export default {
             </div>
         </section>
         <section class="content_table">
-            <div class="table">
+            <!-- <div class="table">
                 <div class="table_item">
                     <div class="table_item-title">
                         ID
@@ -115,15 +135,85 @@ export default {
                         <input type="number">
                     </div>
                 </div>
-            </div>
+            </div> -->
+            <Vue3EasyDataTable
+                :headers="headers"
+                :items="items"
+                border-cell
+                theme-color="#1d90ff"
+                table-class-name="customize-table"
+                header-text-direction="center"
+                body-text-direction="center"
+            />
         </section>
       </div>
     </div>
   </div>
+  
 </template>
 
-<style scoped>
+<style>
+.vue3-easy-data-table__footer,
+.vue3-easy-data-table__footer .pagination__rows-per-page,
+.easy-data-table__rows-selector .rows-input__wrapper{
+    flex-direction: row;
+}
 
+.customize-table {
+    width: 100%;
+    height: 100%;
+
+  --easy-table-border: 1px solid var(--nipigasColorMain);
+  --easy-table-row-border: 1px solid var(--nipigasColorMain);
+
+  --easy-table-header-font-size: 14px;
+  --easy-table-header-height: 50px;
+  --easy-table-header-font-color: var(--nipigasColorMain);
+  --easy-table-header-background-color: var(--white);
+
+  --easy-table-header-item-padding: 10px 15px;
+
+  --easy-table-body-even-row-font-color: var(--nipigasColorMain);
+  --easy-table-body-even-row-background-color: var(--white);
+
+  --easy-table-body-row-font-color: var(--textColorBlack);
+  --easy-table-body-row-background-color: var(--white);
+  --easy-table-body-row-height: 50px;
+  --easy-table-body-row-font-size: 14px;
+
+  --easy-table-body-row-hover-font-color: var(--nipigasColorMain-hover);
+  --easy-table-body-row-hover-background-color: #c0c7d2;
+
+  --easy-table-body-item-padding: 10px 15px;
+
+  --easy-table-footer-background-color: var(--white);
+  --easy-table-footer-font-color: var(--nipigasColorMain);
+  --easy-table-footer-font-size: 14px;
+  --easy-table-footer-padding: 0px 10px;
+  --easy-table-footer-height: 50px;
+
+  --easy-table-rows-per-page-selector-width: 70px;
+  --easy-table-rows-per-page-selector-option-padding: 10px;
+  --easy-table-rows-per-page-selector-z-index: 1;
+
+
+  --easy-table-scrollbar-track-color: #2d3a4f;
+  --easy-table-scrollbar-color: #2d3a4f;
+  --easy-table-scrollbar-thumb-color: #4c5d7a;;
+  --easy-table-scrollbar-corner-color: #2d3a4f;
+
+  --easy-table-loading-mask-background-color: #2d3a4f;
+}
+
+
+</style>
+<style scoped>
+.content_table div{
+  display: unset;
+  justify-content: unset;
+  align-items: unset;  
+  flex-direction: unset;
+}
 .wrapper{
   width: 100%;
   height: 100%;
@@ -229,7 +319,7 @@ section{
     width: 100%;
     min-height: 400px;
     height: fit-content;
-    border-top: 1px solid var(--nipigasColorMain);
+    /* border-top: 1px solid var(--nipigasColorMain); */
 }
 .table{
     width: 100%;
