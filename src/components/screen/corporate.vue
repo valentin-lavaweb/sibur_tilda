@@ -214,7 +214,7 @@ export default {
             {{year}}
             </button>
         </div>
-        <div class="years-container name" v-if="issuerFilterEnabled">
+        <!-- <div class="years-container name" v-if="issuerFilterEnabled">
             <button class="year name"
             v-for="issuer in availableIssuers"
             :key="issuer"
@@ -233,7 +233,7 @@ export default {
             :class="{active: filterGrade == grade}">
                 Степень {{grade}}
             </button>
-        </div>
+        </div> -->
         <div class="filter_AND_search-block" v-if="companyFilterEnabled">
             <button class="filterButton" 
             :class="{active: filterHoverStatus}"
@@ -254,6 +254,18 @@ export default {
                 </div>
                 Все предприятия
             </button>
+            <div class="filter-selection" v-if="issuerFilterEnabled">
+                <select>
+                        <option value="">
+                            --кем выдана--
+                        </option>
+                        <option
+                            v-for="issuer in availableIssuers"
+                            :key="issuer"
+                            :value="issuer">
+                        </option>
+                </select>
+            </div>
             <div class="filter-block" :class="{active: filterHoverStatus}">
                 <div class="filter-container_content">
                     <label class="custom-checkbox"
@@ -432,7 +444,7 @@ export default {
 .filter-block label{
     width: calc(33% - 10px);
     margin: 0 10px 0 0;
-    height: 50px;
+    height: 80px;
     color: var(--textColorBlack);
     font-size: 16px;
     display: flex;
@@ -618,7 +630,8 @@ export default {
     }
     .filter-block label{
         width: 100%;
-        margin: 0;
+        height: fit-content;
+        margin: 0 0 15px 0;
     }
 }
 @media (max-width: 640px) {
