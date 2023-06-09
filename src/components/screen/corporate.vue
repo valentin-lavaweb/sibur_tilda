@@ -214,26 +214,6 @@ export default {
             {{year}}
             </button>
         </div>
-        <!-- <div class="years-container name" v-if="issuerFilterEnabled">
-            <button class="year name"
-            v-for="issuer in availableIssuers"
-            :key="issuer"
-
-            @click="toggleIssuerFilter(issuer)"
-            :class="{active: filterIssuers.includes(issuer)}">
-                {{issuer}}
-            </button>
-        </div>
-        <div class="years-container name" v-if="gradeFilterEnabled">
-            <button class="year name"
-            v-for="grade in availableGrades"
-            :key="grade"
-
-            @click="filterGrade == grade ? filterGrade = undefined : filterGrade = grade"
-            :class="{active: filterGrade == grade}">
-                Степень {{grade}}
-            </button>
-        </div> -->
         <div class="filter_AND_search-block" v-if="companyFilterEnabled">
             <button class="filterButton" 
             :class="{active: filterHoverStatus}"
@@ -261,8 +241,20 @@ export default {
                         </option>
                         <option
                             v-for="issuer in availableIssuers"
-                            :key="issuer"
-                            :value="issuer">
+                            :key="issuer">
+                            {{ issuer }}
+                        </option>
+                </select>
+            </div>
+            <div class="filter-selection" v-if="gradeFilterEnabled">
+                <select>
+                        <option value="">
+                            --степень--
+                        </option>
+                        <option
+                            v-for="grade in availableGrades"
+                            :key="grade">
+                            степень {{ grade }}
                         </option>
                 </select>
             </div>
@@ -529,8 +521,32 @@ export default {
 
 
 
-
-
+.filter-selection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-width: 100px;
+    max-width: 200px;
+    height: 30px;
+    margin: 0 0 0 30px;
+}
+select{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: var(--white);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--filterColor);
+    border: 1px solid var(--filterColor);
+    padding: 0 10px 0 5px;
+}
+option{
+    padding: 5px;
+}
 
 
 
@@ -601,6 +617,15 @@ export default {
         justify-content: space-between;
     }
 }
+@media (max-width: 1200px) {
+    .search_panel{
+        position: relative;
+        display: flex;
+    }
+    .filter-selection{
+        margin: 0 30px;
+    }
+}
 @media (max-width: 1024px) {
     .wrapper-block{
         width: 80vw;
@@ -615,9 +640,21 @@ export default {
     }
 }
 @media (max-width: 980px) {
-
+    .filter_AND_search-block{
+        justify-content: space-between;
+    }
+    .filter-selection{
+        margin: 0;
+    }
 }
 @media (max-width: 768px) {
+    .filter_AND_search-block{
+        flex-direction: column;
+        height: fit-content;
+    }
+    .filter-selection{
+        margin: 20px 0;
+    }
     .years-container{
         width: 80vw;
     }
