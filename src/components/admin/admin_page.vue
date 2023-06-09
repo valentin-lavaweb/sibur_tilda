@@ -75,9 +75,9 @@ export default {
             <div class="search-img">
                 <img src="/img/search_grey.svg" alt="search"/>
             </div>
-            <input type="text" placeholder="Введите запрос" v-model="filterName">
+            <input type="text" placeholder="Введите запрос" v-model="searchValue">
         </div>
-        <section>
+        <section class="section_tabs">
             <div class="tab">
                 командные награды
             </div>
@@ -137,13 +137,27 @@ export default {
                 </div>
             </div> -->
             <Vue3EasyDataTable
+                v-model:server-options="serverOptions"
+                :server-items-length="serverItemsLength"
+                :loading="loading"
+
                 :headers="headers"
                 :items="items"
+                v-model:items-selected="itemsSelected"
+                show-index
+            
+                :search-field="searchField"
+                :search-value="searchValue"
+
                 border-cell
-                theme-color="#1d90ff"
+                theme-color="rgb(0, 140, 149)"
                 table-class-name="customize-table"
                 header-text-direction="center"
                 body-text-direction="center"
+
+                :items-selected="itemsSelected"
+                buttons-pagination
+                loading
             />
         </section>
       </div>
@@ -182,7 +196,7 @@ export default {
   --easy-table-body-row-font-size: 14px;
 
   --easy-table-body-row-hover-font-color: var(--nipigasColorMain-hover);
-  --easy-table-body-row-hover-background-color: #c0c7d2;
+  --easy-table-body-row-hover-background-color: #e6e6e6;
 
   --easy-table-body-item-padding: 10px 15px;
 
@@ -451,21 +465,41 @@ section{
 
 
 @media (max-width: 1440px) {
+    .wrapper-block{
+        width: 1000px;
+    }
 }
 @media (max-width: 1024px) {
-
+    .wrapper-block{
+        width: 900px;
+    }
 }
 @media (max-width: 980px) {
-
+    .wrapper-block{
+        width: 640px;
+    }
 }
 @media (max-width: 768px) {
-
+    .wrapper-block{
+        width: 580px;
+    }
+    .section_tabs{
+        flex-wrap: wrap;
+    }
+    .tab{
+        border-radius: 0px;
+    }
 }
 @media (max-width: 640px) {
-
+    .wrapper-block{
+        width: 440px;
+    }
 }
 @media (max-width: 480px) {
-
+    .wrapper-block{
+        width: 100vw;
+        padding: 0 10px;
+    }
 }
 @media (max-width: 420px) {
 
