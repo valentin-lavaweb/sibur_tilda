@@ -144,8 +144,11 @@ button{
     font-weight: 400;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.25s ease;
 }
-
+button:hover{
+    background-color: var(--nipigasColorMain-hover);
+}
 
 
 @media (max-width: 1440px) {
@@ -160,13 +163,21 @@ button{
 
 }
 @media (max-width: 640px) {
-
+    .login-block{
+        width: 90vw;
+    }
+    .login-header{
+        font-size: 18px;
+        padding: 0 20px;
+    }
 }
 @media (max-width: 480px) {
 
 }
 @media (max-width: 420px) {
-
+    form{
+        width: 250px;
+    }
 }
 @media (max-width: 380px) {
 

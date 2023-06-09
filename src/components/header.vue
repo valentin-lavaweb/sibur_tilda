@@ -132,22 +132,6 @@ export default {
                     active-class="active">
                     {{section.title}}
                 </RouterLink>
-
-                <!-- <RouterLink class="sub_a" 
-                        @click="statusMobileMenu = false"
-                        :to="{name: 'corporate_rewards'}" active-class="active">
-                            Лауреаты ведомственных наград
-            </RouterLink>
-            <RouterLink class="sub_a" 
-                        @click="statusMobileMenu = false"
-                        :to="{name: 'corporate_trainer'}" active-class="active">
-                            Лучшие корпоративные тренеры
-            </RouterLink>
-            <RouterLink class="sub_a" 
-                        @click="statusMobileMenu = false"
-                        :to="{name: 'corporate_mentor'}" active-class="active">
-                            Лучшие производственные наставники
-            </RouterLink> -->
                 <RouterLink :to="{ name: 'photo_gallery' }" active-class="active">
                     Фотогалерея
                 </RouterLink>
