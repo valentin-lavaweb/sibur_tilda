@@ -28,7 +28,7 @@ export const useGameStore = defineStore("interface", {
 
   }),
   getters: {
-    auth(){
+    auth(state){
       authClient.interceptors.response.use(
         (response) => {
           return response;
@@ -37,9 +37,9 @@ export const useGameStore = defineStore("interface", {
           if (
             error.response &&
             [401, 419].includes(error.response.status) &&
-            Boolean(this.admin)
+            Boolean(state.admin)
           ) {
-            this.logout();
+            state.logout();
           }
           return Promise.reject(error);
         }
@@ -47,7 +47,7 @@ export const useGameStore = defineStore("interface", {
 
       return auth
     },
-    api(){
+    api(state){
       apiClient.interceptors.response.use(
         (response) => {
           return response;
@@ -56,9 +56,9 @@ export const useGameStore = defineStore("interface", {
           if (
             error.response &&
             [401, 419].includes(error.response.status) &&
-            Boolean(this.admin)
+            Boolean(state.admin)
           ) {
-            this.logout();
+            state.logout();
           }
           return Promise.reject(error);
         }
