@@ -21,184 +21,11 @@ export const useGameStore = defineStore("interface", {
     personalSections:null,
     // commandAwards: [],
     images: null,
-    imges:[
-      {
-        id: 1,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 2,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 3,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 4,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 5,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 6,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 7,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 8,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 9,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 10,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 11,
-        src: `/img/slider/img.svg`
-      },
-      {
-        id: 12,
-        src: `/img/slider/img.svg`
-      },
-    ],
-    commandAwards:[
-      {
-        id: 1,
-        nomination: `Номинация «Производственное решение года»`,
-        description: `Система видеоинспекции для проверки качества гидроструйной чистки петлевых реакторов ПЭВП ЗСНХ`,
-        authors: `Михаил Бурый, Юрий Дерюгин, Иван Тарасов, Георгий Клевцов.`,
-        year: 2022
-      },
-      {
-        id: 2,
-        nomination: `Номинация «Лучшее организационное решение»`,
-        description: `Проект «Оптимизатор»`,
-        authors: `Рустам Гилязов, Алена Безрукова, Евгений Поляков.`,
-        year: 2022
-      },
-      {
-        id: 3,
-        nomination: `Номинация «Решение в области работы с клиентами»`,
-        description: `Коллаборация СИБУР и WOS: капсульная коллекция одежды из переработанного пластика`,
-        authors: `Константин Вернигоров, Анастасия Щербинина, Константин Лукошко, Иванна Гребенюк.`,
-        year: 2022
-      },
-      {
-        id: 4,
-        nomination: `Номинация «Приз зрительских симпатий»`,
-        description: `Замещение импортных и отечественных марок полиолефинов на специальные марки СИБУР`,
-        authors: `Авторы: Александр Мазильников, Камиля Мамлеева, Валерий Панарин, Иван Турчан, Ильдар Салахов.`,
-        year: 2023
-      },
-    ],
     commandAwards: null,
     popupSlider: false,
     enableSlide: 1,
 
-    /* тестовый массив, потом удалить */
-    testCorporateArray:[
-      {
-        id: 1,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 2,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 3,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 4,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 5,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 6,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 7,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 8,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 9,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-      {
-        id: 10,
-        src: `/img/template_photo/men.svg`,
-        name: "Иванов Иван",
-        post: "Инженер",
-        filter: "ООО “ЗапСибНефтехим”",
-        reward: "Почётная грамота",
-        date: "МИНЭНЕРГО",
-      },
-    ]
-    /* ------------------------------ */
+
   }),
   getters: {
     auth(){
@@ -238,7 +65,10 @@ export const useGameStore = defineStore("interface", {
       );
 
       return api
-    }
+    },
+    isAdmin(state){
+      return Boolean(state.admin);
+    },
     
   },
   actions: {

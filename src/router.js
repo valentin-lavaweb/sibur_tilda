@@ -9,7 +9,7 @@ const team_track_winners       = () => import("@/components/screen/team_track_wi
 const corporate                = () => import("@/components/screen/corporate.vue");
 const photo_gallery            = () => import("@/components/screen/photo_gallery.vue");
 const certificates             = () => import("@/components/screen/certificates.vue");
-
+const admin_page               = () => import("@/components/admin/admin_page.vue");
 
 
 
@@ -26,6 +26,7 @@ const routes = [
   // { path: '/Лучшие_производственные_наставники',    component: corporate,               name: 'corporate_mentor',         meta:{title:'Лучшие производственные наставники'}},
   { path: '/gallery',                                component: photo_gallery,           name: 'photo_gallery'},
   { path: '/sertificates',                           component: certificates,            name: 'certificates'},
+  { path: '/admin_page',                             component: admin_page,            name: 'admin_page'},
   ]
 
 const router = createRouter({
