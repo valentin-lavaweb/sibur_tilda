@@ -8,9 +8,11 @@ import axios from "axios";
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api",
   withCredentials: true, // required to handle the CSRF token
-  headers:{
-    Accept: 'application/json'
-  }
+  // headers:{
+  //   Accept: 'application/json'
+  // }
+  // xsrfHeaderName: 'X-XSRF-TOKEN',
+  // xsrfCookieName: 'XSRF-TOKEN',
 
 });
 
@@ -130,10 +132,11 @@ export default {
        */
       updatePersonalAward(id, data) {
         let payload = new FormData();
+        payload.append('_method', 'PUT');
         for(let prop in data){
           payload.append(prop, data[prop]);
         }
-        return apiClient.put("/personal_award/" + id, payload);
+        return apiClient.post("/personal_award/" + id, payload);
       },
 
       /**
@@ -264,6 +267,23 @@ export default {
 
 
 
+
+
+
+
+      async login({email, password}) {
+        let res = await apiClient.get( import.meta.env.VITE_VUE_APP_API_URL + "/sanctum/csrf-cookie");
+
+        return apiClient.post("/login", {email, password});
+      },
+      logout() {
+        // await authClient.get("/sanctum/csrf-cookie");
+        return apiClient.post("/logout");
+      },
+      async getAuthAdmin() {
+        await apiClient.get( import.meta.env.VITE_VUE_APP_API_URL + "/sanctum/csrf-cookie");
+        return apiClient.get("/admin/auth");
+      },
 
 
   };

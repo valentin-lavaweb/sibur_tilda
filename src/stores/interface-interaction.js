@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import auth, {authClient} from "../scripts/auth.js";
+// import auth, {authClient} from "../scripts/auth.js";
 import api, {apiClient} from "../scripts/api.js";
 
 export function debounce(fn, wait){
@@ -28,25 +28,25 @@ export const useGameStore = defineStore("interface", {
 
   }),
   getters: {
-    auth(state){
-      authClient.interceptors.response.use(
-        (response) => {
-          return response;
-        },
-        function (error) {
-          if (
-            error.response &&
-            [401, 419].includes(error.response.status) &&
-            Boolean(state.admin)
-          ) {
-            state.logout();
-          }
-          return Promise.reject(error);
-        }
-      );
+    // auth(state){
+    //   authClient.interceptors.response.use(
+    //     (response) => {
+    //       return response;
+    //     },
+    //     function (error) {
+    //       if (
+    //         error.response &&
+    //         [401, 419].includes(error.response.status) &&
+    //         Boolean(state.admin)
+    //       ) {
+    //         state.logout();
+    //       }
+    //       return Promise.reject(error);
+    //     }
+    //   );
 
-      return auth
-    },
+    //   return auth
+    // },
     api(state){
       apiClient.interceptors.response.use(
         (response) => {
@@ -104,15 +104,15 @@ export const useGameStore = defineStore("interface", {
 
 
     async login(email, password){
-      let adminData = await this.auth.login({email, password});
+      let adminData = await this.api.login({email, password});
       this.admin = adminData.data;
     },
     async getAuthAdmin(){
-      let adminData = await this.auth.getAuthAdmin();
+      let adminData = await this.api.getAuthAdmin();
       this.admin = adminData.data;
     },
     async logout(){
-      await this.auth.logout();
+      await this.api.logout();
       this.admin = null;
     }
   },
