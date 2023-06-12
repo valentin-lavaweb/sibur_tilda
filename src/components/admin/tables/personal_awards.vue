@@ -93,11 +93,9 @@ export default {
       console.log(updateItem);
       // return
       let res = await this.interaction.api.updatePersonalAward(item.id, updateItem);
-      console.log(res.data);
+      let newItem = res.data.data;
 
-      Object.assign(oldItem, res.data);
-
-
+      Object.assign(oldItem, newItem);
     },
     async updateImage(item, image) {
 
@@ -156,7 +154,7 @@ export default {
         <input type="file" accept="image/*" multiple="false">
       </template>
       <template #item-section="item">
-        <select v-model="item.section_id" @change="updateItem(item)">
+        <select v-model="item.personal_award_section_id" @change="updateItem(item)">
           <option v-for="section in availableSections" :key="section.id" :value="section.id">
             {{ section.title }}
           </option>

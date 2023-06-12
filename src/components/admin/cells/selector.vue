@@ -42,7 +42,7 @@ export default {
 
 
 <template >
-    <select v-model="item.section_id">
+    <select v-model="item.personal_award_section_id">
       <option
           v-for="section in personalSections"
           :key="section.id"

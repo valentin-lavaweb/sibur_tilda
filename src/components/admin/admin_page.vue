@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     checkAuth(){
+        this.interaction.auth.getAuthAdmin().catch(e => console.error(e)).then(e => console.debug(e));
         this.interaction.getAuthAdmin().catch(e => console.error(e)).then(e => console.debug(e));
     }
   },

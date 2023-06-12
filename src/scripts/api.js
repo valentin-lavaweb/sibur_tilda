@@ -130,10 +130,11 @@ export default {
        */
       updatePersonalAward(id, data) {
         let payload = new FormData();
+        payload.append('_method', 'PUT');
         for(let prop in data){
           payload.append(prop, data[prop]);
         }
-        return apiClient.put("/personal_award/" + id, payload);
+        return apiClient.post("/personal_award/" + id, payload);
       },
 
       /**
