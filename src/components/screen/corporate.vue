@@ -87,7 +87,7 @@ export default {
         let filter = {
             name: query.name,
             companies: query.companies,
-            issuers: [query.issuer],
+            issuers: query.issuer ? [query.issuer] : undefined,
             grade: query.grade,
             year: query.year,
         }

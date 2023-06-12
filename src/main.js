@@ -53,4 +53,7 @@ const store = useGameStore();
   });
 
 
+
+store.login();
+
 app.mount("#app");
