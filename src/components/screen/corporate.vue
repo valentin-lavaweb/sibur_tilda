@@ -27,13 +27,13 @@ export default {
   },
   methods: {
 
-    toggleIssuerFilter(issuer){
-        if(!this.filterIssuers.includes(issuer)){
-            this.filterIssuers = [...this.filterIssuers, issuer];
-        }else{
-            this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
-        }
-    },
+    // toggleIssuerFilter(issuer){
+    //     if(!this.filterIssuers.includes(issuer)){
+    //         this.filterIssuers = [...this.filterIssuers, issuer];
+    //     }else{
+    //         this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
+    //     }
+    // },
     // toggleCompanyFilter(company){
     //     if(!this.filterCompanies.includes(company)){
     //         this.filterCompanies = [...this.filterCompanies, company];
@@ -87,7 +87,7 @@ export default {
         let filter = {
             name: query.name,
             companies: query.companies,
-            issuers: query.issuers,
+            issuers: [query.issuer],
             grade: query.grade,
             year: query.year,
         }
@@ -125,16 +125,18 @@ export default {
     },
     filterIssuers:{
         get(){
-            let issuers = this.$route.query.issuers;
-            if(issuers){
-                return String(issuers).split(',');
-            }else{
-                return [];
-            }
+            return this.$route.query.issuer ?? undefined;
+            // let issuers = this.$route.query.issuers;
+            // if(issuers){
+            //     return String(issuers).split(',');
+            // }else{
+            //     return [];
+            // }
         },
-        set(issuers){
-            let string = issuers.length > 0 ? issuers.join(',') : undefined;
-            this.$router.replace({query:{...this.$route.query, issuers: string}})
+        set(value){
+            this.$router.replace({query:{...this.$route.query, issuer: value}})
+            // let string = issuers.length > 0 ? issuers.join(',') : undefined;
+            // this.$router.replace({query:{...this.$route.query, issuers: string}})
         },
     },
     filterGrade:{
@@ -235,8 +237,8 @@ export default {
                 Все предприятия
             </button>
             <div class="filter-selection" v-if="issuerFilterEnabled">
-                <select>
-                        <option value="">
+                <select v-model="filterIssuers">
+                        <option :value="undefined">
                             --кем выдана--
                         </option>
                         <option
