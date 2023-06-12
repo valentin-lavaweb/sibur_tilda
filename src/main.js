@@ -54,6 +54,6 @@ const store = useGameStore();
 
 
 
-store.login();
+// store.login();
 
 app.mount("#app");

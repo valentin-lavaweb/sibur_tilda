@@ -21,10 +21,12 @@ export default {
     awardsTable
   },
   methods: {
-
+    checkAuth(){
+        this.interaction.getAuthAdmin().catch(e => console.error(e)).then(e => console.debug(e));
+    }
   },
   mounted() {
-
+    this.checkAuth();
   },
   computed:{
     
@@ -46,7 +48,7 @@ export default {
     <div class="wrapper-block">
       <div class="content-block">
         <nav>
-            <div class="logo">
+            <div class="logo" @click="checkAuth">
                 <img src="/img/logo.svg" alt="logo" />
                 <div class="logo-text">
                     энергия<br>
