@@ -15,7 +15,7 @@ const headers = [
   { text: "Выдана", value: "issued", },
   { text: "Фото", value: "image", },
   { text: "Год", value: "year" },
-  // { text: "Раздел", value: "personal_award_section_id" },
+  { text: "Раздел", value: "section" },
 ]
 
 
@@ -74,13 +74,29 @@ export default {
 
 
 
-    }
+    },
   },
   created() {
     this.loadData();
   },
   computed:{
-
+    availableSections(){
+      return this.interaction.personalSections;
+    },
+    imagePath(){
+      return function(item){
+        if (item.image) {
+            return new URL('storage/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
+          } else {
+            if (item.gender) {
+              return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+            } else {
+              return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+            }
+          }
+      }
+    }
+    
   },
   watch:{
     serverOptions(){
@@ -109,10 +125,51 @@ export default {
                 body-text-direction="center"
 
                 buttons-pagination
-            />
+            >
+
+
+            <template #item-image="item" >
+              <img :src="imagePath(item)" :alt="item.name">
+              <input type="file" accept="image/*" multiple="false">
+            </template>
+            <template #item-section="item" >
+              <select v-model="item.section_id">
+                <option
+                    v-for="section in availableSections"
+                    :key="section.id"
+                    :value="section.id"
+                    >
+                    {{section.title}}
+                </option>
+              </select>
+            </template>
+          
+          
+          
+          </Vue3EasyDataTable>
   </div>
 
 </template>
+
+
+
+
+<!-- { text: "Id", value: "id", fixed: true },
+{ text: "Имя", value: "name" },
+{ text: "Должность", value: "position" },
+{ text: "Компания", value: "company",  },
+{ text: "Награда", value: "award", },
+{ text: "Степень", value: "grade", },
+{ text: "Выдана", value: "issued", },
+{ text: "Фото", value: "image", },
+{ text: "Год", value: "year" },
+{ text: "Раздел", value: "section" }, -->
+
+
+
+
+
+
 
 <style>
 .vue3-easy-data-table__footer,
