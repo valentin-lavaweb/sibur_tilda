@@ -24,6 +24,40 @@ export default {
 
   },
   mounted() {
+    let table  = this.$refs.table;
+    let wrapper  = this.$refs.wrapper;
+    let pos = { left: 0, x: 0, };
+
+    const mouseDownHandler = function (e) {
+        pos = {
+            left: wrapper.scrollLeft,
+            x: e.clientX,
+
+        };
+        table.style.cursor = 'grabbing';
+        table.style.userSelect = 'none';
+
+        wrapper.addEventListener('mousemove', mouseMoveHandler);
+        wrapper.addEventListener('mouseup', mouseUpHandler);
+    };
+
+    const mouseMoveHandler = function (e) {
+        const dx = e.clientX - pos.x;
+        wrapper.scrollLeft = pos.left - dx;
+    };
+
+    const mouseUpHandler = function () {
+        wrapper.removeEventListener('mousemove', mouseMoveHandler);
+        wrapper.removeEventListener('mouseup', mouseUpHandler);
+
+        table.style.cursor = 'auto';
+        table.style.userSelect = 'all';
+    };
+
+
+    table.addEventListener('mousedown', mouseDownHandler);
+
+
 
   },
   computed:{
@@ -43,7 +77,7 @@ export default {
             <login_comp v-if="!interaction.admin"/>
         </transition>
     </Teleport>
-    <div class="wrapper-block">
+    <div class="wrapper-block" ref="wrapper">
       <div class="content-block">
         <nav>
             <div class="logo">
@@ -78,7 +112,7 @@ export default {
                 фотогалерея
             </div>
         </section>
-        <section class="content_table">
+        <section class="content_table" ref="table">
             <!-- <div class="table">
                 <div class="table_item">
                     <div class="table_item-title">
@@ -146,7 +180,7 @@ export default {
                 buttons-pagination
                 loading
             /> -->
-            <awards-table></awards-table>
+            <awards-table/>
         </section>
       </div>
     </div>
@@ -155,6 +189,7 @@ export default {
 </template>
 
 <style>
+.buttons-pagination,
 .vue3-easy-data-table__footer,
 .vue3-easy-data-table__footer .pagination__rows-per-page,
 .easy-data-table__rows-selector .rows-input__wrapper{
@@ -168,8 +203,8 @@ export default {
   --easy-table-border: 1px solid var(--nipigasColorMain);
   --easy-table-row-border: 1px solid var(--nipigasColorMain);
 
-  --easy-table-header-font-size: 14px;
-  --easy-table-header-height: 50px;
+  --easy-table-header-font-size: 18px;
+  --easy-table-header-height: 30px;
   --easy-table-header-font-color: var(--nipigasColorMain);
   --easy-table-header-background-color: var(--white);
 
@@ -186,15 +221,15 @@ export default {
   --easy-table-body-row-hover-font-color: var(--nipigasColorMain-hover);
   --easy-table-body-row-hover-background-color: #e6e6e6;
 
-  --easy-table-body-item-padding: 10px 15px;
+  --easy-table-body-item-padding: 5px 10px;
 
   --easy-table-footer-background-color: var(--white);
   --easy-table-footer-font-color: var(--nipigasColorMain);
-  --easy-table-footer-font-size: 14px;
+  --easy-table-footer-font-size: 16px;
   --easy-table-footer-padding: 0px 10px;
   --easy-table-footer-height: 50px;
 
-  --easy-table-rows-per-page-selector-width: 70px;
+  --easy-table-rows-per-page-selector-width: 60px;
   --easy-table-rows-per-page-selector-option-padding: 10px;
   --easy-table-rows-per-page-selector-z-index: 1;
 
@@ -221,9 +256,10 @@ export default {
   height: 100%;
 }
 .wrapper-block{
-   width: 1160px;
+   width: 1645px;
    height: fit-content;
    margin: 0px 0 50px 0;
+   overflow-x: auto;
 }
 
 .content-block{
@@ -451,26 +487,22 @@ section{
 
 
 
-
-@media (max-width: 1440px) {
+@media (max-width: 1700px) {
     .wrapper-block{
-        width: 1000px;
+        width: 90vw;
     }
+}
+@media (max-width: 1440px) {
+
 }
 @media (max-width: 1024px) {
-    .wrapper-block{
-        width: 900px;
-    }
+
 }
 @media (max-width: 980px) {
-    .wrapper-block{
-        width: 640px;
-    }
+
 }
 @media (max-width: 768px) {
-    .wrapper-block{
-        width: 580px;
-    }
+
     .section_tabs{
         flex-wrap: wrap;
     }
@@ -479,15 +511,10 @@ section{
     }
 }
 @media (max-width: 640px) {
-    .wrapper-block{
-        width: 440px;
-    }
+
 }
 @media (max-width: 480px) {
-    .wrapper-block{
-        width: 100vw;
-        padding: 0 10px;
-    }
+
 }
 @media (max-width: 420px) {
 
