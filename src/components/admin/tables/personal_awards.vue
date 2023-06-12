@@ -3,6 +3,9 @@ import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore } from '@/stores/interface-interaction.js';
 
+import textEdit from '../cells/textEdit.vue';
+import TextEdit from '../cells/textEdit.vue';
+
 
 
 const headers = [
@@ -45,7 +48,8 @@ export default {
   },
   components: {
     Vue3EasyDataTable,
-  },
+    TextEdit
+},
   methods: {
     async loadData() {
 
@@ -84,7 +88,7 @@ export default {
       for (let prop in oldItem) {
         if (prop == 'image') continue;
         if (oldItem[prop] != item[prop]) {
-          updateItem[prop] = item[prop];
+          updateItem[prop] = item[prop] === null ? "" : item[prop];
         }
       }
 
@@ -97,17 +101,16 @@ export default {
 
       Object.assign(oldItem, newItem);
     },
-    async updateImage(item, image) {
+    async updateImage(item, event) {
 
       let oldItem = this.serverItems.find(i => i.id == item.id);
 
-      console.log(item);
-      let res = await this.interaction.api.updatePersonalAward(item.id, { image: image });
-      console.log(res.data);
+      let files = event.target.files || event.dataTransfer.files;
+      if (!files.length) return;
 
-      Object.assign(oldItem, res.data);
-
-
+      let res = await this.interaction.api.updatePersonalAward(item.id, { image: files[0] });
+      let newItem = res.data.data;
+      Object.assign(oldItem, newItem);
     }
   },
   created() {
@@ -151,12 +154,49 @@ export default {
 
       <template #item-image="item">
         <img :src="imagePath(item)" :alt="item.name">
-        <input type="file" accept="image/*" multiple="false">
+        <input type="file" accept="image/*" multiple="false"  @change="updateImage(item, $event)">
       </template>
       <template #item-section="item">
         <select v-model="item.personal_award_section_id" @change="updateItem(item)">
           <option v-for="section in availableSections" :key="section.id" :value="section.id">
             {{ section.title }}
+          </option>
+        </select>
+      </template>
+
+      <template #item-award="item">
+        <TextEdit :item="item" editProp="award" @updateItem="updateItem($event)"/>
+      </template>
+      <template #item-name="item">
+        <TextEdit :item="item" editProp="name" @updateItem="updateItem($event)"/>
+      </template>
+      <template #item-issued="item">
+        <TextEdit :item="item" editProp="issued" @updateItem="updateItem($event)"/>
+      </template>
+      <template #item-company="item">
+        <TextEdit :item="item" editProp="company" @updateItem="updateItem($event)"/>
+      </template>
+      <template #item-position="item">
+        <TextEdit :item="item" editProp="position" @updateItem="updateItem($event)"/>
+      </template>
+
+      <template #item-year="item">
+        <input type="number" v-model="item.year" @change="updateItem(item)">
+      </template>
+
+      <template #item-grade="item">
+        <select v-model="item.grade" @change="updateItem(item)">
+          <option :value="null">
+            Не указано
+          </option>
+          <option :value="1">
+            1
+          </option>
+          <option :value="2">
+            2
+          </option>
+          <option :value="3">
+            3
           </option>
         </select>
       </template>
