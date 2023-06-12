@@ -75,6 +75,9 @@ export default {
 
 
     },
+    changeSection(item){
+      console.log(item);
+    }
   },
   created() {
     this.loadData();
@@ -133,7 +136,7 @@ export default {
               <input type="file" accept="image/*" multiple="false">
             </template>
             <template #item-section="item" >
-              <select v-model="item.section_id">
+              <select v-model="item.section_id" @change="changeSection(item)">
                 <option
                     v-for="section in availableSections"
                     :key="section.id"
