@@ -21,7 +21,9 @@ export default {
     awardsTable
   },
   methods: {
-
+    checkAuth(){
+        this.interaction.getAuthAdmin().catch(e => console.error(e)).then(e => console.debug(e));
+    }
   },
   mounted() {
     let table  = this.$refs.table;
@@ -58,6 +60,7 @@ export default {
     table.addEventListener('mousedown', mouseDownHandler);
 
 
+    this.checkAuth();
 
   },
   computed:{
@@ -80,7 +83,7 @@ export default {
     <div class="wrapper-block" ref="wrapper">
       <div class="content-block">
         <nav>
-            <div class="logo">
+            <div class="logo" @click="checkAuth">
                 <img src="/img/logo.svg" alt="logo" />
                 <div class="logo-text">
                     энергия<br>
