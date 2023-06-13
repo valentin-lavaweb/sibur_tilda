@@ -415,4 +415,11 @@ option {
   padding: 5px;
   cursor: pointer;
 }
+
+
+
+.actions button{
+  margin: 0 0 20px 0;
+}
+
 </style>

@@ -12,8 +12,7 @@ import gallery_edit from './gallery_edit.vue';
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 75 },
-
-  { text: "Фото", value: "image", fixed: true, width: 75 },
+  { text: "Фото", value: "image", fixed: true, width: 200 },
   { text: "Год", value: "year", width: 75 },
 ]
 
@@ -469,6 +468,11 @@ option {
 }
 .inpu_gender:hover span{
   opacity: 1;
+}
+
+
+.actions button{
+  margin: 0 0 20px 0;
 }
 
 </style>

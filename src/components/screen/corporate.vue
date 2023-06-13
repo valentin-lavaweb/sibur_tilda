@@ -282,7 +282,7 @@ export default {
         <div class="corporate-container_content">
             <div class="placeholder" v-if="searching">
                 Поиск...
-                <img src="/default.png" alt="крутилка">
+                <img src="/default.gif" alt="крутилка">
             </div>
             <div class="placeholder" v-else-if="awardsList.length == 0">
                 Ничего не найдено
@@ -519,9 +519,13 @@ export default {
 }
 
 .placeholder{
+    flex-direction: row-reverse;
     color: var(--nipigasColorMain);
 }
-
+.placeholder img{
+    width: 36px;
+    margin: 0 10px 0 0;
+}
 
 
 .filter-selection{
