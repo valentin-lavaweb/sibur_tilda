@@ -11,7 +11,7 @@ import Personal_awards_edit from './personal_awards_edit.vue';
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
-  { text: "Действия", value: "actions", fixed: true, width: 150 },
+  { text: "Действия", value: "actions", fixed: true, width: 75 },
   { text: "Имя", value: "name", fixed: true, width: 100 },
   { text: "Должность", value: "position", width: 200 },
   { text: "Компания", value: "company", width: 200 },
@@ -367,12 +367,19 @@ export default {
 
       <template #item-gender="item">
         <!-- <CheckBoxEdit :item="item" editProp="gender" :value="item.gender" @updateValue="item.gender = $event"  @updateItem="updateItem($event)"/> -->
-        <input type="checkbox" v-model="item.gender" @change="updateItem({ ...item, gender: $event.target.checked })" />
+        <div class="inpu_gender">
+          <input class="gender_change" type="checkbox" v-model="item.gender" @change="updateItem({ ...item, gender: $event.target.checked })" />
+          <span>
+            <div> муж  -  &nbsp; <input type="checkbox" checked></div>
+            <div> жен  -  &nbsp; <input type="checkbox"></div>
+          </span>
+        </div>
         <!-- <input type="radio" id="one" :value="true" v-model="item.gender" @change="updateItem(item)"/>
         <label for="one">Муж</label>
         <br />
         <input type="radio" id="two" :value="false" v-model="item.gender" />
         <label for="two">Жен</label> -->
+
       </template>
 
       <template #item-image="item">
@@ -525,7 +532,7 @@ textarea {
   display: flex;
   width: 100%;
   height: 100%;
-  min-height: 50px;
+  min-height: 100px;
   height: fit-content;
   max-height: 200px;
   padding: 5px;
@@ -557,4 +564,34 @@ option {
   padding: 5px;
   cursor: pointer;
 }
+
+.actions button{
+  margin: 0 0 20px 0;
+}
+
+
+.inpu_gender span{
+  position: absolute;
+  top: 0;
+  transform: translateY(-120%);
+  min-width: 100px;
+  padding: 5px 5px;
+  border-radius: 10px;
+  background-color: rgb(233, 233, 233);
+  transition: all 0.25s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.inpu_gender span div{
+  color: var(--textColorBlack);
+  flex-direction: row;
+}
+.inpu_gender span div input{
+  pointer-events: none;
+}
+.inpu_gender:hover span{
+  opacity: 1;
+}
+
 </style>

@@ -186,8 +186,8 @@ export default {
                 buttons-pagination
                 loading
             /> -->
-            <!-- <personal_awards :search="searchValue"/> -->
-            <command_awards :search="searchValue"/>
+            <personal_awards :search="searchValue"/>
+            <!-- <command_awards :search="searchValue"/> -->
         </section>
       </div>
     </div>
@@ -287,7 +287,7 @@ export default {
   height: 100%;
 }
 .wrapper-block{
-   width: 1645px;
+   width: 1700px;
    height: fit-content;
    margin: 0px 0 50px 0;
    overflow-x: auto;
