@@ -26,7 +26,7 @@ const routes = [
   // { path: '/Лучшие_производственные_наставники',    component: corporate,               name: 'corporate_mentor',         meta:{title:'Лучшие производственные наставники'}},
   { path: '/gallery',                                component: photo_gallery,           name: 'photo_gallery'},
   { path: '/sertificates',                           component: certificates,            name: 'certificates'},
-  { path: '/admin_page',                             component: admin_page,            name: 'admin_page'},
+  { path: '/admin',                             component: admin_page,            name: 'admin_page'},
   ]
 
 const router = createRouter({
