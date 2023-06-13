@@ -67,26 +67,6 @@ export default {
                                 {{section.title}}
                             </RouterLink>
                         </div>
-                        <!-- <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_winners'}" active-class="active">
-                            Победители командного трека
-                        </RouterLink>
-                    </div>
-                    <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_rewards'}" active-class="active">
-                            Лауреаты ведомственных наград
-                        </RouterLink>
-                    </div>
-                    <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_trainer'}" active-class="active">
-                            Лучшие корпоративные тренеры
-                        </RouterLink>
-                    </div>
-                    <div class="hover-link">
-                        <RouterLink :to="{name: 'corporate_mentor'}" active-class="active">
-                            Лучшие производственные наставники
-                        </RouterLink>
-                    </div> -->
                     </div>
                 </div>
                 <div class="header-link">
