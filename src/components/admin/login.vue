@@ -17,7 +17,8 @@ export default {
   methods: {
     async authAdmin(){
         try{
-            await this.interaction.login(this.login, this.password)
+            await this.interaction.login(this.login, this.password);
+            this.$router.push({name: 'command_awards_table'});
         }
         catch(e){
             console.error(e);

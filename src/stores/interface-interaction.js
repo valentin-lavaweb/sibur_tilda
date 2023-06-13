@@ -61,7 +61,7 @@ export const useGameStore = defineStore("interface", {
             state.logout();
           }
           if(import.meta.env.DEV){
-            console.log(error.response);
+            console.warn(error.response);
           }
 
           if(error.response?.data?.message){
