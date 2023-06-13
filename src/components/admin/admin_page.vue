@@ -86,7 +86,7 @@ export default {
             <login_comp v-if="!interaction.admin"/>
         </transition>
     </Teleport>
-    <div class="wrapper-block" ref="wrapper">
+    <div class="wrapper-block" ref="wrapper" v-show="interaction.admin">
       <div class="content-block">
         <nav>
             <div class="logo" @click="checkAuth">
@@ -97,7 +97,7 @@ export default {
                 </div>
             </div>
             <div class="login"
-                @click="interaction.logout()">
+                @click="interaction.logout(), $router.push({name: 'admin_page'})">
                 Выйти
             </div>
         </nav>

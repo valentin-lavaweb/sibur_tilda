@@ -33,10 +33,10 @@ const routes = [
   { path: '/sertificates',                           component: certificates,                     name: 'certificates'},
   { path: '/admin',                                  component: admin_page,                       name: 'admin_page',
     children:[
-      { path: 'command_awards_table',                      component: command_awards,          name: 'command_awards_table'},
-      { path: 'personal_awards_table',                     component: personal_awards,         name: 'personal_awards_table'},
-      { path: 'personal_award_sections_table',             component: personal_award_sections, name: 'personal_award_sections_table'},
-      { path: 'gallery_table',                             component: gallery,                 name: 'gallery_table'},
+      { path: 'command_awards_table',                      component: command_awards,          name: 'command_awards_table', meta:{requiresAuth: true}},
+      { path: 'personal_awards_table',                     component: personal_awards,         name: 'personal_awards_table', meta:{requiresAuth: true}},
+      { path: 'personal_award_sections_table',             component: personal_award_sections, name: 'personal_award_sections_table', meta:{requiresAuth: true}},
+      { path: 'gallery_table',                             component: gallery,                 name: 'gallery_table', meta:{requiresAuth: true}},
     ]
   },
   ]

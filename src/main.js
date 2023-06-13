@@ -30,22 +30,22 @@ const store = useGameStore();
 
   router.beforeEach(async(to, from, next) => {
 
-
-
     if(!store.personalSections){
         await store.loadSections();
     }
 
-
     const isAdmin = Boolean(store.admin);
     const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
-    const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
+    const loginQuery = { name: 'admin_page' };
   
     if (reqAuth && !isAdmin) {
-      store.getAuthAdmin().then(() => {
-        if (!Boolean(store.admin)) next(loginQuery);
-        else next();
-      });
+      try{
+        await store.getAuthAdmin();
+        next()
+      }catch{
+        next(loginQuery);
+      }
+      
     } else {
       next(); // make sure to always call next()!
     }
