@@ -4,10 +4,10 @@ import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore } from '@/stores/interface-interaction.js';
 import login_comp from "@/components/admin/login.vue";
 
-import personal_awards from "@/components/admin/tables/personal_awards.vue";
-import command_awards from "@/components/admin/tables/command_awards.vue";
-import personal_award_sections from "@/components/admin/tables/personal_award_sections.vue";
-import gallery_table from "@/components/admin/tables/gallery.vue";
+// import personal_awards from "@/components/admin/tables/personal_awards.vue";
+// import command_awards from "@/components/admin/tables/command_awards.vue";
+// import personal_award_sections from "@/components/admin/tables/personal_award_sections.vue";
+// import gallery_table from "@/components/admin/tables/gallery.vue";
 
 export default {
   name: "admin_page",
@@ -21,10 +21,10 @@ export default {
   components:{
     login_comp,
     // Vue3EasyDataTable,
-    personal_awards,
-    command_awards,
-    personal_award_sections,
-    gallery_table
+    // personal_awards,
+    // command_awards,
+    // personal_award_sections,
+    // gallery_table
   },
   methods: {
     checkAuth(){
@@ -123,14 +123,17 @@ export default {
                 @click="this.$router.push({name: 'personal_award_sections_table'})">
                 разделы для персональных наград
             </div>
-            <div class="tab">
-                фотогалерея
+            <div class="tab"
+                :class="{active: this.$route.name == 'gallery_table'}"
+                @click="this.$router.push({name: 'gallery_table'})">
+                галерея
             </div>
         </section>
         <section class="content_table" ref="table">
-            <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
+            <RouterView :search="searchValue"/>
+            <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
             <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
-            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards_table'"/>
+            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards_table'"/> -->
         </section>
       </div>
     </div>

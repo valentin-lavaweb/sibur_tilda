@@ -11,10 +11,11 @@ const photo_gallery            = () => import("@/components/screen/photo_gallery
 const certificates             = () => import("@/components/screen/certificates.vue");
 const admin_page               = () => import("@/components/admin/admin_page.vue");
 
-const command_awards_table           = () => import("@/components/admin/tables/command_awards.vue");
-const personal_awards_table          = () => import("@/components/admin/tables/personal_awards.vue");
-const personal_award_sections_table  = () => import("@/components/admin/tables/personal_award_sections.vue");
 
+const command_awards           = () => import("@/components/admin/tables/command_awards.vue");
+const personal_awards          = () => import("@/components/admin/tables/personal_awards.vue");
+const personal_award_sections  = () => import("@/components/admin/tables/personal_award_sections.vue");
+const gallery  = () => import("@/components/admin/tables/gallery.vue");
 
 
 const routes = [
@@ -32,9 +33,10 @@ const routes = [
   { path: '/sertificates',                           component: certificates,                     name: 'certificates'},
   { path: '/admin',                                  component: admin_page,                       name: 'admin_page',
     children:[
-      { path: 'command_awards_table',                component: command_awards_table,             name: 'command_awards_table'},
-      { path: 'personal_awards_table',               component: personal_awards_table,            name: 'personal_awards_table'},
-      { path: 'personal_award_sections_table',       component: personal_award_sections_table,    name: 'personal_award_sections_table'},
+      { path: 'command_awards_table',                      component: command_awards,          name: 'command_awards_table'},
+      { path: 'personal_awards_table',                     component: personal_awards,         name: 'personal_awards_table'},
+      { path: 'personal_award_sections_table',             component: personal_award_sections, name: 'personal_award_sections_table'},
+      { path: 'gallery_table',                             component: gallery,                 name: 'gallery_table'},
     ]
   },
   ]
