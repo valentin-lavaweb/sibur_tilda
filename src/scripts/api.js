@@ -172,10 +172,11 @@ export default {
        */
       updateCommandAward(id, data) {
         let payload = new FormData();
+        payload.append('_method', 'PUT');
         for(let prop in data){
           payload.append(prop, data[prop]);
         }
-        return apiClient.put("/command_award/" + id, payload);
+        return apiClient.post("/command_award/" + id, payload);
       },
 
       /**
@@ -210,10 +211,11 @@ export default {
        */
       updatePersonalAwardSection(id, data) {
         let payload = new FormData();
+        payload.append('_method', 'PUT');
         for(let prop in data){
           payload.append(prop, data[prop]);
         }
-        return apiClient.put("/personal_award_section/" + id, payload);
+        return apiClient.post("/personal_award_section/" + id, payload);
       },
 
       /**

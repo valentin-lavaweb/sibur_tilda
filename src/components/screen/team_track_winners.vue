@@ -57,7 +57,6 @@ export default {
     let interaction = useGameStore();
     if(!interaction.commandAwards){
         await interaction.loadCommandAwards();
-        next();
     }
     next();
   }

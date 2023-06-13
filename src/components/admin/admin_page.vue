@@ -4,7 +4,8 @@ import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore } from '@/stores/interface-interaction.js';
 import login_comp from "@/components/admin/login.vue";
 
-import awardsTable from "@/components/admin/tables/personal_awards.vue";
+import personal_awards from "@/components/admin/tables/personal_awards.vue";
+import command_awards from "@/components/admin/tables/command_awards.vue";
 
 export default {
   name: "admin_page",
@@ -18,7 +19,8 @@ export default {
   components:{
     login_comp,
     // Vue3EasyDataTable,
-    awardsTable
+    personal_awards,
+    command_awards
   },
   methods: {
     checkAuth(){
@@ -184,7 +186,8 @@ export default {
                 buttons-pagination
                 loading
             /> -->
-            <awards-table :search="searchValue"/>
+            <!-- <personal_awards :search="searchValue"/> -->
+            <command_awards :search="searchValue"/>
         </section>
       </div>
     </div>
