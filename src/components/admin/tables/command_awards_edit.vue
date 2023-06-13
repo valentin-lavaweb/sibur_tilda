@@ -30,7 +30,8 @@ export default {
 <template >
     <div class="container">
 
-      <div class="block-content">
+      <div class="Main_block-content">
+        <div class="block-content">
         <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
 
@@ -58,6 +59,7 @@ export default {
           <button @click="$emit('cancel')">Отменить</button>
           <button @click="endEdit">Завершить</button>
         </div>
+        </div>
       </div>
 
     </div>
@@ -72,6 +74,16 @@ export default {
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 50;
+}
+.Main_block-content{
+  width: 90vw;
+  height: 90vh;
+  max-width: 650px;
+  max-height: 810px;
+  padding: 10px 0px 10px 0;
+  background-color: var(--white);
+  justify-content: flex-start;
+  border-radius: 20px;
 }
 .block-content{
   width: 90vw;
