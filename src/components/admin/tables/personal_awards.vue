@@ -1,21 +1,25 @@
 <script>
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
-import { useGameStore } from '@/stores/interface-interaction.js';
+import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 
-import textEdit from '../cells/textEdit.vue';
 import TextEdit from '../cells/textEdit.vue';
+import Personal_awards_edit from './personal_awards_edit.vue';
+// import CheckBoxEdit from '../cells/checkBoxEdit.vue';
 
 
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
+  { text: "Действия", value: "actions", fixed: true, width: 50 },
+
   { text: "Имя", value: "name", fixed: true, width: 100 },
   { text: "Должность", value: "position", width: 200 },
   { text: "Компания", value: "company", width: 200 },
   { text: "Награда", value: "award", width: 150 },
   { text: "Степень", value: "grade", width: 150 },
   { text: "Выдана", value: "issued", width: 200 },
+  { text: "Пол", value: "gender", width: 50 },
   { text: "Фото", value: "image", width: 200 },
   { text: "Год", value: "year", width: 75 },
   { text: "Раздел", value: "section", width: 240 },
@@ -28,6 +32,9 @@ const headers = [
 
 export default {
   name: "personal_awards_table",
+  props:{
+    search: String
+  },
   data() {
     let interaction = useGameStore();
     return {
@@ -41,15 +48,19 @@ export default {
         sortBy: "id",
         sortType: 'asc',
       },
-      headers: headers
+      headers: headers,
+      editedItem: null,
+      onEditDone: null,
+
 
 
     }
   },
   components: {
     Vue3EasyDataTable,
-    TextEdit
-},
+    TextEdit,
+    Personal_awards_edit
+  },
   methods: {
     async loadData() {
 
@@ -57,7 +68,8 @@ export default {
 
       let filter = {
         // ...this.queryFilter,
-        limit: this.serverOptions.rowsPerPage
+        limit: this.serverOptions.rowsPerPage,
+        name: (this.search && this.search != "") ? this.search : undefined
       }
       this.isLoading = true;
 
@@ -79,39 +91,193 @@ export default {
 
 
     },
-    async updateItem(item) {
+    async createItem(item) {
 
-      let oldItem = this.serverItems.find(i => i.id == item.id);
+      console.log(item);
 
-      let updateItem = {};
 
-      for (let prop in oldItem) {
-        if (prop == 'image') continue;
-        if (oldItem[prop] != item[prop]) {
-          updateItem[prop] = item[prop] === null ? "" : item[prop];
+      try {
+
+        let updateItem = {};
+
+        for (let prop in item) {
+          if (prop == 'image') {
+            if (typeof item[prop] === File) {
+              updateItem[prop] = item[prop];
+            } else {
+              continue;
+            }
+          }
+
+          switch (item[prop]) {
+            case null:
+              updateItem[prop] = "";
+              break;
+            case true:
+              updateItem[prop] = 1;
+              break;
+            case false:
+              updateItem[prop] = 0;
+              break;
+            default:
+              updateItem[prop] = item[prop];
+              break;
+          }
         }
+
+
+        console.log(updateItem);
+
+        let res = await this.interaction.api.createPersonalAward(updateItem);
+        let newItem = res.data.data;
+
+        this.serverItems.unshift(newItem);
+
+        this.$toast.success("Данные добавлены");
+
+        return newItem;
+
+      } catch (e) {
+        this.$toast.error(e.message);
       }
 
 
-      // console.log(item);
-      console.log(updateItem);
-      // return
-      let res = await this.interaction.api.updatePersonalAward(item.id, updateItem);
-      let newItem = res.data.data;
+    },
+    async updateItem(item) {
 
-      Object.assign(oldItem, newItem);
+      console.log(item);
+
+      let oldItem = this.serverItems.find(i => i.id == item.id);
+      let oldItemRestore = Object.assign({}, oldItem);
+      try {
+
+        let updateItem = {};
+
+        for (let prop in oldItem) {
+          if (prop == 'image') {
+            if (typeof item[prop] === File) {
+              updateItem[prop] = item[prop];
+            } else {
+              continue;
+            }
+          }
+          if (oldItem[prop] != item[prop]) {
+
+            switch (item[prop]) {
+              case null:
+                updateItem[prop] = "";
+                break;
+              case true:
+                updateItem[prop] = 1;
+                break;
+              case false:
+                updateItem[prop] = 0;
+                break;
+              default:
+                updateItem[prop] = item[prop];
+                break;
+            }
+
+
+
+          }
+        }
+
+
+        console.log(updateItem);
+
+        let res = await this.interaction.api.updatePersonalAward(item.id, updateItem);
+        let newItem = res.data.data;
+
+        Object.assign(oldItem, newItem);
+
+        this.$toast.success("Данные обновлены");
+
+        return oldItem;
+
+      } catch (e) {
+        setTimeout(() => {
+          let oldIdx = this.serverItems.findIndex(i => i.id == item.id);
+          this.serverItems[oldIdx] = oldItemRestore;
+        }, 500);
+        this.$toast.error(e.message);
+      }
+
+
     },
     async updateImage(item, event) {
 
       let oldItem = this.serverItems.find(i => i.id == item.id);
+      let oldItemRestore = Object.assign({}, oldItem);
+      try {
 
-      let files = event.target.files || event.dataTransfer.files;
-      if (!files.length) return;
+        let files = event.target.files || event.dataTransfer.files;
+        if (!files.length) return;
 
-      let res = await this.interaction.api.updatePersonalAward(item.id, { image: files[0] });
-      let newItem = res.data.data;
-      Object.assign(oldItem, newItem);
-    }
+        let res = await this.interaction.api.updatePersonalAward(item.id, { image: files[0] });
+        let newItem = res.data.data;
+        Object.assign(oldItem, newItem);
+
+        this.$toast.success("Изображение обновлено");
+      } catch (e) {
+        setTimeout(() => {
+          let oldIdx = this.serverItems.findIndex(i => i.id == item.id);
+          this.serverItems[oldIdx] = oldItemRestore;
+        }, 500);
+        this.$toast.error(e.message);
+      }
+    },
+    async deleteItem(item) {
+
+      console.log(item);
+
+      if (!confirm(`Удалить ${item.name}?`)) return;
+
+
+      let oldIdx = this.serverItems.findIndex(i => i.id == item.id);
+      let oldItem = this.serverItems[oldIdx];
+      let oldItemRestore = Object.assign({}, oldItem);
+      try {
+
+        let updateItem = {};
+
+
+
+        console.log(updateItem);
+
+        let res = await this.interaction.api.deletePersonalAward(item.id, updateItem);
+
+        this.serverItems.splice(oldIdx, 1);
+
+        this.$toast.success("Удалено");
+
+      } catch (e) {
+        setTimeout(() => {
+          this.serverItems.splice(oldIdx, 0, oldItemRestore);
+        }, 500);
+        this.$toast.error(e.message);
+      }
+
+
+    },
+    async editItem(item) {
+      this.onEditDone = async (item) => {
+        let updItem = await this.updateItem(item);
+        this.editedItem = null;
+        setTimeout(()=>{this.editItem(updItem);}, 10);
+      }
+      this.editedItem = item;
+
+    },
+    async duplicateItem(item) {
+      this.onEditDone = async (item) => {
+        let newItem = await this.createItem(item);
+        this.editedItem = null;
+        setTimeout(()=>{this.editItem(newItem);}, 10);
+      }
+      this.editedItem = Object.assign({}, item, { id: undefined, image: null });
+
+    },
   },
   created() {
     this.loadData();
@@ -132,12 +298,18 @@ export default {
           }
         }
       }
+    },
+    debouncedSearch(){
+      return debounce(this.loadData, 500);
     }
 
   },
   watch: {
     serverOptions() {
       this.loadData();
+    },
+    search() {
+      this.debouncedSearch();
     }
   },
 };
@@ -147,41 +319,30 @@ export default {
 <template>
   <div>
 
+    <Teleport to="body" v-if="editedItem">
+      <Personal_awards_edit :availableSections="availableSections" :item="editedItem" @done="onEditDone"
+        @cancel="editedItem = null" />
+    </Teleport>
+
     <Vue3EasyDataTable v-model:server-options="serverOptions" :server-items-length="serverTotalItemsLength"
       :loading="isLoading" :headers="headers" :items="serverItems" border-cell theme-color="rgb(0, 140, 149)"
       table-class-name="customize-table" header-text-direction="center" body-text-direction="center" buttons-pagination>
 
 
-      <template #item-image="item">
-        <img :src="imagePath(item)" :alt="item.name">
-        <input type="file" accept="image/*" multiple="false"  @change="updateImage(item, $event)">
+      <template #item-name="item">
+        <TextEdit :item="item" editProp="name" @updateItem="updateItem($event)" />
       </template>
-      <template #item-section="item">
-        <select v-model="item.personal_award_section_id" @change="updateItem(item)">
-          <option v-for="section in availableSections" :key="section.id" :value="section.id">
-            {{ section.title }}
-          </option>
-        </select>
+
+      <template #item-position="item">
+        <TextEdit :item="item" editProp="position" @updateItem="updateItem($event)" />
+      </template>
+
+      <template #item-company="item">
+        <TextEdit :item="item" editProp="company" @updateItem="updateItem($event)" />
       </template>
 
       <template #item-award="item">
-        <TextEdit :item="item" editProp="award" @updateItem="updateItem($event)"/>
-      </template>
-      <template #item-name="item">
-        <TextEdit :item="item" editProp="name" @updateItem="updateItem($event)"/>
-      </template>
-      <template #item-issued="item">
-        <TextEdit :item="item" editProp="issued" @updateItem="updateItem($event)"/>
-      </template>
-      <template #item-company="item">
-        <TextEdit :item="item" editProp="company" @updateItem="updateItem($event)"/>
-      </template>
-      <template #item-position="item">
-        <TextEdit :item="item" editProp="position" @updateItem="updateItem($event)"/>
-      </template>
-
-      <template #item-year="item">
-        <TextEdit :item="item" editProp="year" @updateItem="updateItem($event)"/>
+        <TextEdit :item="item" editProp="award" @updateItem="updateItem($event)" />
       </template>
 
       <template #item-grade="item">
@@ -201,6 +362,52 @@ export default {
         </select>
       </template>
 
+      <template #item-issued="item">
+        <TextEdit :item="item" editProp="issued" @updateItem="updateItem($event)" />
+      </template>
+
+      <template #item-gender="item">
+        <!-- <CheckBoxEdit :item="item" editProp="gender" :value="item.gender" @updateValue="item.gender = $event"  @updateItem="updateItem($event)"/> -->
+        <input type="checkbox" v-model="item.gender" @change="updateItem({ ...item, gender: $event.target.checked })" />
+        <!-- <input type="radio" id="one" :value="true" v-model="item.gender" @change="updateItem(item)"/>
+        <label for="one">Муж</label>
+        <br />
+        <input type="radio" id="two" :value="false" v-model="item.gender" />
+        <label for="two">Жен</label> -->
+      </template>
+
+      <template #item-image="item">
+        <img :src="imagePath(item)" :alt="item.name">
+        <input type="file" accept="image/*" multiple="false" @change="updateImage(item, $event)">
+      </template>
+
+      <template #item-year="item">
+        <TextEdit :item="item" editProp="year" @updateItem="updateItem($event)" />
+      </template>
+
+      <template #item-section="item">
+        <select v-model="item.personal_award_section_id" @change="updateItem(item)">
+          <option v-for="section in availableSections" :key="section.id" :value="section.id">
+            {{ section.title }}
+          </option>
+        </select>
+      </template>
+
+
+
+      <template #item-actions="item">
+        <div class="actions">
+          <button title="Удалить" @click="deleteItem(item)">
+            <img src="/delete.svg" alt="Удалить" class="delete" />
+          </button>
+          <button title="Редактировать" @click="editItem(item)">
+            <img src="/edit.svg" alt="Редактировать" class="edit" />
+          </button>
+          <button title="Дублировать" @click="duplicateItem(item)">
+            <img src="/duplicate.svg" alt="Дублировать" class="duplicate" />
+          </button>
+        </div>
+      </template>
 
 
     </Vue3EasyDataTable>
@@ -228,36 +435,43 @@ export default {
 
 
 <style scoped>
-.vue3-easy-data-table__body tr td:first-child{
-    background-color: rgba(0, 140, 149, 0.07);
+.vue3-easy-data-table__body tr td:first-child {
+  background-color: rgba(0, 140, 149, 0.07);
 }
-.vue3-easy-data-table__main.hoverable tr:hover td:first-child{
-    background-color: rgba(0, 140, 149, 0.07);
+
+.vue3-easy-data-table__main.hoverable tr:hover td:first-child {
+  background-color: rgba(0, 140, 149, 0.07);
 }
-.vue3-easy-data-table__main.hoverable tr:hover td:hover{
-    background-color: transparent;
+
+.vue3-easy-data-table__main.hoverable tr:hover td:hover {
+  background-color: transparent;
 }
-.vue3-easy-data-table__body tr td{transition: all 0.25s ease;}
+
+.vue3-easy-data-table__body tr td {
+  transition: all 0.25s ease;
+}
 
 
 .easy-data-table__rows-selector ul.select-items.inside li,
-.buttons-pagination .item{
-    transition: all 0.25s ease;
+.buttons-pagination .item {
+  transition: all 0.25s ease;
 }
+
 .easy-data-table__rows-selector ul.select-items.inside li:hover,
-.buttons-pagination .item:hover{
-    background-color: rgb(236, 236, 236);
+.buttons-pagination .item:hover {
+  background-color: rgb(236, 236, 236);
 }
+
 .easy-data-table__rows-selector ul.select-items.inside li.selected:hover,
-.buttons-pagination .item.button.active:hover{
-    background-color: var(--nipigasColorMain-hover);
+.buttons-pagination .item.button.active:hover {
+  background-color: var(--nipigasColorMain-hover);
 }
 
 .buttons-pagination,
 .vue3-easy-data-table__footer,
 .vue3-easy-data-table__footer .pagination__rows-per-page,
-.easy-data-table__rows-selector .rows-input__wrapper{
-    flex-direction: row;
+.easy-data-table__rows-selector .rows-input__wrapper {
+  flex-direction: row;
 }
 
 .customize-table {
@@ -307,7 +521,7 @@ export default {
   --easy-table-loading-mask-background-color: #2d3a4f;
 }
 
-textarea{
+textarea {
   position: relative;
   display: flex;
   width: 100%;
@@ -319,26 +533,28 @@ textarea{
   resize: vertical;
   border: none;
 }
-input{
+
+input {
   color: var(--textColorBlack);
 }
 
-select{
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    border-radius: 5px;
-    background-color: var(--white);
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--textColorBlack);
-    border: 1px solid var(--nipigasColorMain);
-    padding: 5px 10px 5px 10px;
-    cursor: pointer;
+select {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: var(--white);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--textColorBlack);
+  border: 1px solid var(--nipigasColorMain);
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
 }
-option{
-    padding: 5px;
-    cursor: pointer;
+
+option {
+  padding: 5px;
+  cursor: pointer;
 }
 </style>

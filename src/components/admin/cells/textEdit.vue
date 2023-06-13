@@ -9,24 +9,20 @@ export default {
   },
   data() {
     return{
-      isEdit: false,
-      editItem: null,
+      isEdit: true,
 
     }
   },
   components:{
   },
-  created(){
-    this.editItem = this.item;
-  },
   methods:{
-    startEdit(){
-      this.isEdit = true;
-    },
-    endEdit(){
-      if(!this.isEdit) return;
-      this.isEdit = false;
-      this.$emit('updateItem', this.editItem);
+    endEdit(event){
+      // if(!this.isEdit) return;
+      let text = event.target.value;
+      let newItem = {...this.item};
+      newItem[this.editProp] = text;
+      this.$emit('updateItem', newItem);
+      // this.isEdit = false;
     },
 
   },
@@ -38,6 +34,6 @@ export default {
 
 
 <template >
-    <textarea v-model="editItem[editProp]"  @dblclick="startEdit" @change="endEdit" :class="{edit: isEdit}" :readonly="!isEdit" resize="none"
+    <textarea :value="item[editProp]"  @change="endEdit" :class="{edit: isEdit}" :readonly="!isEdit" resize="none"
  ></textarea>
   </template>

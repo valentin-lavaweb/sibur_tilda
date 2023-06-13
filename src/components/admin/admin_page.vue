@@ -184,7 +184,7 @@ export default {
                 buttons-pagination
                 loading
             /> -->
-            <awards-table/>
+            <awards-table :search="searchValue"/>
         </section>
       </div>
     </div>

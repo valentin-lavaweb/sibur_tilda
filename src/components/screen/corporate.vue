@@ -249,12 +249,13 @@ export default {
                 </select>
             </div>
             <div class="filter-selection" v-if="gradeFilterEnabled">
-                <select>
-                        <option value="">
+                <select  v-model="filterGrade">
+                        <option :value="undefined">
                             --степень--
                         </option>
                         <option
                             v-for="grade in availableGrades"
+                            :value="grade"
                             :key="grade">
                             степень {{ grade }}
                         </option>
