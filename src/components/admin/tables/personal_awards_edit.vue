@@ -29,6 +29,9 @@ export default {
         }else{
             this.editItem.image = files[0];
         }
+    },
+    setItem(item){
+      this.editItem = Object.assign({}, item);
     }
 
   },

@@ -27,6 +27,9 @@ export default {
         }else{
             this.editItem.image = files[0];
         }
+    },
+    setItem(item){
+      this.editItem = Object.assign({}, item);
     }
 
   },
@@ -41,11 +44,7 @@ export default {
                 return url;
             }
         }else if(this.editItem.image === null){
-            if (this.editItem.gender) {
-                return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
-            } else {
-                return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
-            }
+          return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
         }
         else{
             return URL.createObjectURL(this.editItem.image);
