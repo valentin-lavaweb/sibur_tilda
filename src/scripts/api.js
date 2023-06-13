@@ -252,10 +252,11 @@ export default {
        */
       updateImage(id, data) {
         let payload = new FormData();
+        payload.append('_method', 'PUT');
         for(let prop in data){
           payload.append(prop, data[prop]);
         }
-        return apiClient.put("/image/" + id, payload);
+        return apiClient.post("/image/" + id, payload);
       },
 
       /**

@@ -60,6 +60,16 @@ export const useGameStore = defineStore("interface", {
           ) {
             state.logout();
           }
+          if(import.meta.env.DEV){
+            console.log(error.response);
+          }
+
+          if(error.response?.data?.message){
+            return Promise.reject(new Error(error.response.data.message));
+          }
+          if(error.response){
+            return Promise.reject(new Error(error.response.statusText));
+          }
           return Promise.reject(error);
         }
       );

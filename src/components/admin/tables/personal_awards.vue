@@ -238,13 +238,7 @@ export default {
       let oldItemRestore = Object.assign({}, oldItem);
       try {
 
-        let updateItem = {};
-
-
-
-        console.log(updateItem);
-
-        let res = await this.interaction.api.deletePersonalAward(item.id, updateItem);
+        let res = await this.interaction.api.deletePersonalAward(item.id);
 
         this.serverItems.splice(oldIdx, 1);
 
@@ -288,7 +282,13 @@ export default {
     imagePath() {
       return function (item) {
         if (item.image) {
-          return new URL('storage/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
+          try{
+                let url = new URL(item.image);
+                return url;
+            }catch{
+                let url = new URL('storage/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                return url;
+            }
         } else {
           if (item.gender) {
             return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
