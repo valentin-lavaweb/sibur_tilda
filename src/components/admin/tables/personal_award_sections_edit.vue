@@ -43,21 +43,21 @@ export default {
           <TextEdit :item="editItem" editProp="title" @updateItem="editItem = $event" />
         </div>
 
-        <div class="content">
+        <div class="content row-content">
           <h2>Фильтр по выдавшему</h2>
           <div class="inpu_gender">
             <input type="checkbox" v-model="editItem.issuer_filter" />  
           </div>
         </div>
 
-        <div class="content">
+        <div class="content row-content">
           <h2>Фильтр по компании</h2>
           <div class="inpu_gender">
             <input type="checkbox" v-model="editItem.company_filter" />  
           </div>
         </div>
 
-        <div class="content">
+        <div class="content row-content">
           <h2>Фильтр по степени</h2>
           <div class="inpu_gender">
             <input type="checkbox" v-model="editItem.grade_filter" />  
@@ -65,8 +65,8 @@ export default {
         </div>
 
         <div class="content-btn">
-          <button @click="$emit('cancel')">Отменить</button>
-          <button @click="endEdit">Завершить</button>
+          <button class="btn" @click="$emit('cancel')">Отменить</button>
+          <button class="btn" @click="endEdit">Завершить</button>
         </div>
         </div>
       </div>
@@ -81,32 +81,50 @@ export default {
     top: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
     z-index: 50;
+    backdrop-filter: blur(10px);
+    transition: all 0.25s ease;
 }
 .Main_block-content{
   width: 90vw;
   height: 90vh;
   max-width: 650px;
   max-height: 810px;
-  padding: 10px 0px 10px 0;
+  padding: 10px 10px 10px 0;
   background-color: var(--white);
   justify-content: flex-start;
   border-radius: 20px;
+
+  border: 1px solid rgba(0, 255, 242, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+
+  backdrop-filter: blur(15px);
+
+  transition: all 0.25s ease;
+
 }
 .block-content{
   width: 90vw;
+  height: 90vh;
   max-width: 640px;
+  max-height: 800px;
   padding: 20px 10px;
-  background-color: var(--white);
   justify-content: space-between;
   border-radius: 20px;
   overflow-y: auto;
+  
 }
 .content{
   width: 100%;
+  margin: 0 0 10px 0;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.content.row-content{
   flex-direction: row;
-  margin: 0 0 20px 0;justify-content: space-between;
+  align-items: center;
 }
 
 .content-btn{
@@ -117,55 +135,99 @@ export default {
 }
 
 h3{
+  width: 100%;
   color: var(--textColorBlack);
   margin: 0 0 20px 0;
   font-size: 20px;
+  padding: 5px 10px;
+
+
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 h2{
-  width: 30%;
+  width: 100%;
   color: var(--nipigasColorMain);
-  margin: 0 20px 0 0;
+  margin: 0 20px 5px 0;
+  padding: 0 0 0 10px;
   font-size: 20px;
   text-align: left;
   font-weight: 500;
+  opacity: 0.7;
+  font-size: 1.4rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 textarea{
-  min-width: 70%;
+  min-width: 100%;
   max-width: 100%;
   min-height: 80px;
   max-height: 80px;
   resize: none;
   color: var(--textColorBlack);
   font-size: 15px;
-  padding: 5px;
+  padding: 5px 10px;
+
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,0.3);
+  border-top: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px;
+  backdrop-filter: blur(15px);
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  font-weight: 500;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 button{
   border: none;
-  padding: 20px 55px;
-  border-radius: 10px;
+  width: 250px;
+	height: 50px;
+  border-radius: 50px;
   cursor: pointer;
   color: var(--white);
   font-size: 14px;
   font-weight: 600;
   transition: all 0.25s ease;
 }
-button:first-child{
-  background-color: rgb(248, 109, 109);
+
+.btn:nth-child(1) {
+  background: #ff1f7170;
 }
-button:first-child:hover{
-  background-color: rgb(247, 71, 71);
+.btn:nth-child(2) {
+  background: #1eff4570;
 }
-button:last-child{
-  background-color: rgb(84, 192, 89);
+ .btn:nth-child(1):hover {
+	background: #ff1f71;
+	box-shadow: 0 0 2px #ff1f71, 0 0 2px #ff1f71, 0 0 5px #ff1f71,
+		0 0 10px #ff1f71;
 }
-button:last-child:hover{
-  background-color: rgb(54, 212, 62);
+.btn:nth-child(2):hover {
+	background: #1eff45;
+	box-shadow: 0 0 2px #1eff45, 0 0 2px #1eff45, 0 0 5px #1eff45,
+		0 0 10px #1eff45;
+}
+
+@media (max-width: 600px) {
+  .content-btn{
+    flex-direction: column;
+  }
+  button{
+    margin: 10px 0 0 0;
+    width: 70%;
+  }
 }
 
 .inpu_gender{
-  width: calc(100% - 200px);
+  width: 100%;
+  align-items: flex-start;
 }
 
 img {

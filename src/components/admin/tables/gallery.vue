@@ -12,7 +12,7 @@ import gallery_edit from './gallery_edit.vue';
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 75 },
-  { text: "Фото", value: "image", fixed: true, width: 200 },
+  { text: "Фото", value: "image", fixed: true, width: 300 },
   { text: "Год", value: "year", width: 75 },
 ]
 
@@ -267,8 +267,21 @@ export default {
 
 
       <template #item-image="item">
-        <img :src="imagePath(item)" :alt="item.name">
-        <input type="file" accept="image/*" multiple="false" @change="updateImage(item, $event)">
+        <div class="photoDownlouad-box">            
+          <div class="input__wrapper">
+            <input name="file" type="file" id="input__file" class="input input__file" multiple="false"
+              @change="updateImage(item, $event)">
+            <label for="input__file" class="input__file-button">
+                <span class="input__file-icon-wrapper">
+                  <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
+                </span>
+                <span class="input__file-button-text">Выберите файл</span>
+            </label>
+          </div>
+          <div class="img-block">
+            <img :src="imagePath(item)" :alt="item.name">
+          </div>
+        </div>
       </template>
 
       <template #item-year="item">
@@ -474,5 +487,94 @@ option {
 .actions button{
   margin: 0 0 20px 0;
 }
+
+
+
+
+
+
+.img-block{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 20px 0;
+}
+.img-block img{
+  width: 150px;
+  height: auto;
+}
+.photoDownlouad-box{
+  width: 100%;
+  padding: 0 0 0 10px;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+}
+.input__wrapper {
+  width: fit-content;
+  position: relative;
+  margin: 0px 0px 0px 0px;
+}
+ 
+.input__file {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+ 
+.input__file-icon-wrapper {
+  height: 40px;
+  width: 40px;
+  margin-right: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-right: 1px solid #fff;
+}
+.input__file-icon-wrapper img{
+  width: 20px;
+  height: 20px;
+}
+ 
+.input__file-button-text {
+  line-height: 1;
+  margin-top: 1px;
+}
+ 
+.input__file-button {
+  width: 100%;
+  max-width: 290px;
+  height: 40px;
+  background: #1bbc9b;
+  color: #fff;
+  padding: 0 5px 0 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+
+
+
+
+
 
 </style>

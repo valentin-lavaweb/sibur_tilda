@@ -387,11 +387,12 @@ textarea {
   display: flex;
   width: 100%;
   height: 100%;
-  min-height: 50px;
+  min-height: 100px;
+  height: fit-content;
   max-height: 200px;
   padding: 5px;
   color: var(--textColorBlack);
-  resize: vertical;
+  resize: none;
   border: none;
 }
 
