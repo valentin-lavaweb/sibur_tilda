@@ -1,4 +1,11 @@
 for key, value in $toast-colors
   .c-toast--{key}
-    border: 1px solid rgba(245, 165, 22, 0.5)
-    background-color value
+    background-color value[0]
+    backdrop-filter blur(10px)
+    color value[1]
+    border 2px solid value[2]
+
+// for key, value in $toast-colors-text
+//   .c-toast--{key}
+//     color value
+//     border 1px solid value

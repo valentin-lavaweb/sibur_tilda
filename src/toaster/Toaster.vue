@@ -77,9 +77,7 @@ export default {
     },
     asyncFunction: {
       type: Function,
-      default() {
-        return Promise.resolve();
-      }
+      required: false
     }
   },
   data() {
@@ -156,32 +154,25 @@ export default {
       this.correctParent.insertAdjacentElement('afterbegin', this.$el)
       this.isActive = true
 
-
-
-      this.asyncFunction().then((result) => {
+      if(this.asyncFunction){
+        this.asyncFunction().then((result) => {
         this.mutMessage = this.onSuccessMessage(result) ?? this.mutMessage
         this.mutType = 'success'
       }).catch((e) => {
-
-        console.log(e);
-        let error = e.error;
-
-
-        if (!error) {
-          this.mutMessage = e.message;
-        } else if (error.code == 3050003) {
-          this.mutMessage = error.details[0].message.split('message:')[1];
-        } else {
-          this.mutMessage = error.details[0].message;
-        }
+        console.warn(e);
+        this.mutMessage = e.message;
         this.mutType = 'error'
       }).finally(() => {
         this.timer = this.duration !== false ? new Timer(this.close, this.duration) : null
       })
+      }else{
+        this.timer = this.duration !== false ? new Timer(this.close, this.duration) : null
+      }
 
 
-      // this.timer =
-      //   this.duration !== false ? new Timer(this.close, this.duration) : null
+      
+
+
     },
     click() {
       this.onClick.apply(null, arguments)
@@ -236,4 +227,9 @@ export default {
 .v--default-css
   @import './themes/default/colors.styl'
   @import './themes/default/toast.styl'
+</style>
+<style scoped>
+/* .c-toast.success{
+  color: red;
+} */
 </style>
