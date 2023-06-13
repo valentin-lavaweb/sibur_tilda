@@ -11,8 +11,7 @@ import Command_awards_edit from './command_awards_edit.vue';
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
-  { text: "Действия", value: "actions", fixed: true, width: 50 },
-
+  { text: "Действия", value: "actions", fixed: true, width: 150 },
   { text: "Номинация", value: "nomination", fixed: true, width: 100 },
   { text: "Описание проекта", value: "description", width: 200 },
   { text: "Авторы", value: "authors", width: 200 },
@@ -405,10 +404,11 @@ textarea {
   width: 100%;
   height: 100%;
   min-height: 50px;
+  height: fit-content;
   max-height: 200px;
   padding: 5px;
   color: var(--textColorBlack);
-  resize: vertical;
+  resize: none;
   border: none;
 }
 
