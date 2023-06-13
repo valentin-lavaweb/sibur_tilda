@@ -398,13 +398,13 @@ export default {
       <template #item-actions="item">
         <div class="actions">
           <button title="Удалить" @click="deleteItem(item)">
-            <img src="/delete.svg" alt="Удалить" class="delete" />
+            <img src="src/assets/icons/delete.png" alt="Удалить" class="delete" />
           </button>
           <button title="Редактировать" @click="editItem(item)">
-            <img src="/edit.svg" alt="Редактировать" class="edit" />
+            <img src="src/assets/icons/edit.png" alt="Редактировать" class="edit" />
           </button>
           <button title="Дублировать" @click="duplicateItem(item)">
-            <img src="/duplicate.svg" alt="Дублировать" class="duplicate" />
+            <img src="/src/assets/icons/duplicate.png" alt="Дублировать" class="duplicate" />
           </button>
         </div>
       </template>

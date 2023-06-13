@@ -22,7 +22,7 @@ const headers = [
 
 
 export default {
-  name: "command_awards_table",
+  name: "personal_award_sections",
   props:{
     search: String
   },
@@ -81,10 +81,10 @@ export default {
 
         console.log(updateItem);
 
-        let res = await this.interaction.api.createCommandAward(updateItem);
+        let res = await this.interaction.api.createPersonalAwardSection(updateItem);
         let newItem = res.data.data;
 
-        this.interaction.commandAwards.unshift(newItem);
+        this.interaction.personalSections.unshift(newItem);
 
         this.$toast.success("Данные добавлены");
 
@@ -139,7 +139,7 @@ export default {
 
         console.log(updateItem);
 
-        let res = await this.interaction.api.updateCommandAward(item.id, updateItem);
+        let res = await this.interaction.api.updatePersonalAwardSection(item.id, updateItem);
         let newItem = res.data.data;
 
         Object.assign(oldItem, newItem);
@@ -150,8 +150,8 @@ export default {
 
       } catch (e) {
         setTimeout(() => {
-          let oldIdx = this.interaction.commandAwards.findIndex(i => i.id == item.id);
-          this.interaction.commandAwards[oldIdx] = oldItemRestore;
+          let oldIdx = this.interaction.personalSections.findIndex(i => i.id == item.id);
+          this.interaction.personalSections[oldIdx] = oldItemRestore;
         }, 500);
         this.$toast.error(e.message);
       }
@@ -165,8 +165,8 @@ export default {
       if (!confirm(`Удалить ${item.nomination}?`)) return;
 
 
-      let oldIdx = this.interaction.commandAwards.findIndex(i => i.id == item.id);
-      let oldItem = this.interaction.commandAwards[oldIdx];
+      let oldIdx = this.interaction.personalSections.findIndex(i => i.id == item.id);
+      let oldItem = this.interaction.personalSections[oldIdx];
       let oldItemRestore = Object.assign({}, oldItem);
       try {
 
@@ -176,15 +176,15 @@ export default {
 
         console.log(updateItem);
 
-        let res = await this.interaction.api.deleteCommandAward(item.id, updateItem);
+        let res = await this.interaction.api.deletePersonalAwardSection(item.id, updateItem);
 
-        this.interaction.commandAwards.splice(oldIdx, 1);
+        this.interaction.personalSections.splice(oldIdx, 1);
 
         this.$toast.success("Удалено");
 
       } catch (e) {
         setTimeout(() => {
-          this.interaction.commandAwards.splice(oldIdx, 0, oldItemRestore);
+          this.interaction.personalSections.splice(oldIdx, 0, oldItemRestore);
         }, 500);
         this.$toast.error(e.message);
       }
@@ -211,7 +211,7 @@ export default {
     },
   },
   created() {
-    if(!this.interaction.commandAwards){
+    if(!this.interaction.personalSections){
       this.interaction.loadCommandAwards();
     }
   },
@@ -221,7 +221,7 @@ export default {
     },
     items:{
       get(){
-        return this.interaction.commandAwards ?? [];
+        return this.interaction.personalSections ?? [];
       }
     },
     searchValue(){
@@ -282,7 +282,7 @@ export default {
             <img src="src/assets/icons/edit.png" alt="Редактировать" class="edit" />
           </button>
           <button title="Дублировать" @click="duplicateItem(item)">
-            <img src="src/assets/icons/duplicate.png" alt="Дублировать" class="duplicate" />
+            <img src="/src/assets/icons/duplicate.png" alt="Дублировать" class="duplicate" />
           </button>
         </div>
       </template>
