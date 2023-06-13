@@ -7,6 +7,7 @@ import login_comp from "@/components/admin/login.vue";
 import personal_awards from "@/components/admin/tables/personal_awards.vue";
 import command_awards from "@/components/admin/tables/command_awards.vue";
 import personal_award_sections from "@/components/admin/tables/personal_award_sections.vue";
+import gallery_table from "@/components/admin/tables/gallery.vue";
 
 export default {
   name: "admin_page",
@@ -22,7 +23,8 @@ export default {
     // Vue3EasyDataTable,
     personal_awards,
     command_awards,
-    personal_award_sections
+    personal_award_sections,
+    gallery_table
   },
   methods: {
     checkAuth(){

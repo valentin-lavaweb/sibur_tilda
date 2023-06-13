@@ -44,7 +44,13 @@ export default {
     },
     preparedImages(){
       return this.yearImages.map(i=>{
-        i.src = new URL(i.image, import.meta.env.VITE_VUE_APP_API_URL);
+        let url = null;
+        try{
+                url = new URL(i.image);
+            }catch{
+                url = new URL('storage/' + i.image, import.meta.env.VITE_VUE_APP_API_URL);
+            }
+        i.src = url;
         return i;
       })
     }
@@ -56,7 +62,6 @@ export default {
     let interaction = useGameStore();
     if(!interaction.images){
         await interaction.loadImages();
-        next();
     }
     next();
   }

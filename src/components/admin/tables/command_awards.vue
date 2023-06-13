@@ -169,13 +169,7 @@ export default {
       let oldItemRestore = Object.assign({}, oldItem);
       try {
 
-        let updateItem = {};
-
-
-
-        console.log(updateItem);
-
-        let res = await this.interaction.api.deleteCommandAward(item.id, updateItem);
+        let res = await this.interaction.api.deleteCommandAward(item.id);
 
         this.interaction.commandAwards.splice(oldIdx, 1);
 

@@ -138,7 +138,6 @@ export default {
 
         let res = await this.interaction.api.updatePersonalAwardSection(item.id, updateItem);
         let newItem = res.data.data;
-        debugger
 
         Object.assign(oldItem, newItem);
 
@@ -168,13 +167,7 @@ export default {
       let oldItemRestore = Object.assign({}, oldItem);
       try {
 
-        let updateItem = {};
-
-
-
-        console.log(updateItem);
-
-        let res = await this.interaction.api.deletePersonalAwardSection(item.id, updateItem);
+        let res = await this.interaction.api.deletePersonalAwardSection(item.id);
 
         this.interaction.personalSections.splice(oldIdx, 1);
 

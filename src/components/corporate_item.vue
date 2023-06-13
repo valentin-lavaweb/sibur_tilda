@@ -24,7 +24,13 @@ export default {
   computed:{
     imagePath(){
         if(this.item.image){
-            return new URL('storage/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
+            try{
+                let url = new URL(this.item.image);
+                return url;
+            }catch{
+                let url = new URL('storage/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                return url;
+            }
         }else{
             if(this.item.gender){
                 return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);

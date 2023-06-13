@@ -4,7 +4,7 @@ import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 
 import TextEdit from '../cells/textEdit.vue';
-import Personal_awards_edit from './personal_awards_edit.vue';
+import gallery_edit from './gallery_edit.vue';
 // import CheckBoxEdit from '../cells/checkBoxEdit.vue';
 
 
@@ -12,16 +12,9 @@ import Personal_awards_edit from './personal_awards_edit.vue';
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 75 },
-  { text: "Имя", value: "name", fixed: true, width: 150 },
-  { text: "Должность", value: "position", width: 150 },
-  { text: "Компания", value: "company", width: 200 },
-  { text: "Награда", value: "award", width: 150 },
-  { text: "Степень", value: "grade", width: 150 },
-  { text: "Выдана", value: "issued", width: 200 },
-  { text: "Пол", value: "gender", width: 50 },
-  { text: "Фото", value: "image", width: 200 },
+
+  { text: "Фото", value: "image", fixed: true, width: 75 },
   { text: "Год", value: "year", width: 75 },
-  { text: "Раздел", value: "section", width: 240 },
 ]
 
 
@@ -30,7 +23,7 @@ const headers = [
 
 
 export default {
-  name: "personal_awards_table",
+  name: "gallery_table",
   props:{
     search: String
   },
@@ -38,58 +31,17 @@ export default {
     let interaction = useGameStore();
     return {
       interaction: interaction,
-      isLoading: false,
-      serverItems: [],
-      serverTotalItemsLength: 0,
-      serverOptions: {
-        page: 1,
-        rowsPerPage: 25,
-        sortBy: "id",
-        sortType: 'asc',
-      },
       headers: headers,
       editedItem: null,
       onEditDone: null,
-
-
-
     }
   },
   components: {
     Vue3EasyDataTable,
     TextEdit,
-    Personal_awards_edit
+    gallery_edit
   },
   methods: {
-    async loadData() {
-
-
-
-      let filter = {
-        // ...this.queryFilter,
-        limit: this.serverOptions.rowsPerPage,
-        name: (this.search && this.search != "") ? this.search : undefined
-      }
-      this.isLoading = true;
-
-      let res = await this.interaction.api.getPersonalAwards(filter, this.serverOptions.page);
-
-      let awards = res.data.data;
-      this.serverTotalItemsLength = res.data.meta.total;
-
-      this.serverItems = awards
-      this.isLoading = false;
-
-
-
-
-
-
-
-
-
-
-    },
     async createItem(item) {
 
       console.log(item);
@@ -127,10 +79,10 @@ export default {
 
         console.log(updateItem);
 
-        let res = await this.interaction.api.createPersonalAward(updateItem);
+        let res = await this.interaction.api.createImage(updateItem);
         let newItem = res.data.data;
 
-        this.serverItems.unshift(newItem);
+        this.interaction.images.unshift(newItem);
 
         this.$toast.success("Данные добавлены");
 
@@ -146,7 +98,7 @@ export default {
 
       console.log(item);
 
-      let oldItem = this.serverItems.find(i => i.id == item.id);
+      let oldItem = this.interaction.images.find(i => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
       try {
 
@@ -185,7 +137,7 @@ export default {
 
         console.log(updateItem);
 
-        let res = await this.interaction.api.updatePersonalAward(item.id, updateItem);
+        let res = await this.interaction.api.updateImage(item.id, updateItem);
         let newItem = res.data.data;
 
         Object.assign(oldItem, newItem);
@@ -196,8 +148,8 @@ export default {
 
       } catch (e) {
         setTimeout(() => {
-          let oldIdx = this.serverItems.findIndex(i => i.id == item.id);
-          this.serverItems[oldIdx] = oldItemRestore;
+          let oldIdx = this.interaction.images.findIndex(i => i.id == item.id);
+          this.interaction.images[oldIdx] = oldItemRestore;
         }, 500);
         this.$toast.error(e.message);
       }
@@ -206,22 +158,22 @@ export default {
     },
     async updateImage(item, event) {
 
-      let oldItem = this.serverItems.find(i => i.id == item.id);
+      let oldItem = this.interaction.images.find(i => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
       try {
 
         let files = event.target.files || event.dataTransfer.files;
         if (!files.length) return;
 
-        let res = await this.interaction.api.updatePersonalAward(item.id, { image: files[0] });
+        let res = await this.interaction.api.updateImage(item.id, { image: files[0] });
         let newItem = res.data.data;
         Object.assign(oldItem, newItem);
 
         this.$toast.success("Изображение обновлено");
       } catch (e) {
         setTimeout(() => {
-          let oldIdx = this.serverItems.findIndex(i => i.id == item.id);
-          this.serverItems[oldIdx] = oldItemRestore;
+          let oldIdx = this.interaction.images.findIndex(i => i.id == item.id);
+          this.interaction.images[oldIdx] = oldItemRestore;
         }, 500);
         this.$toast.error(e.message);
       }
@@ -230,23 +182,22 @@ export default {
 
       console.log(item);
 
-      if (!confirm(`Удалить ${item.name}?`)) return;
+      if (!confirm(`Удалить изображение?`)) return;
 
 
-      let oldIdx = this.serverItems.findIndex(i => i.id == item.id);
-      let oldItem = this.serverItems[oldIdx];
+      let oldIdx = this.interaction.images.findIndex(i => i.id == item.id);
+      let oldItem = this.interaction.images[oldIdx];
       let oldItemRestore = Object.assign({}, oldItem);
       try {
+        let res = await this.interaction.api.deleteImage(item.id);
 
-        let res = await this.interaction.api.deletePersonalAward(item.id);
-
-        this.serverItems.splice(oldIdx, 1);
+        this.interaction.images.splice(oldIdx, 1);
 
         this.$toast.success("Удалено");
 
       } catch (e) {
         setTimeout(() => {
-          this.serverItems.splice(oldIdx, 0, oldItemRestore);
+          this.interaction.images.splice(oldIdx, 0, oldItemRestore);
         }, 500);
         this.$toast.error(e.message);
       }
@@ -273,43 +224,35 @@ export default {
     },
   },
   created() {
-    this.loadData();
+    if(!this.interaction.images){
+      this.interaction.loadImages();
+    }
   },
   computed: {
-    availableSections() {
-      return this.interaction.personalSections;
-    },
     imagePath() {
       return function (item) {
-        if (item.image) {
-          try{
+
+        try{
                 let url = new URL(item.image);
                 return url;
             }catch{
                 let url = new URL('storage/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
                 return url;
             }
-        } else {
-          if (item.gender) {
-            return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
-          } else {
-            return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
-          }
-        }
+        
       }
     },
-    debouncedSearch(){
-      return debounce(this.loadData, 500);
+    items:{
+      get(){
+        return this.interaction.images ?? [];
+      }
+    },
+    searchValue(){
+      return (this.search && this.search != "") ? this.search : undefined;
     }
 
   },
   watch: {
-    serverOptions() {
-      this.loadData();
-    },
-    search() {
-      this.debouncedSearch();
-    }
   },
 };
 </script>
@@ -319,68 +262,19 @@ export default {
   <div>
 
     <Teleport to="body" v-if="editedItem">
-      <Personal_awards_edit :availableSections="availableSections" :item="editedItem" @done="onEditDone"
+      <gallery_edit :item="editedItem" @done="onEditDone"
         @cancel="editedItem = null" />
     </Teleport>
 
-    <Vue3EasyDataTable v-model:server-options="serverOptions" :server-items-length="serverTotalItemsLength"
-      :loading="isLoading" :headers="headers" :items="serverItems" border-cell theme-color="rgb(0, 140, 149)"
+    <Vue3EasyDataTable 
+      :search-value="searchValue"
+      :headers="headers" 
+      :items="items" 
+      
+      border-cell theme-color="rgb(0, 140, 149)"
       table-class-name="customize-table" header-text-direction="center" body-text-direction="center" buttons-pagination>
 
 
-      <template #item-name="item">
-        <TextEdit :item="item" editProp="name" @updateItem="updateItem($event)" />
-      </template>
-
-      <template #item-position="item">
-        <TextEdit :item="item" editProp="position" @updateItem="updateItem($event)" />
-      </template>
-
-      <template #item-company="item">
-        <TextEdit :item="item" editProp="company" @updateItem="updateItem($event)" />
-      </template>
-
-      <template #item-award="item">
-        <TextEdit :item="item" editProp="award" @updateItem="updateItem($event)" />
-      </template>
-
-      <template #item-grade="item">
-        <select v-model="item.grade" @change="updateItem(item)">
-          <option :value="null">
-            Не указано
-          </option>
-          <option :value="1">
-            1
-          </option>
-          <option :value="2">
-            2
-          </option>
-          <option :value="3">
-            3
-          </option>
-        </select>
-      </template>
-
-      <template #item-issued="item">
-        <TextEdit :item="item" editProp="issued" @updateItem="updateItem($event)" />
-      </template>
-
-      <template #item-gender="item">
-        <!-- <CheckBoxEdit :item="item" editProp="gender" :value="item.gender" @updateValue="item.gender = $event"  @updateItem="updateItem($event)"/> -->
-        <div class="inpu_gender">
-          <input class="gender_change" type="checkbox" v-model="item.gender" @change="updateItem({ ...item, gender: $event.target.checked })" />
-          <span>
-            <div> муж  -  &nbsp; <input type="checkbox" checked></div>
-            <div> жен  -  &nbsp; <input type="checkbox"></div>
-          </span>
-        </div>
-        <!-- <input type="radio" id="one" :value="true" v-model="item.gender" @change="updateItem(item)"/>
-        <label for="one">Муж</label>
-        <br />
-        <input type="radio" id="two" :value="false" v-model="item.gender" />
-        <label for="two">Жен</label> -->
-
-      </template>
 
       <template #item-image="item">
         <img :src="imagePath(item)" :alt="item.name">
@@ -389,14 +283,6 @@ export default {
 
       <template #item-year="item">
         <TextEdit :item="item" editProp="year" @updateItem="updateItem($event)" />
-      </template>
-
-      <template #item-section="item">
-        <select v-model="item.personal_award_section_id" @change="updateItem(item)">
-          <option v-for="section in availableSections" :key="section.id" :value="section.id">
-            {{ section.title }}
-          </option>
-        </select>
       </template>
 
 
