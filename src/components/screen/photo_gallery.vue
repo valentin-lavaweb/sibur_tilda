@@ -169,6 +169,7 @@ export default {
   height: 260px;
   margin: 0 20px 20px 0;
   transition: all 0.25s ease;
+  overflow: hidden;
   cursor: pointer;
 }
 .item-img:hover{
