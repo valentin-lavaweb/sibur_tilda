@@ -328,7 +328,6 @@ section{
 .content_table{
     margin: 0;
     width: 100%;
-    min-height: 400px;
     height: fit-content;
     /* border-top: 1px solid var(--nipigasColorMain); */
 }
