@@ -10,11 +10,11 @@ import TextEdit from '../cells/textEdit.vue';
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
-  { text: "Имя", value: "name", fixed: true, width: 200 },
+  { text: "Имя", value: "name", fixed: true, width: 100 },
   { text: "Должность", value: "position", width: 200 },
   { text: "Компания", value: "company", width: 200 },
-  { text: "Награда", value: "award", width: 200 },
-  { text: "Степень", value: "grade", width: 75 },
+  { text: "Награда", value: "award", width: 150 },
+  { text: "Степень", value: "grade", width: 150 },
   { text: "Выдана", value: "issued", width: 200 },
   { text: "Фото", value: "image", width: 200 },
   { text: "Год", value: "year", width: 75 },
@@ -181,7 +181,7 @@ export default {
       </template>
 
       <template #item-year="item">
-        <input type="number" v-model="item.year" @change="updateItem(item)">
+        <TextEdit :item="item" editProp="year" @updateItem="updateItem($event)"/>
       </template>
 
       <template #item-grade="item">
