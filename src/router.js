@@ -14,6 +14,7 @@ const admin_page               = () => import("@/components/admin/admin_page.vue
 const command_awards           = () => import("@/components/admin/tables/command_awards.vue");
 const personal_awards          = () => import("@/components/admin/tables/personal_awards.vue");
 const personal_award_sections  = () => import("@/components/admin/tables/personal_award_sections.vue");
+const gallery  = () => import("@/components/admin/tables/gallery.vue");
 
 
 
@@ -35,6 +36,7 @@ const routes = [
       { path: 'command_awards',                      component: command_awards,          name: 'command_awards'},
       { path: 'personal_awards',                     component: personal_awards,         name: 'personal_awards'},
       { path: 'personal_award_sections',             component: personal_award_sections, name: 'personal_award_sections'},
+      { path: 'gallery',                             component: personal_award_sections, name: 'gallery_table'},
     ]
   },
   ]
