@@ -41,17 +41,23 @@ export default {
 
         <div class="content">
           <h2>Фильтр по выдавшему</h2>
-          <input type="checkbox" v-model="editItem.issuer_filter" />
+          <div class="inpu_gender">
+            <input type="checkbox" v-model="editItem.issuer_filter" />  
+          </div>
         </div>
 
         <div class="content">
           <h2>Фильтр по компании</h2>
-          <input type="checkbox" v-model="editItem.company_filter" />
+          <div class="inpu_gender">
+            <input type="checkbox" v-model="editItem.company_filter" />  
+          </div>
         </div>
 
         <div class="content">
           <h2>Фильтр по степени</h2>
-          <input type="checkbox" v-model="editItem.grade_filter" />
+          <div class="inpu_gender">
+            <input type="checkbox" v-model="editItem.grade_filter" />  
+          </div>
         </div>
 
         <div class="content-btn">
@@ -142,6 +148,9 @@ button:last-child:hover{
   background-color: rgb(54, 212, 62);
 }
 
+.inpu_gender{
+  width: calc(100% - 200px);
+}
 
 img {
     width: 100px;
