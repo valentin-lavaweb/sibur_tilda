@@ -4,20 +4,18 @@ import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 
 import TextEdit from '../cells/textEdit.vue';
-import Command_awards_edit from './command_awards_edit.vue';
+import personal_award_sections_edit from './personal_award_sections_edit.vue';
 // import CheckBoxEdit from '../cells/checkBoxEdit.vue';
-
 
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 50 },
 
-  { text: "Номинация", value: "nomination", fixed: true, width: 100 },
-  { text: "Описание проекта", value: "description", width: 200 },
-  { text: "Авторы", value: "authors", width: 200 },
-  // { text: "Фото", value: "image", width: 200 },
-  { text: "Год", value: "year", width: 75 },
+  { text: "Название раздела", value: "title", fixed: true, width: 300 },
+  { text: "Фильтр по выдавшему", value: "issuer_filter", width: 50 },
+  { text: "Фильтр по компании", value: "company_filter", width: 50 },
+  { text: "Фильтр по степени", value: "grade_filter", width: 50 },
 ]
 
 
@@ -41,7 +39,7 @@ export default {
   components: {
     Vue3EasyDataTable,
     TextEdit,
-    Command_awards_edit
+    personal_award_sections_edit
 },
   methods: {
     async createItem(item) {
@@ -141,6 +139,7 @@ export default {
 
         let res = await this.interaction.api.updatePersonalAwardSection(item.id, updateItem);
         let newItem = res.data.data;
+        debugger
 
         Object.assign(oldItem, newItem);
 
@@ -162,7 +161,7 @@ export default {
 
       console.log(item);
 
-      if (!confirm(`Удалить ${item.nomination}?`)) return;
+      if (!confirm(`Удалить ${item.title}?`)) return;
 
 
       let oldIdx = this.interaction.personalSections.findIndex(i => i.id == item.id);
@@ -212,7 +211,7 @@ export default {
   },
   created() {
     if(!this.interaction.personalSections){
-      this.interaction.loadCommandAwards();
+      this.interaction.loadSections();
     }
   },
   computed: {
@@ -239,7 +238,7 @@ export default {
   <div>
 
     <Teleport to="body" v-if="editedItem">
-      <Command_awards_edit :item="editedItem" @done="onEditDone"
+      <personal_award_sections_edit :item="editedItem" @done="onEditDone"
         @cancel="editedItem = null" />
     </Teleport>
 
@@ -254,21 +253,21 @@ export default {
       >
 
 
-      <template #item-nomination="item">
-        <TextEdit :item="item" editProp="nomination" @updateItem="updateItem($event)" />
+      <template #item-title="item">
+        <TextEdit :item="item" editProp="title" @updateItem="updateItem($event)" />
       </template>
 
-      <template #item-description="item">
-        <TextEdit :item="item" editProp="description" @updateItem="updateItem($event)" />
+      <template #item-issuer_filter="item">
+        <input type="checkbox" v-model="item.issuer_filter" @change="updateItem(item)" />
       </template>
 
-      <template #item-authors="item">
-        <TextEdit :item="item" editProp="authors" @updateItem="updateItem($event)" />
+      <template #item-company_filter="item">
+        <input type="checkbox" v-model="item.company_filter" @change="updateItem(item)" />
       </template>
 
 
-      <template #item-year="item">
-        <TextEdit :item="item" editProp="year" @updateItem="updateItem($event)" />
+      <template #item-grade_filter="item">
+        <input type="checkbox" v-model="item.grade_filter" @change="updateItem(item)" />
       </template>
 
 
