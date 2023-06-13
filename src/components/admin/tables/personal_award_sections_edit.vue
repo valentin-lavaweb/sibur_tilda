@@ -123,7 +123,7 @@ h2{
   color: var(--nipigasColorMain);
   margin: 0 20px 0 0;
   font-size: 20px;
-  text-align: center;
+  text-align: left;
   font-weight: 500;
 }
 

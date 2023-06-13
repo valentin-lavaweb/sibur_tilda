@@ -107,18 +107,18 @@ export default {
         </div>
         <section class="section_tabs">
             <div class="tab" 
-                :class="{active: this.$route.name == 'command_awards'}"
-                @click="this.$router.push({name: 'command_awards'})">
+                :class="{active: this.$route.name == 'command_awards_table'}"
+                @click="this.$router.push({name: 'command_awards_table'})">
                 командные награды
             </div>
             <div class="tab"
-                :class="{active: this.$route.name == 'personal_awards'}"
-                @click="this.$router.push({name: 'personal_awards'})">
+                :class="{active: this.$route.name == 'personal_awards_table'}"
+                @click="this.$router.push({name: 'personal_awards_table'})">
                 персональные награды
             </div>
             <div class="tab"
-                :class="{active: this.$route.name == 'personal_award_sections'}"
-                @click="this.$router.push({name: 'personal_award_sections'})">
+                :class="{active: this.$route.name == 'personal_award_sections_table'}"
+                @click="this.$router.push({name: 'personal_award_sections_table'})">
                 разделы для персональных наград
             </div>
             <div class="tab">
@@ -126,9 +126,9 @@ export default {
             </div>
         </section>
         <section class="content_table" ref="table">
-            <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections'"/>
-            <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards'"/>
-            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards'"/>
+            <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
+            <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
+            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards_table'"/>
         </section>
       </div>
     </div>
