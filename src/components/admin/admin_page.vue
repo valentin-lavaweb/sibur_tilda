@@ -128,9 +128,10 @@ export default {
             </div>
         </section>
         <section class="content_table" ref="table">
-            <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections'"/>
+            <RouterView/>
+            <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections'"/>
             <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards'"/>
-            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards'"/>
+            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards'"/> -->
         </section>
       </div>
     </div>
