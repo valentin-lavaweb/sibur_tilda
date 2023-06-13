@@ -123,12 +123,14 @@ export default {
                 @click="this.$router.push({name: 'personal_award_sections_table'})">
                 разделы для персональных наград
             </div>
-            <div class="tab">
-                фотогалерея
+            <div class="tab"
+                :class="{active: this.$route.name == 'gallery_table'}"
+                @click="this.$router.push({name: 'gallery_table'})">
+                галерея
             </div>
         </section>
         <section class="content_table" ref="table">
-            <RouterView/>
+            <RouterView :search="searchValue"/>
             <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
             <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
             <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards_table'"/> -->
