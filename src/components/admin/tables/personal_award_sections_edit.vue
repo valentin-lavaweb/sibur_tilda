@@ -20,6 +20,9 @@ export default {
     endEdit(event){
       this.$emit('done', this.editItem);
     },
+    setItem(item){
+      this.editItem = Object.assign({}, item);
+    }
   },
 };
 </script>

@@ -22,7 +22,7 @@ const headers = [
 
 export default {
   name: "command_awards_table",
-  props:{
+  props: {
     search: String
   },
   data() {
@@ -41,20 +41,15 @@ export default {
     Vue3EasyDataTable,
     TextEdit,
     Command_awards_edit
-},
+  },
   methods: {
     async createItem(item) {
-
-      console.log(item);
-
-
       try {
-
         let updateItem = {};
 
         for (let prop in item) {
           if (prop == 'image') {
-            if (typeof item[prop] === File) {
+            if (item[prop] instanceof File) {
               updateItem[prop] = item[prop];
             } else {
               continue;
@@ -77,9 +72,6 @@ export default {
           }
         }
 
-
-        console.log(updateItem);
-
         let res = await this.interaction.api.createCommandAward(updateItem);
         let newItem = res.data.data;
 
@@ -97,8 +89,6 @@ export default {
     },
     async updateItem(item) {
 
-      console.log(item);
-
       let oldItem = this.items.find(i => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
       try {
@@ -107,7 +97,7 @@ export default {
 
         for (let prop in oldItem) {
           if (prop == 'image') {
-            if (typeof item[prop] === File) {
+            if (item[prop] instanceof File) {
               updateItem[prop] = item[prop];
             } else {
               continue;
@@ -159,8 +149,6 @@ export default {
     },
     async deleteItem(item) {
 
-      console.log(item);
-
       if (!confirm(`Удалить ${item.nomination}?`)) return;
 
 
@@ -187,24 +175,23 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
-        this.editedItem = null;
-        setTimeout(()=>{this.editItem(updItem);}, 10);
+        this.editItem(updItem);
       }
       this.editedItem = item;
+      this.$refs.editForm?.setItem(item)
 
     },
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
-        this.editedItem = null;
-        setTimeout(()=>{this.editItem(newItem);}, 10);
+        this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
 
     },
   },
   created() {
-    if(!this.interaction.commandAwards){
+    if (!this.interaction.commandAwards) {
       this.interaction.loadCommandAwards();
     }
   },
@@ -212,12 +199,12 @@ export default {
     availableSections() {
       return this.interaction.personalSections;
     },
-    items:{
-      get(){
+    items: {
+      get() {
         return this.interaction.commandAwards ?? [];
       }
     },
-    searchValue(){
+    searchValue() {
       return (this.search && this.search != "") ? this.search : undefined;
     }
 
@@ -231,20 +218,19 @@ export default {
 <template>
   <div>
 
-    <Teleport to="body" v-if="editedItem">
-      <Command_awards_edit :item="editedItem" @done="onEditDone"
-        @cancel="editedItem = null" />
-    </Teleport>
+    
+      <Teleport to="body" >
+        <transition name="openPage" mode="out-in" appear>
+          <Command_awards_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem" ref="editForm"/>
+        </transition>
+      </Teleport>
 
-    <Vue3EasyDataTable
-      :search-value="searchValue"
-      :headers="headers" 
-      :items="items" 
-      
-      border-cell theme-color="rgb(0, 140, 149)"
-      table-class-name="customize-table" header-text-direction="center" body-text-direction="center" buttons-pagination
+    
 
-      >
+
+    <Vue3EasyDataTable :search-value="searchValue" :headers="headers" :items="items" border-cell
+      theme-color="rgb(0, 140, 149)" table-class-name="customize-table" header-text-direction="center"
+      body-text-direction="center" buttons-pagination>
 
 
       <template #item-nomination="item">
