@@ -11,7 +11,7 @@ import Command_awards_edit from './command_awards_edit.vue';
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
-  { text: "Действия", value: "actions", fixed: true, width: 150 },
+  { text: "Действия", value: "actions", fixed: true, width: 75 },
   { text: "Номинация", value: "nomination", fixed: true, width: 100 },
   { text: "Описание проекта", value: "description", width: 200 },
   { text: "Авторы", value: "authors", width: 200 },

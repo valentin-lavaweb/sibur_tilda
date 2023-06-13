@@ -61,7 +61,7 @@ export default {
       </div>
 
     </div>
-  </template>
+</template>
 
 
 <style scoped>
@@ -75,11 +75,14 @@ export default {
 }
 .block-content{
   width: 90vw;
+  height: 90vh;
   max-width: 640px;
+  max-height: 800px;
   padding: 20px 10px;
   background-color: var(--white);
   justify-content: space-between;
   border-radius: 20px;
+  overflow-y: auto;
 }
 .content{
   width: 100%;

@@ -290,7 +290,7 @@ export default {
   height: 100%;
 }
 .wrapper-block{
-   width: 1645px;
+   width: 1700px;
    height: fit-content;
    margin: 0px 0 50px 0;
    overflow-x: auto;
