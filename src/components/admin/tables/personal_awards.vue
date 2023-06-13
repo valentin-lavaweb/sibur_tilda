@@ -12,8 +12,8 @@ import Personal_awards_edit from './personal_awards_edit.vue';
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 75 },
-  { text: "Имя", value: "name", fixed: true, width: 100 },
-  { text: "Должность", value: "position", width: 200 },
+  { text: "Имя", value: "name", fixed: true, width: 150 },
+  { text: "Должность", value: "position", width: 150 },
   { text: "Компания", value: "company", width: 200 },
   { text: "Награда", value: "award", width: 150 },
   { text: "Степень", value: "grade", width: 150 },

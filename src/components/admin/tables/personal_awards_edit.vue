@@ -64,92 +64,93 @@ export default {
 <template >
       <div class="container">
 
-        <div class="block-content">
-          <h3>ID: {{ editItem.id ?? '---' }}</h3>
+        <div class="Main_block-content">
+          <div class="block-content">
+            <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
 
-          <div class="content">
-            <h2>Имя</h2>
-            <TextEdit :item="editItem" editProp="name" @updateItem="editItem = $event" />
-          </div>
+            <div class="content">
+              <h2>Имя</h2>
+              <TextEdit :item="editItem" editProp="name" @updateItem="editItem = $event" />
+            </div>
 
-          <div class="content">
-            <h2>Должность</h2>
-            <TextEdit :item="editItem" editProp="position" @updateItem="editItem = $event" />
-          </div>
+            <div class="content">
+              <h2>Должность</h2>
+              <TextEdit :item="editItem" editProp="position" @updateItem="editItem = $event" />
+            </div>
 
-          <div class="content">
-            <h2>Компания</h2>
-            <TextEdit :item="editItem" editProp="company" @updateItem="editItem = $event"/>
-          </div>
+            <div class="content">
+              <h2>Компания</h2>
+              <TextEdit :item="editItem" editProp="company" @updateItem="editItem = $event"/>
+            </div>
 
-          <div class="content">
-            <h2>Награды</h2>
-            <TextEdit :item="editItem" editProp="award" @updateItem="editItem = $event" />
-          </div>
+            <div class="content">
+              <h2>Награды</h2>
+              <TextEdit :item="editItem" editProp="award" @updateItem="editItem = $event" />
+            </div>
 
-          <div class="content">
-            <h2>Степень</h2>
-            <select v-model="editItem.grade">
-              <option :value="null">
-                Не указано
-              </option>
-              <option :value="1">
-                1
-              </option>
-              <option :value="2">
-                2
-              </option>
-              <option :value="3">
-                3
-              </option>
-            </select>
-          </div>
+            <div class="content">
+              <h2>Степень</h2>
+              <select v-model="editItem.grade">
+                <option :value="null">
+                  Не указано
+                </option>
+                <option :value="1">
+                  1
+                </option>
+                <option :value="2">
+                  2
+                </option>
+                <option :value="3">
+                  3
+                </option>
+              </select>
+            </div>
 
-          <div class="content">
-            <h2>Выдана</h2>
-            <TextEdit :item="editItem" editProp="issued" @updateItem="editItem = $event" />
-          </div>
+            <div class="content">
+              <h2>Выдана</h2>
+              <TextEdit :item="editItem" editProp="issued" @updateItem="editItem = $event" />
+            </div>
 
-          <div class="content">
-            <h2>Пол</h2>
-            <div class="inpu_gender">
-              <input type="checkbox" v-model="editItem.gender" />
-              <span>
-                <div> муж  -  &nbsp; <input type="checkbox" checked></div>
-                <div> жен  -  &nbsp; <input type="checkbox"></div>
-              </span>
+            <div class="content">
+              <h2>Пол</h2>
+              <div class="inpu_gender">
+                <input type="checkbox" v-model="editItem.gender" />
+                <span>
+                  <div> муж  -  &nbsp; <input type="checkbox" checked></div>
+                  <div> жен  -  &nbsp; <input type="checkbox"></div>
+                </span>
+              </div>
+            </div>
+
+            <div class="content">
+              <h2>Фото</h2>
+              <img :src="imagePath" :alt="editItem.name">
+              <input type="file" accept="image/*" multiple="false" @change="updateImage($event)">
+            </div>
+
+            <div class="content">
+              <h2>Год</h2>
+              <TextEdit :item="editItem" editProp="year" @updateItem="editItem = $event" />
+            </div>
+
+            <div class="content">
+              <h2>Раздел</h2>
+              <select v-model="editItem.personal_award_section_id">
+                <option v-for="section in availableSections" :key="section.id" :value="section.id">
+                  {{ section.title }}
+                </option>
+              </select>
+            </div>
+
+            <div class="content-btn">
+              <button @click="$emit('cancel')">Отменить</button>
+              <button @click="endEdit">Завершить</button>
             </div>
           </div>
-
-          <div class="content">
-            <h2>Фото</h2>
-            <img :src="imagePath" :alt="editItem.name">
-            <input type="file" accept="image/*" multiple="false" @change="updateImage($event)">
-          </div>
-
-          <div class="content">
-            <h2>Год</h2>
-            <TextEdit :item="editItem" editProp="year" @updateItem="editItem = $event" />
-          </div>
-
-          <div class="content">
-            <h2>Раздел</h2>
-            <select v-model="editItem.personal_award_section_id">
-              <option v-for="section in availableSections" :key="section.id" :value="section.id">
-                {{ section.title }}
-              </option>
-            </select>
-          </div>
-
-          <div class="content-btn">
-            <button @click="$emit('cancel')">Отменить</button>
-            <button @click="endEdit">Завершить</button>
-          </div>
         </div>
 
-        </div>
-
+      </div>
   </template>
 
 
@@ -161,6 +162,16 @@ export default {
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     z-index: 50;
+}
+.Main_block-content{
+  width: 90vw;
+  height: 90vh;
+  max-width: 650px;
+  max-height: 810px;
+  padding: 10px 0px 10px 0;
+  background-color: var(--white);
+  justify-content: flex-start;
+  border-radius: 20px;
 }
 .block-content{
   width: 90vw;

@@ -30,7 +30,8 @@ export default {
 <template >
     <div class="container">
 
-      <div class="block-content">
+      <div class="Main_block-content">
+        <div class="block-content">
         <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
 
@@ -41,22 +42,29 @@ export default {
 
         <div class="content">
           <h2>Фильтр по выдавшему</h2>
-          <input type="checkbox" v-model="editItem.issuer_filter" />
+          <div class="inpu_gender">
+            <input type="checkbox" v-model="editItem.issuer_filter" />  
+          </div>
         </div>
 
         <div class="content">
           <h2>Фильтр по компании</h2>
-          <input type="checkbox" v-model="editItem.company_filter" />
+          <div class="inpu_gender">
+            <input type="checkbox" v-model="editItem.company_filter" />  
+          </div>
         </div>
 
         <div class="content">
           <h2>Фильтр по степени</h2>
-          <input type="checkbox" v-model="editItem.grade_filter" />
+          <div class="inpu_gender">
+            <input type="checkbox" v-model="editItem.grade_filter" />  
+          </div>
         </div>
 
         <div class="content-btn">
           <button @click="$emit('cancel')">Отменить</button>
           <button @click="endEdit">Завершить</button>
+        </div>
         </div>
       </div>
 
@@ -73,6 +81,16 @@ export default {
     background: rgba(0, 0, 0, 0.5);
     z-index: 50;
 }
+.Main_block-content{
+  width: 90vw;
+  height: 90vh;
+  max-width: 650px;
+  max-height: 810px;
+  padding: 10px 0px 10px 0;
+  background-color: var(--white);
+  justify-content: flex-start;
+  border-radius: 20px;
+}
 .block-content{
   width: 90vw;
   max-width: 640px;
@@ -80,6 +98,7 @@ export default {
   background-color: var(--white);
   justify-content: space-between;
   border-radius: 20px;
+  overflow-y: auto;
 }
 .content{
   width: 100%;
@@ -142,6 +161,9 @@ button:last-child:hover{
   background-color: rgb(54, 212, 62);
 }
 
+.inpu_gender{
+  width: calc(100% - 200px);
+}
 
 img {
     width: 100px;
