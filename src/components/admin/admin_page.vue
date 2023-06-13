@@ -106,13 +106,19 @@ export default {
             <input type="text" placeholder="Введите запрос" v-model="searchValue">
         </div>
         <section class="section_tabs">
-            <div class="tab">
+            <div class="tab" 
+                :class="{active: this.$route.name == 'command_awards'}"
+                @click="this.$router.push({name: 'command_awards'})">
                 командные награды
             </div>
-            <div class="tab">
+            <div class="tab"
+                :class="{active: this.$route.name == 'personal_awards'}"
+                @click="this.$router.push({name: 'personal_awards'})">
                 персональные награды
             </div>
-            <div class="tab">
+            <div class="tab"
+                :class="{active: this.$route.name == 'personal_award_sections'}"
+                @click="this.$router.push({name: 'personal_award_sections'})">
                 разделы для персональных наград
             </div>
             <div class="tab">
@@ -120,76 +126,9 @@ export default {
             </div>
         </section>
         <section class="content_table" ref="table">
-            <!-- <div class="table">
-                <div class="table_item">
-                    <div class="table_item-title">
-                        ID
-                    </div>
-                    <div class="table_item-title">
-                        Наименование
-                    </div>
-                    <div class="table_item-title">
-                        Описание
-                    </div>
-                    <div class="table_item-title">
-                        Авторы
-                    </div>
-                    <div class="table_item-title">
-                        Год
-                    </div>
-                </div>
-                <div class="table_item" 
-                    v-for ="item in 20" 
-                    :key="item">
-                    <div class="table_item-content">
-                        ID
-                        <div class="table_item-hover_panel">
-                            <button>
-                                удалить
-                                строку
-                            </button>
-                        </div>
-                    </div>
-                    <div class="table_item-content">
-                        <input type="text">
-                    </div>
-                    <div class="table_item-content">
-                        <input type="text">
-                    </div>
-                    <div class="table_item-content">
-                        <input type="text">
-                    </div>
-                    <div class="table_item-content">
-                        <input type="number">
-                    </div>
-                </div>
-            </div> -->
-            <!-- <Vue3EasyDataTable
-                v-model:server-options="serverOptions"
-                :server-items-length="serverItemsLength"
-                :loading="loading"
-
-                :headers="headers"
-                :items="items"
-                v-model:items-selected="itemsSelected"
-                show-index
-            
-                :search-field="searchField"
-                :search-value="searchValue"
-
-                border-cell
-                theme-color="rgb(0, 140, 149)"
-                table-class-name="customize-table"
-                header-text-direction="center"
-                body-text-direction="center"
-
-                :items-selected="itemsSelected"
-                buttons-pagination
-                loading
-            /> -->
-            <!-- <personal_awards :search="searchValue"/> -->
-            <!-- <command_awards :search="searchValue"/> -->
-            <personal_award_sections :search="searchValue"/>
+            <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections'"/>
+            <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards'"/>
+            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards'"/>
         </section>
       </div>
     </div>
@@ -367,6 +306,7 @@ section{
     display: flex;
 }
 .tab.active{
+    color: var(--white);
     background-color: var(--nipigasColorMain);
 }
 .tab{
@@ -391,128 +331,6 @@ section{
     min-height: 400px;
     height: fit-content;
     /* border-top: 1px solid var(--nipigasColorMain); */
-}
-.table{
-    width: 100%;
-    min-height: 400px;
-    height: 100%;
-}
-
-.table_item{
-    width: 100%;
-    height: 50px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid var(--nipigasColorMain);
-}
-.table_item-title{
-    height: 100%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    color: var(--nipigasColorMain);
-    font-weight: 600;
-    border-right: 1px solid var(--nipigasColorMain);
-    padding: 5px 10px;
-}
-
-
-.table_item-content input{
-    width: 100%;
-    height: 100%;
-    color: var(--textColorBlack);
-    border: none;
-    background: none;
-}
-.table_item-content{
-    height: 100%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    color: var(--textColorBlack);
-    border-right: 1px solid var(--nipigasColorMain);
-    padding: 5px 10px;
-    overflow: auto;
-}
-
-.table_item-content:first-child, .table_item-title:first-child{
-    width: 75px;
-    min-width: 75px;
-    background-color: #008C9512;
-}
-.table_item-content:first-child:hover{
-    color: rgba(255, 255, 255, 0);
-} 
-.table_item-content:first-child:hover .table_item-hover_panel{
-    opacity: 1;
-    pointer-events: auto;
-}
-.table_item-hover_panel{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.25s ease;
-}
-.table_item-hover_panel button{
-    border: none;
-    width: 100%;
-    height: 100%;
-    color: var(--white);
-    font-weight: 600;
-    background-color: #008b955d;
-    cursor: pointer;
-}
-.table_item-hover_panel button:active{
-    background-color: #008C9512;
-}
-.table_item-content:first-child:hover, .table_item-title:first-child:hover{
-    background-color: #008b955d;
-}
-.table_item-content:nth-child(2), .table_item-title:nth-child(2){
-    width: 100%;
-}
-.table_item-content:nth-child(3), .table_item-title:nth-child(3){
-    width: 100%;
-}
-.table_item-content:nth-child(4), .table_item-title:nth-child(4){
-    width: 100%;
-}
-    
-.table_item-content:nth-child(5), .table_item-title:nth-child(5){
-    width: 60px;
-    min-width: 60px;
-}
-.table_item-content:last-child, .table_item-title:last-child{
-    border: none;
-}
-
-
-
-
-.table_item-content:nth-child(2),
-.table_item-content:nth-child(3),
-.table_item-content:nth-child(4),
-.table_item-content:nth-child(5){
-    opacity: 0.5;
-    background-color: rgba(44, 44, 44, 0.2);
-    cursor: pointer;
-}
-.table_item-content:nth-child(2).active,
-.table_item-content:nth-child(3).active,
-.table_item-content:nth-child(4).active,
-.table_item-content:nth-child(5).active{
-    opacity: 1;
-    background-color: none;
-    cursor: auto;
-}
-.table_item-content input{
-    pointer-events: none;
-}
-.table_item-content.active input{
-    pointer-events: auto;
 }
 
 

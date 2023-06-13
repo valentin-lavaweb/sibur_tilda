@@ -11,6 +11,10 @@ const photo_gallery            = () => import("@/components/screen/photo_gallery
 const certificates             = () => import("@/components/screen/certificates.vue");
 const admin_page               = () => import("@/components/admin/admin_page.vue");
 
+const command_awards           = () => import("@/components/admin/tables/command_awards.vue");
+const personal_awards          = () => import("@/components/admin/tables/personal_awards.vue");
+const personal_award_sections  = () => import("@/components/admin/tables/personal_award_sections.vue");
+
 
 
 const routes = [
@@ -26,7 +30,13 @@ const routes = [
   // { path: '/Лучшие_производственные_наставники',    component: corporate,               name: 'corporate_mentor',         meta:{title:'Лучшие производственные наставники'}},
   { path: '/gallery',                                component: photo_gallery,           name: 'photo_gallery'},
   { path: '/sertificates',                           component: certificates,            name: 'certificates'},
-  { path: '/admin',                             component: admin_page,            name: 'admin_page'},
+  { path: '/admin',                                  component: admin_page,              name: 'admin_page',
+    children:[
+      { path: 'command_awards',                      component: command_awards,          name: 'command_awards'},
+      { path: 'personal_awards',                     component: personal_awards,         name: 'personal_awards'},
+      { path: 'personal_award_sections',             component: personal_award_sections, name: 'personal_award_sections'},
+    ]
+  },
   ]
 
 const router = createRouter({

@@ -10,12 +10,11 @@ import personal_award_sections_edit from './personal_award_sections_edit.vue';
 
 const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
-  { text: "Действия", value: "actions", fixed: true, width: 50 },
-
+  { text: "Действия", value: "actions", fixed: true, width: 75 },
   { text: "Название раздела", value: "title", fixed: true, width: 300 },
-  { text: "Фильтр по выдавшему", value: "issuer_filter", width: 50 },
-  { text: "Фильтр по компании", value: "company_filter", width: 50 },
-  { text: "Фильтр по степени", value: "grade_filter", width: 50 },
+  { text: "Фильтр по выдавшему", value: "issuer_filter", width: 100 },
+  { text: "Фильтр по компании", value: "company_filter", width: 100 },
+  { text: "Фильтр по степени", value: "grade_filter", width: 100 },
 ]
 
 
