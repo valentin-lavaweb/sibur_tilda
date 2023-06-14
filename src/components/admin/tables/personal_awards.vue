@@ -307,7 +307,7 @@ export default {
 
 
 <template>
-  <div>
+  <div class="awards_table">
 
 
     <Teleport to="body" >
@@ -316,9 +316,18 @@ export default {
         </transition>
       </Teleport>
 
-    <Vue3EasyDataTable v-model:server-options="serverOptions" :server-items-length="serverTotalItemsLength"
-      :loading="isLoading" :headers="headers" :items="serverItems" border-cell theme-color="rgb(0, 140, 149)"
-      table-class-name="customize-table" header-text-direction="center" body-text-direction="center" buttons-pagination>
+    <Vue3EasyDataTable 
+    v-model:server-options="serverOptions" 
+    :server-items-length="serverTotalItemsLength"
+    :loading="isLoading"
+    :headers="headers" 
+    :items="serverItems" 
+    border-cell 
+    theme-color="rgb(0, 140, 149)"
+    table-class-name="customize-table" 
+    header-text-direction="center" 
+    body-text-direction="center" 
+    buttons-pagination>
 
 
       <template #item-name="item">
@@ -447,43 +456,10 @@ export default {
 
 
 <style scoped>
-.vue3-easy-data-table__body tr td:first-child {
-  background-color: rgba(0, 140, 149, 0.07);
-}
-
-.vue3-easy-data-table__main.hoverable tr:hover td:first-child {
-  background-color: rgba(0, 140, 149, 0.07);
-}
-
-.vue3-easy-data-table__main.hoverable tr:hover td:hover {
-  background-color: transparent;
-}
-
-.vue3-easy-data-table__body tr td {
-  transition: all 0.25s ease;
-}
 
 
-.easy-data-table__rows-selector ul.select-items.inside li,
-.buttons-pagination .item {
-  transition: all 0.25s ease;
-}
-
-.easy-data-table__rows-selector ul.select-items.inside li:hover,
-.buttons-pagination .item:hover {
-  background-color: rgb(236, 236, 236);
-}
-
-.easy-data-table__rows-selector ul.select-items.inside li.selected:hover,
-.buttons-pagination .item.button.active:hover {
-  background-color: var(--nipigasColorMain-hover);
-}
-
-.buttons-pagination,
-.vue3-easy-data-table__footer,
-.vue3-easy-data-table__footer .pagination__rows-per-page,
-.easy-data-table__rows-selector .rows-input__wrapper {
-  flex-direction: row;
+.awards_table{
+  width: 100%;
 }
 
 .customize-table {
@@ -509,7 +485,7 @@ export default {
   --easy-table-body-row-font-size: 14px;
 
   --easy-table-body-row-hover-font-color: var(--nipigasColorMain-hover);
-  --easy-table-body-row-hover-background-color: none;
+  --easy-table-body-row-hover-background-color: var(--white);
 
   --easy-table-body-item-padding: 10px 15px;
 

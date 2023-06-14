@@ -32,21 +32,34 @@ export default {
     }
   },
   mounted() {
-    let table  = this.$refs.table;
-    let wrapper  = this.$refs.wrapper;
-    let pos = { left: 0, x: 0, };
+    let tableContainer  = this.$refs.tableContainer;
+    let pos = { start: 0, end: 0 };
 
-    const mouseDownHandler = function (e) {
+    tableContainer.addEventListener('pointerdown', (e)=>{
+        
         pos = {
-            left: wrapper.scrollLeft,
-            x: e.clientX,
-
+            start: 0, 
+            end: 0
         };
         table.style.cursor = 'grabbing';
         table.style.userSelect = 'none';
 
-        wrapper.addEventListener('mousemove', mouseMoveHandler);
-        wrapper.addEventListener('mouseup', mouseUpHandler);
+        tableContainer.setPointerCapture(e.pointerId);
+
+        tableContainer.addEventListener('pointermove', (e)=>{
+
+        });
+        tableContainer.addEventListener('pointerup', (e)=>{
+
+        });
+
+
+
+    });
+
+
+    const handleDown = function (elem) {
+        
     };
 
     const mouseMoveHandler = function (e) {
@@ -63,7 +76,40 @@ export default {
     };
 
 
-    table.addEventListener('mousedown', mouseDownHandler);
+
+
+
+
+
+    function scroll(){
+let speed = 2; // Скорость скролла.
+
+let scroll = document.querySelector('.scroll');
+
+let left = 0; // отпустили мышку - сохраняем положение скролла
+let drag = false;
+let coorX = 0; // нажали мышку - сохраняем координаты.
+
+scroll.addEventListener('mousedown', function(e) {
+  drag = true;
+  coorX = e.pageX - this.offsetLeft;
+});
+document.addEventListener('mouseup', function() {
+  drag = false;
+  left = scroll.scrollLeft;
+});
+scroll.addEventListener('mousemove', function(e) {
+  if (drag) {
+    this.scrollLeft = left + (e.pageX - this.offsetLeft - coorX)*speed;
+  }
+});
+
+}
+
+    
+
+
+    
 
 
     this.checkAuth();
@@ -86,7 +132,7 @@ export default {
             <login_comp v-if="!interaction.admin"/>
         </transition>
     </Teleport>
-    <div class="wrapper-block" ref="wrapper" v-show="interaction.admin">
+    <div class="wrapper-block" v-show="interaction.admin">
       <div class="content-block">
         <nav>
             <div class="logo" @click="checkAuth">
@@ -129,7 +175,7 @@ export default {
                 галерея
             </div>
         </section>
-        <section class="content_table" ref="table">
+        <section class="content_table" ref="tableContainer">
             <RouterView :search="searchValue"/>
             <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
             <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
@@ -143,14 +189,14 @@ export default {
 
 <style>
 .vue3-easy-data-table__body tr td:first-child{
-    background-color: rgba(0, 140, 149, 0.07);
+    background-color: #EDF7F8;
 }
 .vue3-easy-data-table__main.hoverable tr:hover td:first-child{
-    background-color: rgba(0, 140, 149, 0.07);
+    background-color: #EDF7F8;
 }
-.vue3-easy-data-table__main.hoverable tr:hover td:hover{
+/* .vue3-easy-data-table__main.hoverable tr:hover td:hover{
     background-color: transparent;
-}
+} */
 .vue3-easy-data-table__body tr td{transition: all 0.25s ease;}
 
 
@@ -167,58 +213,21 @@ export default {
     background-color: var(--nipigasColorMain-hover);
 }
 
-.buttons-pagination,
+.vue3-easy-data-table__footer, .vue3-easy-data-table__footer *{
+    flex-direction: row;
+}
+
+.vue3-easy-data-table__main {
+    display: block;
+}
+
+/* .buttons-pagination,
 .vue3-easy-data-table__footer,
 .vue3-easy-data-table__footer .pagination__rows-per-page,
 .easy-data-table__rows-selector .rows-input__wrapper{
     flex-direction: row;
-}
+} */
 
-.customize-table {
-    width: 100%;
-    height: 100%;
-
-  --easy-table-border: 1px solid var(--nipigasColorMain);
-  --easy-table-row-border: 1px solid var(--nipigasColorMain);
-
-  --easy-table-header-font-size: 18px;
-  --easy-table-header-height: 30px;
-  --easy-table-header-font-color: var(--nipigasColorMain);
-  --easy-table-header-background-color: var(--white);
-
-  --easy-table-header-item-padding: 10px 15px;
-
-  --easy-table-body-even-row-font-color: var(--nipigasColorMain);
-  --easy-table-body-even-row-background-color: var(--white);
-
-  --easy-table-body-row-font-color: var(--textColorBlack);
-  --easy-table-body-row-background-color: var(--white);
-  --easy-table-body-row-height: 50px;
-  --easy-table-body-row-font-size: 14px;
-
-  --easy-table-body-row-hover-font-color: var(--textColorBlack);
-  --easy-table-body-row-hover-background-color: none;
-
-  --easy-table-body-item-padding: 5px 10px;
-
-  --easy-table-footer-background-color: var(--white);
-  --easy-table-footer-font-color: var(--nipigasColorMain);
-  --easy-table-footer-font-size: 16px;
-  --easy-table-footer-padding: 0px 10px;
-  --easy-table-footer-height: 50px;
-
-  --easy-table-rows-per-page-selector-width: 60px;
-  --easy-table-rows-per-page-selector-option-padding: 10px;
-  --easy-table-rows-per-page-selector-z-index: 1;
-
-
-  --easy-table-scrollbar-track-color: #2d3a4f;
-  --easy-table-scrollbar-color: #2d3a4f;
-  --easy-table-scrollbar-thumb-color: #4c5d7a;;
-  --easy-table-scrollbar-corner-color: #2d3a4f;
-
-  --easy-table-loading-mask-background-color: #2d3a4f;
-}
 </style>
 <style scoped>
 
