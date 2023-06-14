@@ -48,7 +48,7 @@ export default {
         try{
                 url = new URL(i.image);
             }catch{
-                url = new URL('storage/' + i.image, import.meta.env.VITE_VUE_APP_API_URL);
+                url = new URL('files/' + i.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
             }
         i.src = url;
         return i;
