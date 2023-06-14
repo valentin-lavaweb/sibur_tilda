@@ -28,14 +28,14 @@ export default {
                 let url = new URL(this.item.image);
                 return url;
             }catch{
-                let url = new URL('storage/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                let url = new URL('files/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
                 return url;
             }
         }else{
             if(this.item.gender){
-                return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('files/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
             }else{
-                return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('files/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
             }
             
         }

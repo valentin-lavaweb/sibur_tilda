@@ -225,7 +225,7 @@ export default {
                 let url = new URL(item.image);
                 return url;
             }catch{
-                let url = new URL('storage/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                let url = new URL('files/' + item.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
                 return url;
             }
         
