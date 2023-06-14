@@ -9,7 +9,7 @@ export default {
   },
   data() {
     return{
-      editItem: this.item,
+      editItem: Object.assign({}, this.item)
     }
   },
   components:{
@@ -68,9 +68,9 @@ export default {
             <h2>Фото</h2>
             <div class="photoDownlouad-box">            
                 <div class="input__wrapper">
-                  <input name="file" type="file" id="input__file" class="input input__file" multiple="false"
+                  <input name="file" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" multiple="false"
                     @change="updateImage($event)">
-                  <label for="input__file" class="input__file-button">
+                  <label :for="`input_edit_${editItem.id}`" class="input__file-button">
                       <span class="input__file-icon-wrapper">
                         <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
                       </span>

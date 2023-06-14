@@ -378,9 +378,9 @@ export default {
       <template #item-image="item">
         <div class="photoDownlouad-box">            
           <div class="input__wrapper">
-            <input name="file" type="file" id="input__file" class="input input__file" multiple="false"
+            <input name="file" type="file" :id="`input_img_${item.id}`" class="input input__file" multiple="false"
               @change="updateImage(item, $event)">
-            <label for="input__file" class="input__file-button">
+            <label :for="`input_img_${item.id}`" class="input__file-button">
                 <span class="input__file-icon-wrapper">
                   <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
                 </span>
