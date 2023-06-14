@@ -172,6 +172,11 @@ export default {
   overflow: hidden;
   cursor: pointer;
 }
+.item-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .item-img:hover{
   filter: brightness(0.5);
 }

@@ -61,7 +61,8 @@ export default {
 <template >
       <div class="container">
 
-        <div class="block-content">
+        <div class="Main_block-content">
+          <div class="block-content">
           <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
           <div class="content">
@@ -92,6 +93,7 @@ export default {
           <div class="content-btn">
             <button class="btn" @click="$emit('cancel')">Отменить</button>
             <button class="btn" @click="endEdit">Завершить</button>
+          </div>
           </div>
         </div>
 

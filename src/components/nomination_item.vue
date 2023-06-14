@@ -11,6 +11,7 @@ export default {
 
 <template>
     <div class="nomination-item">
+      <div class="item-content">
         <h3 class="subTitle">
             {{ item.nomination }}
         </h3>
@@ -23,20 +24,25 @@ export default {
             </span>
             {{ item.authors }}
         </span>  
+      </div>
     </div>
 </template>
 
 <style scoped>
 .nomination-item{
   width: 545px;
-  height: fit-content;
-  min-height: 240px;
+  height: 240px;
   background-color: rgba(246, 246, 246, 1);
   border: 1px solid rgba(0, 140, 149, 0.2);
   border-radius: 10px;
   padding: 25px 15px;
   margin: 0 0 30px 0;
   justify-content: flex-start;
+}
+.item-content{
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 .subTitle{
   width: 100%;
