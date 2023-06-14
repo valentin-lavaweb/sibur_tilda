@@ -19,7 +19,7 @@ export default defineConfig({
 		//global: "globalThis",
 	},
   build: {
-    sourcemap: true,
+    sourcemap: false,
     //outDir: '../game.com',
     //emptyOutDir: true,
     //publicDir : './public',
