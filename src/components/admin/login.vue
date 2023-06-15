@@ -19,10 +19,11 @@ export default {
         try{
             await this.interaction.login(this.login, this.password);
             this.$router.push({name: 'command_awards_table'});
+            this.$toast.success("Добро пожаловать");
         }
         catch(e){
             console.error(e);
-            return alert(e.message);
+            return this.$toast.error("Введеные данные не верны");
         }
     }
   },
@@ -150,6 +151,9 @@ button{
 }
 button:hover{
     background-color: var(--nipigasColorMain-hover);
+}
+button:active{
+    background-color: var(--nipigasColorMain);
 }
 
 

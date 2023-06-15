@@ -111,10 +111,14 @@ export default {
             <div class="content-block">
                 <nav>
                     <div class="logo" @click="checkAuth">
-                        <img src="/img/logo.svg" alt="logo" />
+                        <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                            <img src="/img/logo.svg" alt="logo" />
+                        </RouterLink>
                         <div class="logo-text">
-                            энергия<br>
-                            признания
+                            <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                                энергия<br>
+                                признания
+                            </RouterLink>
                         </div>
                     </div>
                     <div class="login" @click="interaction.logout(), $router.push({ name: 'admin_page' })">
@@ -279,6 +283,46 @@ nav {
     height: 100px;
 }
 
+a:active {
+    color: var(--nipigasColorAdditional);
+}
+
+a:visited {
+    color: var(--nipigasColorMain);
+}
+
+.router-link-active:visited {
+    color: var(--nipigasColorAdditional);
+}
+
+a {
+    color: var(--nipigasColorMain);
+    font-weight: 700;
+}
+
+.router-link {
+    color: var(--nipigasColorMain);
+
+}
+
+a.active {
+    color: var(--nipigasColorAdditional);
+}
+
+.router-link-active {
+    color: var(--nipigasColorAdditional);
+}
+
+.hover-link a {
+    text-decoration: underline;
+}
+.logo a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .logo {
     flex-direction: row;
 }

@@ -557,6 +557,7 @@ export default {
 }
 .changePage-arrow.disactive{
     filter: grayscale(1);
+    cursor: auto;
 }
 
 
@@ -596,8 +597,8 @@ export default {
   color: var(--white);
 }
 .year{
-  margin: 0 0 0 40px;
-  width: 100px;
+  margin: 0 0 0 30px;
+  width: 120px;
   height: 30px;
   font-weight: 500;
   border-radius: 5px;
