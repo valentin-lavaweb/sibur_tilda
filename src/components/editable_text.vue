@@ -68,7 +68,7 @@ export default {
 
           pos.start = pos.current = pos.end = {x:e.clientX, y:e.clientY};
 
-          editor.style.cursor = 'grabbing';
+          // editor.style.cursor = 'grabbing';
           editor.style.userSelect = 'none';
 
           editor.setPointerCapture(e.pointerId);
@@ -89,7 +89,7 @@ export default {
               editor.removeEventListener('pointermove', movelistener);
               editor.removeEventListener('pointerup', uplistener);
 
-              editor.style.cursor = 'auto';
+              // editor.style.cursor = 'auto';
               editor.style.userSelect = 'all';
 
           }
@@ -204,6 +204,7 @@ textarea {
   background-color: rgb(236, 236, 236);
   color: var(--nipigasColorMain);
   font-weight: 600;
+  cursor: move;
 }
 
 .btn-save {}
