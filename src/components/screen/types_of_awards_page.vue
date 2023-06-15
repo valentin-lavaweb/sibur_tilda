@@ -66,14 +66,13 @@ export default {
       <span class="text description_title text-animate-gsap">
         <editable_text dictionary_key="awards_desc"/>
       </span>
-      <video 
+      <!-- <video 
         class="videoBlock video-animate-gsap" 
         src="/video/video.mp4"
         poster="https://static.tildacdn.com/tild3264-6339-4339-a463-323162643665/photo.jpg"
         controls
       >
-
-      </video>
+      </video> -->
       <h2 class="subTitle text-animate-gsap">
         <editable_text dictionary_key="department_title"/>
       </h2>
@@ -138,7 +137,7 @@ export default {
 .wrapper-block{
    width: 1160px;
    height: fit-content;
-   margin: 130px 0 0 0;
+   margin: 230px 0 0 0;
 }
 
 

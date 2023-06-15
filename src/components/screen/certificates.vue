@@ -96,6 +96,9 @@ export default {
                 <span class="text text-text-animate-gsap">
                     <editable_text dictionary_key="frame_desc"/>
                 </span>
+                <div class="before-text">
+                    *Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.
+                </div>
             </div>
         </div>
     </div>
@@ -140,20 +143,10 @@ export default {
     border-radius: 10px;
     padding: 0 30px;
 }
-.certificates-block:nth-child(2)::before{
-    /* content: "*Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.";  */
-    content: "Надо сделать примечание через html чтобы редактировалось"; 
-    width: 100%;
-    padding: 0 30px;
-    font-size: 12px;
-    color: var(--textColorBlack);
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    transform: translateY(60px);
-    text-align: center;
-}
 
+.before-text{
+    content: "*Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.";
+}
 .titleBlock{
     font-size: 36px;
     font-weight: 600;
@@ -211,13 +204,13 @@ export default {
         padding: 1.5vw;
         justify-content: flex-start;
     }
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(5vw);
         padding: 0 1.5vw;
     }
 }
 @media (max-width: 1200px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(8vw);
         padding: 0 1.5vw;
     }
@@ -241,7 +234,7 @@ export default {
     .certificates-block:nth-child(1){
         margin: 0 0 50px 0;
     }
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(50px);
         padding: 0 20px;
     }
@@ -253,7 +246,7 @@ export default {
 
 }
 @media (max-width: 640px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(70px);
     }
     .title {
@@ -264,7 +257,7 @@ export default {
     }
 }
 @media (max-width: 480px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(100px);
     }
     .wrapper-block{
