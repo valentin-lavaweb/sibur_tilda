@@ -258,6 +258,24 @@ export default {
         </transition>
       </Teleport>
 
+
+
+
+      <div class="control-panel">
+        <button class="btn">
+            добавить записаь
+        </button>
+        <button class="btn">
+            добавить несколько записей
+        </button>
+      </div>
+
+
+
+
+
+
+
     <Vue3EasyDataTable 
       :search-value="searchValue"
       :headers="headers" 
