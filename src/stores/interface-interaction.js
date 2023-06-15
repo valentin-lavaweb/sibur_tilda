@@ -62,7 +62,8 @@ export const useGameStore = defineStore("interface", {
 
 
 
-    }
+    },
+    dictionary: null
 
 
   }),
@@ -151,6 +152,16 @@ export const useGameStore = defineStore("interface", {
     async loadImages(){
       let images = await this.api.getGallery();
       this.images = images.data.data;
+    },
+
+    async loadDictionary(){
+      let res = await this.api.getDictionary();
+      let dictionary = res.data.data;
+      let result = {};
+      for(let item of dictionary){
+        result[item.key] = item.text;
+      }
+      this.dictionary = result;
     },
 
 
