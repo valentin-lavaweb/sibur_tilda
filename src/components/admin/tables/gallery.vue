@@ -197,6 +197,7 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
+        if(!updItem) return;
         this.editItem(updItem);
       }
       this.editedItem = item;
@@ -206,6 +207,7 @@ export default {
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
+        if(!newItem) return;
         this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
