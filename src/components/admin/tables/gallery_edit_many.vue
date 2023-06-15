@@ -94,7 +94,7 @@ export default {
             <h2>Фото</h2>
             <div class="photoDownlouad-box">            
                 <div class="input__wrapper">
-                  <input name="file" type="file" id="input_edit_many" class="input input__file" :multiple="true"
+                  <input name="file" accept="image/*" type="file" id="input_edit_many" class="input input__file" :multiple="true"
                     @change="updateImages($event)">
                   <label for="input_edit_many" class="input__file-button">
                       <span class="input__file-icon-wrapper">
