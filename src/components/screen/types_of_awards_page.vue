@@ -90,7 +90,7 @@ export default {
           <span class="text text-animate-gsap">
             <editable_text dictionary_key="command_desc"/>
           </span>
-          <span class="text nipigas text-animate-gsap"
+          <span class="text nipigas text-animate-gsap nominations"
           v-for="nomination in availableNominations"
           :key="nomination"
           >
@@ -140,6 +140,10 @@ export default {
    margin: 200px 0 0 0;
 }
 
+
+.nominations:last-child:after{
+  content: "new";
+}
 
 
 .title{
