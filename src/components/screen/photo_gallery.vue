@@ -51,6 +51,16 @@ export default {
                 url = new URL('files/' + i.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
             }
         i.src = url;
+
+        try{
+                url = new URL(i.image);
+            }catch{
+                url = new URL('files/' + i.image, import.meta.env.VITE_VUE_APP_API_URL);
+            }
+
+
+
+        i.originalSrc = url;
         return i;
       })
     }

@@ -47,9 +47,9 @@ export default {
             }
         }else if(this.editItem.image === null){
             if (this.editItem.gender) {
-                return new URL('files/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
             } else {
-                return new URL('files/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
             }
         }
         else{
