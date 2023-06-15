@@ -195,6 +195,7 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 5px;
+  font-family: "Dinpro", sans-serif;
   color: var(--textColorBlack);
   resize: both;
   background-color: white;
