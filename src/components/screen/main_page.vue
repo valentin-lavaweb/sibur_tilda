@@ -64,7 +64,6 @@ export default {
         </span>
         <span class="pinata text-animate-gsap">
           <editable_text dictionary_key="main_subdesc"/>
-          Сделаем успех видимым для каждого!
         </span>
       </div>
       <div class="img-block img-animate-gsap">
