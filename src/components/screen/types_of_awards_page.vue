@@ -119,6 +119,70 @@ export default {
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
           </h3>
+          <div class="awards-container">
+            <div class="block-awards text-animate-gsap">
+              <div class="awards-title">
+                <span>
+                  <img src="/img/degree_left.svg" alt="degree">
+                </span>
+                1
+                <span>
+                  <img src="/img/degree_right.svg" alt="degree">
+                </span>
+              </div>
+              <div class="awards-text">
+                <b>Степень 1.</b><editable_text dictionary_key="individual_desc_grade_1"/>
+              </div>
+            </div>
+            <div class="block-awards text-animate-gsap">
+              <div class="awards-title">
+                <span>
+                  <img src="/img/degree_left.svg" alt="degree">
+                </span>
+                  2
+                <span>
+                  <img src="/img/degree_right.svg" alt="degree">
+                </span>
+              </div>
+              <div class="awards-text">
+                <b>Степень 2.</b><editable_text dictionary_key="individual_desc_grade_2"/>
+              </div>
+            </div>
+            <div class="block-awards text-animate-gsap">
+              <div class="awards-title">
+                <span>
+                  <img src="/img/degree_left.svg" alt="degree">
+                </span>
+                  3
+                <span>
+                  <img src="/img/degree_right.svg" alt="degree">
+                </span>
+              </div>
+              <div class="awards-text">
+                <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
+              </div>
+            </div>
+          </div>
+          <h3 class="miniTitle mar-30 text-animate-gsap">
+            <editable_text dictionary_key="command_title"/>
+          </h3>
+          <div class="awards-container column">
+            <span class="text centerline text-animate-gsap">
+              <editable_text dictionary_key="command_desc"/>
+            </span>
+            <span class="text nipigasAprivel text-animate-gsap nominations"
+              v-for="nomination in availableNominations"
+              :key="nomination"
+              >
+              <span class="degree">
+                <img src="/img/degree_left.svg" alt="degree">
+              </span>
+               «{{nomination}}»
+              <span class="degree">
+                <img src="/img/degree_right.svg" alt="degree">
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -150,6 +214,21 @@ export default {
   color: var(--textColorBlack);
   text-align: center;
 }
+.text-block span.text.nominations.nipigasAprivel{
+  width: fit-content;
+  margin: 0 0 35px 0;
+  color: var(--nipigasColorAdditional);
+  font-size: 20px;
+  font-weight: 700;
+  align-items: center;
+}
+.text-block span.degree{
+  width: fit-content;
+  margin: 0 10px;
+}
+.nipigasAprivel span img{
+  width: 20px;
+}
 .subTitle{
   font-size: 36px;
   font-weight: 700;
@@ -163,6 +242,14 @@ export default {
   font-size: 24px;
   font-weight: 700;
   color: var(--nipigasColorMain);
+}
+.mar-30{
+  margin: 30px 0 0 0;
+}
+.text-block span.text.centerline{
+  width: 100%;
+  text-align: center;
+  margin: 0 0 40px 0;
 }
 .nipigas{
   font-weight: 700;
@@ -182,21 +269,11 @@ export default {
 
 
 .text-container{
-  width: 840px;
+  width: 100%;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 0 0 225px 0;
-}
-.text-block:first-child{
-  width: calc(50% - 60px);
-  align-items: flex-start;
-  margin: 0 30px 0 0;
-}
-.text-block:last-child{
-  width: calc(50% - 60px);
-  align-items: flex-start;
-  margin: 0 0 0 30px;
+  margin: 10px 0 225px 0;
 }
 .text-block h3:first-child{
   margin: 0 0 20px 0;
@@ -262,6 +339,40 @@ b{
 
 
 
+.awards-container{
+  width: 100%;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 20px 0 0 0;
+}
+.awards-container.column{
+  flex-direction: column;
+  margin: 16px 0 0 0;
+  justify-content: center;
+  align-items: center;
+}
+.block-awards{
+  width: 30%;
+}
+.awards-title{
+  flex-direction: row;
+  color: var(--nipigasColorAdditional);
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+.awards-title span{
+    width: 20px;
+    margin: 0 5px;
+}
+
+.awards-text{
+  display: block;
+  color: var(--textColorBlack);
+  text-align: center;
+}
+
 
 
 
@@ -319,8 +430,17 @@ b{
   .subTitle, .miniTitle{
     font-size: 1.8vw;
   }
-  .text{
+  .text, .awards-text{
     font-size: 1vw;
+  }
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 1.2vw;
+  }
+  .awards-title{
+    font-size: 1.6vw;
+  }
+  .awards-title span, .nipigasAprivel span img{
+    width: 1vw;
   }
 }
 @media (max-width: 1024px) {
@@ -339,16 +459,24 @@ b{
   .subTitle, .miniTitle{
     font-size: 32px;
   }
-  .text{
+  .text, .awards-text{
     font-size: 16px;
   }
-  .text-block:first-child{
-    width: calc(50% - 30px);
-    margin: 0 15px 0 0;
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 20px;
   }
-  .text-block:last-child{
-      width: calc(50% - 30px);
-      margin: 0 0 0 15px;
+  .awards-title{
+    font-size: 24px;
+  }
+  .awards-title span, .nipigasAprivel span img{
+    width: 16px;
+  }
+  .awards-container{
+    flex-direction: column;
+  }
+  .block-awards{
+    width: 100%;
+    margin: 0 0 40px 0;
   }
 }
 @media (max-width: 980px) {
@@ -370,8 +498,8 @@ b{
     width: 100%;
     margin: 0;
   }
-  .text {
-    text-align: left;
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 15px;
   }
 }
 @media (max-width: 480px) {
@@ -384,17 +512,31 @@ b{
   .title{
     font-size: 32px;
   }
-  .subTitle, .miniTitle{
-    font-size: 24px;
+  .subTitle{
+    font-size: 20px;
+  } 
+  .miniTitle{
+    font-size: 18px;
   }
   .text{
     font-size: 16px;
+  }
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 3.1vw;
+  }
+  .nipigasAprivel span img{
+    width: 3.3vw;
   }
 }
 @media (max-width: 420px) {
 
 }
-@media (max-width: 380px) {
-
+@media (max-width: 340px) {
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 3.0vw;
+  }
+  .nipigasAprivel span img{
+    width: 3.0vw;
+  }
 }
 </style>
