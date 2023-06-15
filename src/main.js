@@ -54,6 +54,6 @@ const store = useGameStore();
 
 
 
-// store.login();
+store.getAuthAdmin().catch(e=>console.info("Не авторизован"));
 
 app.mount("#app");
