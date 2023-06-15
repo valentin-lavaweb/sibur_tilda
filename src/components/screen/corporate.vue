@@ -134,7 +134,7 @@ export default {
                 return [];
             }
         },
-        set(value){
+        set(issuers){
             // this.$router.replace({query:{...this.$route.query, issuer: value}})
             let string = issuers.length > 0 ? issuers.join(',') : undefined;
             this.$router.replace({query:{...this.$route.query, issuers: string}})
