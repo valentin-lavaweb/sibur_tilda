@@ -55,6 +55,15 @@ export default {
 
         this.awardsList = awards
         this.searching = false;
+    },
+    changePage(button){
+        if (button.type === 'button' && !button.active) this.page = button.page;
+    },
+    prevPage(){
+        this.page = Math.max(1, this.page - 1);
+    },
+    nextPage(){
+        this.page = Math.min(this.meta?.last_page, this.page + 1);
     }
 
   },
@@ -177,17 +186,148 @@ export default {
     },
 
 
+
+
+
+    paginationButtons() {
+            const totalVisible = 7;
+
+            const meta = this.meta;
+
+            if(!meta) return [];
+
+            const paginationItems = [];
+            if (meta.last_page <= totalVisible) {
+                // x,x,x,x
+                for (let i = 1; i <= meta.last_page; i += 1) {
+                    paginationItems.push({
+                        type: 'button',
+                        page: i,
+                        active: i === meta.current_page,
+                        activePrev: (i + 1) === meta.current_page,
+                    });
+                }
+            } else if ([1, 2, meta.last_page, meta.last_page - 1].includes(meta.current_page)) {
+                // x,x,x,...,x,x,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i <= 3) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: i,
+                            active: i === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 4) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else {
+                        const page = meta.last_page - (totalVisible - i);
+                        paginationItems.push({
+                            type: 'button',
+                            page,
+                            active: page === meta.current_page,
+                            activePrev: (page + 1) === meta.current_page,
+                        });
+                    }
+                }
+            } else if ([3, 4].includes(meta.current_page)) {
+                // x,x,x,x,x,...,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i <= 5) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: i,
+                            active: i === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 6) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else {
+                        paginationItems.push({
+                            type: 'button',
+                            page: meta.last_page,
+                            active: meta.last_page === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    }
+                }
+            } else if ([meta.last_page - 2, meta.last_page - 3].includes(meta.current_page)) {
+                // x,...,x,x,x,x,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i === 1) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: 1,
+                            active: meta.current_page === 1,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 2) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else {
+                        const page = meta.last_page - (totalVisible - i);
+                        paginationItems.push({
+                            type: 'button',
+                            page,
+                            active: page === meta.current_page,
+                            activePrev: (page + 1) === meta.current_page,
+                        });
+                    }
+                }
+            } else {
+                // x,...,x,x,x,...,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i === 1) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: 1,
+                            active: meta.current_page === 1,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 2 || i === 6) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else if (i === 7) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: meta.last_page,
+                            active: meta.last_page === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else {
+                        const diff = 4 - i;
+                        const page = meta.current_page - diff;
+                        paginationItems.push({
+                            type: 'button',
+                            page,
+                            active: page === meta.current_page,
+                            activePrev: (page + 1) === meta.current_page,
+                        });
+                    }
+                }
+            }
+            return paginationItems;
+        }
+
+
   },
   watch:{
     queryFilter(){
         if(!this.searching){
+            this.page = 1;
             this.debouncedUpdateAwardsList();
         }
     },
     page(){
-        this.debouncedUpdateAwardsList();
+        this.updateAwardsList();
     },
     thisSection(){
+        this.page = 1;
         this.updateAwardsList();
     }
   },
@@ -336,17 +476,28 @@ export default {
                 />
             </transition-group>
         </div>
-        <div class="block-changePage">
-                <div class="changePage-arrow left">
+        <div class="block-changePage" v-if="meta">
+                <div class="changePage-arrow left" @click="prevPage" :class="{disactive: this.page == 1}">
                     <img src="/img/arrow_page.svg" alt="arrow">
                 </div>
                 <div class="changePage-block">
-                    <div class="changePage_page" v-for="numberPage in 5"
-                    :key="numberPage.id">
-                        {{ numberPage }}
+                    <div class="changePage_page"                   
+
+
+                    v-for="(item, i) in paginationButtons"
+                    :key="i"
+                    :class="{
+                      button: item.type === 'button',
+                      active: item.type === 'button' && item.active,
+                      'active-prev': item.type === 'button' && item.activePrev,
+                      omission: item.type === 'omission',
+                    }"
+                    @click="changePage(item)"
+                    >
+                         {{ item.type === 'button' ? item.page : '...' }}
                     </div>
                 </div>
-                <div class="changePage-arrow right">
+                <div class="changePage-arrow right" @click="nextPage" :class="{disactive: this.page == this.meta.last_page}">
                     <img src="/img/arrow_page.svg" alt="arrow">
                 </div>
             </div>
@@ -379,6 +530,10 @@ export default {
     transition: all 0.25s ease;
 }
 .changePage_page:hover{
+    background-color: rgb(236, 236, 236);
+    color: var(--white);
+}
+.changePage_page.active{
     background-color: var(--nipigasColorMain);
     color: var(--white);
 }
