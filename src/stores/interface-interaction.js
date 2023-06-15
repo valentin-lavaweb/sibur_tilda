@@ -63,7 +63,9 @@ export const useGameStore = defineStore("interface", {
 
 
     },
-    dictionary: null
+    dictionary: null,
+
+    focusedEditPopup: null,
 
 
   }),

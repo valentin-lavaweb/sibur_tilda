@@ -15,6 +15,7 @@ export default {
       isEdit: false,
       editLeft: 0,
       editTop: 0,
+      id: Symbol("editable_popup_id")
     }
   },
   components: {
@@ -133,7 +134,7 @@ export default {
   </div>
 
   <Teleport to="body">
-    <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px' }" v-if="isEdit">
+    <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }" @click="interaction.focusedEditPopup = id" v-if="isEdit" >
       <div class="edit-header" ref="editor">
         Нажмите чтобы сохранить
         <button class="btn-save" title="Сохранить" @click="save()">
