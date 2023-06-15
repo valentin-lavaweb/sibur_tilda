@@ -184,6 +184,9 @@ export default {
             this.debouncedUpdateAwardsList();
         }
     },
+    page(){
+        this.debouncedUpdateAwardsList();
+    },
     thisSection(){
         this.updateAwardsList();
     }
