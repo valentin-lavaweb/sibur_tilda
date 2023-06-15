@@ -59,7 +59,7 @@ export default {
             <img src="/img/arrow.svg" alt="arrow"/>
         </div>
         <div class="slider">
-            <img :src="selectedSlide.src" alt="img"/>
+            <img :src="selectedSlide.originalSrc" alt="img"/>
         </div>
         <div class="slider-arrow" @click="nextSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
