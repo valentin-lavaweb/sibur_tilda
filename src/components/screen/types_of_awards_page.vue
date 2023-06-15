@@ -387,16 +387,16 @@ b{
 
 
 .nominations:last-child:after{
-  content: "new";
+  content: "Новая номинация";
   position: absolute;
+  width: 100%;
   top: 0;
-  right: 0;
-  color: var(--nipigasColorAdditional);
+  color: var(--nipigasColorMain);
   font-size: 10px;
   font-weight: 600;
-  text-transform: uppercase;
-  transform: translateX(100%);
-  padding: 0 0 0 5px;
+  transform: translateY(-30%);
+  padding: 0 0 0 0;
+  text-align: center;
 }
 
 
