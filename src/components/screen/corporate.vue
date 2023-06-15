@@ -557,6 +557,7 @@ export default {
 }
 .changePage-arrow.disactive{
     filter: grayscale(1);
+    cursor: auto;
 }
 
 
