@@ -105,7 +105,7 @@ export default {
           :key="img.id"
           @click="interaction.openSlide(img.id)"
           >
-          <img :src="img.src" alt="img"/>
+          <img :src="img.src" alt="img" loading="lazy"/>
         </div>
       </div>
     </div>

@@ -97,7 +97,7 @@ export default {
                     <editable_text dictionary_key="frame_desc"/>
                 </span>
                 <div class="before-text">
-                    *Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.
+                    <editable_text dictionary_key="frame_note"/>
                 </div>
             </div>
         </div>
