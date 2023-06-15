@@ -50,7 +50,6 @@ export default {
 }
 
 
-
 .openPage-leave-active .header, .openPage-enter-from .header, .openPage-leave-to .header {
   transform: translateY(-100%) scale(0.9);
   opacity: 0;
@@ -116,5 +115,46 @@ export default {
 .wrapper{
   overflow: hidden;
 }
+
+
+
+
+/* .imgAnimation_Admin-enter-active{
+  transform: translateX(0px);
+  opacity: 1;
+  transition: all 0.25s ease;
+}
+.imgAnimation_Admin-leave-active{
+  transform: translateX(100%) scale(0.9);
+  opacity: 0;
+  transition: all 0.25s ease;
+} 
+.imgAnimation_Admin-enter-from{
+  transform: translateX(-100%) scale(0.9);
+  opacity: 0;
+  transition: all 0.25s ease;
+} 
+.imgAnimation_Admin-leave-to {
+  transform: translateX(-100%) scale(0.9);
+  opacity: 0;
+  transition: all 0.25s ease;
+} */
+
+.imgAnimation_Admin-item {
+  transition: all 0.5s ease;
+  display: flex;
+}
+
+.imgAnimation_Admin-enter-from,
+.imgAnimation_Admin-leave-to {
+  opacity: 0;
+  transform: translateX(-100%) scale(0.5);
+}
+
+.imgAnimation_Admin-leave-active {
+  position: absolute;
+}
+
+
 
 </style>

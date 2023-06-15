@@ -104,7 +104,7 @@ export default {
                   </label>
                 </div>
                 <div class="container_img-block">
-                  <transition-group name="nominationFade" appear >
+                  <transition-group name="imgAnimation_Admin" appear >
                     <div class="img-block"
                     v-for="img of imagesToLoad"
                     :key="img.idx"
@@ -441,14 +441,24 @@ img {
     width: 100%;
     height: fit-content;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: wrap;
+    overflow-x: hidden;
 }
 .img-block{
-    margin: 0 10px 0 0;
+    width: 140px;
+    height: 140px;
+    margin: 0 5px 10px 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
 }
-
+.img-block img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
 
 
 
