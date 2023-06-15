@@ -5,6 +5,7 @@ import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 
 import TextEdit from '../cells/textEdit.vue';
 import gallery_edit from './gallery_edit.vue';
+import gallery_edit_many from './gallery_edit_many.vue';
 // import CheckBoxEdit from '../cells/checkBoxEdit.vue';
 
 
@@ -33,12 +34,14 @@ export default {
       headers: headers,
       editedItem: null,
       onEditDone: null,
+      manyUpload: false
     }
   },
   components: {
     Vue3EasyDataTable,
     TextEdit,
-    gallery_edit
+    gallery_edit,
+    gallery_edit_many
   },
   methods: {
     async createItem(item) {
@@ -213,6 +216,9 @@ export default {
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
 
     },
+    async openManyUpload() {
+      this.manyUpload = true;
+    },
   },
   created() {
     if(!this.interaction.images){
@@ -252,9 +258,15 @@ export default {
 <template>
   <div class="gallery_table">
 
-    <Teleport to="body" >
+      <Teleport to="body" >
         <transition name="openPage" mode="out-in" appear>
           <gallery_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem" ref="editForm"/>
+        </transition>
+      </Teleport>
+
+      <Teleport to="body" >
+        <transition name="openPage" mode="out-in" appear>
+          <gallery_edit_many :initialYear="(new Date()).getFullYear()" :createItem="createItem" @cancel="manyUpload = false" v-if="manyUpload"/>
         </transition>
       </Teleport>
 
@@ -262,10 +274,10 @@ export default {
 
 
       <div class="control-panel">
-        <button class="btn">
-            добавить записаь
+        <button class="btn" @click="duplicateItem({year: (new Date()).getFullYear()})">
+            добавить запись
         </button>
-        <button class="btn">
+        <button class="btn" @click="openManyUpload()">
             добавить несколько записей
         </button>
       </div>

@@ -182,6 +182,11 @@ export default {
       this.$refs.editForm?.setItem(item)
 
     },
+
+
+
+
+
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
@@ -228,11 +233,8 @@ export default {
       </Teleport>
 
       <div class="control-panel">
-        <button class="btn">
-            добавить записаь
-        </button>
-        <button class="btn">
-            добавить несколько записей
+        <button class="btn" @click="duplicateItem({nomination: null, description: null, authors: null, year: (new Date()).getFullYear() })">
+            добавить запись
         </button>
       </div>
 

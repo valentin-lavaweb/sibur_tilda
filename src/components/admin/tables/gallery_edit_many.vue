@@ -3,52 +3,78 @@ import TextEdit from '../cells/textEdit.vue';
 
 export default {
   name: "gallery_edit_many",
-  emits:['done', 'cancel'],
+  emits:['cancel'],
   props:{
-    item: Object,
+    initialYear: Number,
+    createItem: Function
   },
   data() {
     return{
-      editItem: Object.assign({}, this.item)
+      editItem: {year: this.initialYear},
+      images: [],
+      loading: false
     }
   },
   components:{
     TextEdit
   },
   methods:{
+    async startLoad(){
+      this.loading = true;
+
+      let allImages = this.images;
+
+      while(allImages.length > 0 && this.loading){
+        let image = allImages[0];
+
+        let ok = await this.createItem({...this.editItem, image});
+        if(!ok){
+          break;
+        }
+        allImages.shift();
+      }
+
+
+      this.loading = false;
+
+    },
     endEdit(event){
       this.$emit('done', this.editItem);
     },
-    async updateImage(event) {
+    async updateImages(event) {
 
         let files = event.target.files || event.dataTransfer.files;
         if (!files.length){
-            this.editItem.image = null;
+            this.images = [];
         }else{
-            this.editItem.image = files[0];
+            this.images = [...files];
         }
     },
-    setItem(item){
-      this.editItem = Object.assign({}, item);
-    }
+    // setItem(item){
+    //   this.editItem = Object.assign({}, item);
+    // }
 
   },
   computed:{
-    imagePath(){
-        if(typeof this.editItem.image === 'string'){
-            try{
-                let url = new URL(this.editItem.image);
-                return url;
-            }catch{
-                let url = new URL('files/' + this.editItem.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
-                return url;
-            }
-        }else if(this.editItem.image === null){
-          return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
-        }
-        else{
-            return URL.createObjectURL(this.editItem.image);
-        }
+    imagesToLoad(){
+
+        return this.images.map(i => URL.createObjectURL(i));
+
+
+        // if(typeof this.editItem.image === 'string'){
+        //     try{
+        //         let url = new URL(this.editItem.image);
+        //         return url;
+        //     }catch{
+        //         let url = new URL('files/' + this.editItem.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
+        //         return url;
+        //     }
+        // }else if(this.editItem.image === null){
+        //   return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+        // }
+        // else{
+        //     return URL.createObjectURL(this.editItem.image);
+        // }
     }
 
   }
@@ -59,28 +85,30 @@ export default {
 
 
 <template >
-      <div class="container">
+      <div class="container" @click.self="$emit('cancel')">
 
         <div class="Main_block-content">
           <div class="block-content">
-          <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
           <div class="content">
             <h2>Фото</h2>
             <div class="photoDownlouad-box">            
                 <div class="input__wrapper">
-                  <input name="file" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" :multiple="true"
-                    @change="updateImage($event)">
-                  <label :for="`input_edit_${editItem.id}`" class="input__file-button">
+                  <input name="file" type="file" id="input_edit_many" class="input input__file" :multiple="true"
+                    @change="updateImages($event)">
+                  <label for="input_edit_many" class="input__file-button">
                       <span class="input__file-icon-wrapper">
                         <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
                       </span>
-                      <span class="input__file-button-text">Выберите файл</span>
+                      <span class="input__file-button-text">Выберите файлы</span>
                   </label>
                 </div>
                 <div class="container_img-block">
-                    <div class="img-block">
-                        <img :src="imagePath" :alt="editItem.name">
+                    <div class="img-block"
+                    v-for="src of imagesToLoad"
+                    :key="src"
+                    >
+                        <img :src="src">
                     </div>
                 </div>
             </div>
@@ -93,8 +121,8 @@ export default {
 
 
           <div class="content-btn">
-            <button class="btn" @click="$emit('cancel')">Отменить</button>
-            <button class="btn" @click="endEdit">Завершить</button>
+            <button class="btn" @click="$emit('cancel')" :class="{active: !loading}">Отменить</button>
+            <button class="btn" @click="startLoad" :class="{active: !loading}">Загрузить</button>
           </div>
           </div>
         </div>
@@ -232,6 +260,14 @@ button{
   font-size: 14px;
   font-weight: 600;
   transition: all 0.25s ease;
+
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+button.active{
+  pointer-events: all;
+  filter: none;
 }
 
 .btn:nth-child(1) {

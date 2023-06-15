@@ -318,13 +318,22 @@ export default {
         </transition>
       </Teleport>
 
-
       <div class="control-panel">
-        <button class="btn">
-            добавить записаь
-        </button>
-        <button class="btn">
-            добавить несколько записей
+        <button class="btn" @click="duplicateItem(
+          { 
+            name: null,
+            position: null,
+            company: null,
+            award: null,
+            grade: null,
+            issued: null,
+            gender: null,
+            image: null,
+            personal_award_section_id: availableSections[0]?.id,
+            year: (new Date()).getFullYear() 
+          }
+          )">
+            добавить запись
         </button>
       </div>
 

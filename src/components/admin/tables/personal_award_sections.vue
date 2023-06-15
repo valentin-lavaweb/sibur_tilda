@@ -230,12 +230,10 @@ export default {
 
 
       <div class="control-panel">
-        <button class="btn">
-            добавить записаь
+        <button class="btn" @click="duplicateItem({title: null, issuer_filter: null, company_filter: null, grade_filter: null})">
+            добавить запись
         </button>
-        <button class="btn">
-            добавить несколько записей
-        </button>
+
       </div>
 
 
