@@ -73,7 +73,7 @@ export default {
         controls
       >
       </video> -->
-      <h2 class="subTitle text-animate-gsap">
+      <h2 class="subTitle  m_top-60 text-animate-gsap">
         <editable_text dictionary_key="department_title"/>
       </h2>
       <span class="text description_subTitle text-animate-gsap">
@@ -113,13 +113,13 @@ export default {
             <editable_text dictionary_key="individual_desc"/>
           </span>
           <span class="text text-animate-gsap">
-            <editable_text dictionary_key="individual_desc_grade_1"/>
+            <b>Степень 1.</b><editable_text dictionary_key="individual_desc_grade_1"/>
           </span>
           <span class="text text-animate-gsap">
-            <editable_text dictionary_key="individual_desc_grade_2"/>
+            <b>Степень 2.</b><editable_text dictionary_key="individual_desc_grade_2"/>
           </span>
           <span class="text text-animate-gsap">
-            <editable_text dictionary_key="individual_desc_grade_3"/>
+            <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
         </div>
       </div>
@@ -137,7 +137,7 @@ export default {
 .wrapper-block{
    width: 1160px;
    height: fit-content;
-   margin: 230px 0 0 0;
+   margin: 200px 0 0 0;
 }
 
 
@@ -214,6 +214,20 @@ export default {
 }
 .text-block span.text{
   margin: 0 0 20px 0;
+  display: block;
+  word-wrap: break-word;
+  word-break: normal;
+  text-align: left;
+  
+}
+
+b{
+  width: fit-content;
+  word-wrap: break-word;
+  word-break: normal;
+  text-align: left;
+  color: var(--nipigasColorMain);
+  font-weight: 600;
 }
 
 .videoBlock{

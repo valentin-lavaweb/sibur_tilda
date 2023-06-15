@@ -239,7 +239,7 @@ export default {
             <div class="filter-selection" v-if="issuerFilterEnabled">
                 <select v-model="filterIssuers">
                         <option :value="undefined">
-                            --кем выдана--
+                            --Тип награды--
                         </option>
                         <option
                             v-for="issuer in availableIssuers"
@@ -251,7 +251,7 @@ export default {
             <div class="filter-selection" v-if="gradeFilterEnabled">
                 <select  v-model="filterGrade">
                         <option :value="undefined">
-                            --степень--
+                            --Степень--
                         </option>
                         <option
                             v-for="grade in availableGrades"
@@ -293,7 +293,9 @@ export default {
                 :item = "item"
                 />
             </transition-group>
-            
+            <div class="block-changePage">
+                
+            </div>
         </div>
     </div>
     <footer_comp/>

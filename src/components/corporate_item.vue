@@ -58,13 +58,16 @@ export default {
             {{ item.name }}
         </div>
         <div class="corporate-item_post tempelBlock">
-            <span>Должность: </span>{{ item.position }}
+            {{ item.position }}
         </div>
         <div class="corporate-item_filter tempelBlock">
             {{ item.company }}
         </div>
         <div class="corporate-item_reward tempelBlock">
-            <span>Награда: </span>{{ item.award }}
+            <span class="imgBlock"> 
+                <img src="/img/cup.svg" alt="cup">
+            </span>
+            {{ item.award }}
         </div>
         <div class="corporate-item_date tempelBlock" v-if="item.issued">
             <span>Выдана: </span>{{ item.issued }}
@@ -74,7 +77,7 @@ export default {
 
 <style scoped>
 .corporate-item{
-  width: calc(20% - 20px);
+  width: calc(25% - 20px);
   height: fit-content;
   min-height: 240px;
   color: var(--textColorBlack);
@@ -93,19 +96,46 @@ export default {
     color: var(--nipigasColorMain);
     font-size: 16px;
     font-weight: 700;
-    margin: 0 0 10px 0;
+    margin: 0 0 5px 0;
     text-align: center;
 }
 
 .tempelBlock{
-    width: 100%;
+    width: 90%;
+    font-size: 14px;
     display: block;
+    text-align: center;
 }
 .corporate-item_filter{
     font-weight: 600;
 }
+.corporate-item_post.tempelBlock{
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+.corporate-item_filter.tempelBlock{
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    margin: 0 0 10px 0;
+}
 .corporate-item_post span{
     font-weight: 600;
+}
+.corporate-item_reward.imgBlock{
+    display: block;
+}
+.imgBlock img{
+    width: 16px;
+    height: 16px;
+}
+.corporate-item_reward{
+    margin: 10px 0;
 }
 .corporate-item_reward span{
     font-weight: 600;
@@ -118,10 +148,10 @@ export default {
 
 @media (max-width: 1440px) {
     .corporate-item{
-        min-width: 212px;
+        min-width: 270px;
     }
 }
-@media (max-width: 580px) {
+@media (max-width: 725px) {
     .corporate-item{
         width: 100%;
     }

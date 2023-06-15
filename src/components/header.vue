@@ -60,6 +60,11 @@ export default {
                         Победители и лауреаты
                     </RouterLink>
                     <div class="header-hover-menu">
+                        <div class="hover-link">
+                            <RouterLink :to="{ name: 'team_track_winners' }" active-class="active">
+                                Победители командного трека
+                            </RouterLink>
+                        </div>
                         <div class="hover-link" v-for="section in personalSections" :key="section.id">
                             <RouterLink
                                 :to="{ name: 'personal_awards', params: { sectionId: section.id} }"

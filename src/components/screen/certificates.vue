@@ -145,7 +145,15 @@ export default {
 }
 
 .before-text{
-    content: "*Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.";
+    width: 100%;
+    padding: 0 30px;
+    font-size: 12px;
+    color: var(--textColorBlack);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    transform: translateY(60px);
+    text-align: center;
 }
 .titleBlock{
     font-size: 36px;
@@ -161,6 +169,7 @@ export default {
     background-color: var(--nipigasColorAdditional);
     border: none;
     padding: 10px;
+    border-radius: 5px;
     margin: 25px 0 20px 0;
     transition: all 0.25s ease;
     cursor: pointer;
