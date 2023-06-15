@@ -27,7 +27,7 @@ export default {
       while(allImages.length > 0 && this.loading){
         let image = allImages[0];
 
-        let ok = await this.createItem({...this.editItem, image});
+        let ok = await this.createItem({...this.editItem, image: image.img});
         if(!ok){
           break;
         }
@@ -47,7 +47,7 @@ export default {
         if (!files.length){
             this.images = [];
         }else{
-            this.images = [...files];
+            this.images = [...files].map((img, idx) => {return {img, idx}});
         }
     },
     // setItem(item){
@@ -58,7 +58,7 @@ export default {
   computed:{
     imagesToLoad(){
 
-        return this.images.map(i => URL.createObjectURL(i));
+        return this.images.map(i => {return {...i, src: URL.createObjectURL(i.img)}});
 
 
         // if(typeof this.editItem.image === 'string'){
@@ -104,12 +104,15 @@ export default {
                   </label>
                 </div>
                 <div class="container_img-block">
+                  <transition-group name="nominationFade" appear >
                     <div class="img-block"
-                    v-for="src of imagesToLoad"
-                    :key="src"
+                    v-for="img of imagesToLoad"
+                    :key="img.idx"
                     >
-                        <img :src="src">
+                        <img :src="img.src">
                     </div>
+                  </transition-group>
+                    
                 </div>
             </div>
           </div>
