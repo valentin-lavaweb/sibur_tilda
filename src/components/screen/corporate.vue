@@ -273,7 +273,7 @@ export default {
                         </option>
                 </select>
             </div> -->
-            <div class="filter-selection" v-if="gradeFilterEnabled">
+            <!-- <div class="filter-selection" v-if="gradeFilterEnabled">
                 <select  v-model="filterGrade">
                         <option :value="undefined">
                             --Степень--

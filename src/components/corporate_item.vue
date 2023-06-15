@@ -80,7 +80,7 @@ export default {
         <div class="corporate-item_date tempelBlock" v-if="item.issued">
             <span>Награда выдана: </span>{{ item.issued }}
         </div>
-        <div class="corporate-item_date tempelBlock">
+        <div class="corporate-item_date tempelBlock" v-if="!item.issued">
             {{ item.award }}
         </div>
     </div>
