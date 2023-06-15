@@ -57,7 +57,7 @@ export default {
     },
     close() {
       this.restoreText();
-      this.isEdit = !saved;
+      this.isEdit = false;
     },
     startEdit() {
       let buttonRect = this.$refs.button.getBoundingClientRect();
@@ -134,18 +134,25 @@ export default {
   </div>
 
   <Teleport to="body">
-    <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }" @click="interaction.focusedEditPopup = id" v-if="isEdit" >
-      <div class="edit-header" ref="editor">
-        Нажмите чтобы сохранить
-        <button class="btn-save" title="Сохранить" @click="save()">
-          <img src="/src/assets/icons/save.png" alt="Сохранить" class="save" />
-        </button>
-      </div>
-      <div class="edit-content">
-        <textarea v-model="editableText" />
-      </div>
-    </div>
 
+    <Transition name="openPage" mode="out-in">
+      <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }" @click="interaction.focusedEditPopup = id" v-if="isEdit" >
+        <div class="edit-header" ref="editor">
+          <div class="edit-left_block">
+            <button class="btn-save" title="Сохранить" @click="save()">
+            <img src="/src/assets/icons/save.png" alt="Сохранить" class="save" />
+          </button>
+          Нажмите чтобы сохранить
+          </div>
+          <button class="btn-close" title="закрыть" @click="close()">
+            <img src="/src/assets/icons/close.png" alt="закрыть" class="close" />
+          </button>
+        </div>
+        <div class="edit-content">
+          <textarea v-model="editableText" />
+        </div>
+      </div>
+    </Transition>
   </Teleport>
 
 
@@ -179,16 +186,11 @@ export default {
 }
 
 
-button {
-  width: 3vh;
-  cursor: pointer;
-}
-
 textarea {
   position: relative;
   display: flex;
   height: fit-content;
-  min-width: 300px;
+  min-width: 320px;
   min-height: 100px;
   width: 100%;
   height: 100%;
@@ -203,7 +205,7 @@ textarea {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 10px;
   width: 100%;
   height: 50px;
   background-color: rgb(236, 236, 236);
@@ -211,8 +213,98 @@ textarea {
   font-weight: 600;
   cursor: move;
 }
+.edit-left_block{
+  flex-direction: row;
+  color: var(--nipigasColorMain);
+  font-weight: 600;
+}
 
-.btn-save {}
+.btn-save {
+  margin: 0 5px 0 0;
+}
+.btn-save img{
+  z-index: 3;
+}
+.btn-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  transition: all 0.25s ease;
+}
+.btn-close:hover{
+  background-color: transparent;
+}
+.btn-close:hover::before{
+  width: 32px;
+  height: 32px;
+  background-color: rgb(223, 236, 248);
+}
+.btn-close::before {
+  content: "";
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  background-color: rgb(220, 220, 220);
+  transition: all 0.25s ease;
+  border-radius: 50%;
+}
+.btn-close img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.25s ease;
+}
+
+button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border-radius: 8px;
+  border: none;
+  border: 1px dashed var(--nipigasColorMain);
+  background-color: aliceblue;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+button img{
+  z-index: 2;
+}
+button:hover{
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+button:hover::before{
+  width: 26px;
+  height: 26px;
+  background-color: rgb(223, 236, 248);
+}
+button::before {
+  content: "";
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  background-color: rgb(220, 220, 220);
+  transition: all 0.25s ease;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+
+
+
+
+
+
 
 .edit-content {
   width: fit-content;
