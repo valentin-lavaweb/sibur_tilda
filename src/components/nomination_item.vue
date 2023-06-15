@@ -13,7 +13,13 @@ export default {
     <div class="nomination-item">
       <div class="item-content">
         <h3 class="subTitle">
-            {{ item.nomination }}
+          <span>
+            <img src="/img/degree_left.svg" alt="degree">
+          </span>  
+          {{ item.nomination }}
+          <span>
+            <img src="/img/degree_right.svg" alt="degree">
+          </span>  
         </h3>
         <span class="text">
           {{ item.description }}
@@ -33,31 +39,81 @@ export default {
   width: 545px;
   height: 240px;
   background-color: rgba(246, 246, 246, 1);
-  border: 1px solid rgba(0, 140, 149, 0.2);
+  border: 1px solid rgba(0, 140, 149, 0.0);
   border-radius: 10px;
   padding: 25px 15px;
   margin: 0 0 30px 0;
   justify-content: flex-start;
+  transition: all 0.25s ease;
 }
+
+.subTitle > span{
+  display: flex;
+}
+span img{
+  width: 20px;
+  transform-origin: bottom;
+  transition: all 0.25s ease;
+}
+.nomination-item:hover{
+  border: 1px solid rgba(252, 194, 23, 1);
+}
+.nomination-item:hover span:first-child img{
+  animation: wreathMove 3s ease infinite;
+}
+.nomination-item:hover span:last-child img{
+  animation: wreathMove2 3s ease infinite;
+}
+
+@keyframes wreathMove {
+  0% {
+    animation-timing-function: ease-out;
+  }
+  50% {
+      transform: rotate(-10deg);
+      animation-timing-function: ease-in;
+  }
+  100% {
+  }
+}
+@keyframes wreathMove2 {
+  0% {
+    animation-timing-function: ease-out;
+  }
+  50% {
+      transform: rotate(10deg);
+      animation-timing-function: ease-in;
+  }
+  100% {
+
+  }
+}
+
+
 .item-content{
   width: 100%;
   height: 100%;
+  justify-content: flex-start;
   overflow-y: auto;
 }
 .subTitle{
   width: 100%;
-  align-items: flex-start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 20px;
   font-weight: 700;
-  color: var(--nipigasColorMain);
+  color: var(--nipigasColorAdditional);
   margin: 0 0 25px 0;
 }
 .text{
   width: 100%;
-  align-items: flex-start;
+  text-align: center;
   font-size: 18px;
+  font-weight: 600;
   color: var(--nipigasColorMain);
   margin: 0 0 20px 0;
+  line-height: 110%;
 }
 .autorText{
   width: 100%;
@@ -65,6 +121,7 @@ export default {
   font-size: 16px;
   font-weight: 500;
   color: var(--textColorBlack);
+  text-align: center;
 }
 .autorBlock{
   font-size: 16px;

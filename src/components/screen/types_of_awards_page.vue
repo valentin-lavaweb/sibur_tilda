@@ -141,11 +141,6 @@ export default {
 }
 
 
-.nominations:last-child:after{
-  content: "new";
-}
-
-
 .title{
   font-size: 96px;
   font-weight: 700;
@@ -264,6 +259,44 @@ b{
     transform: translateX(-30px) rotate(10deg);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+.text-block span.text.nominations{
+  display: flex;
+  width: fit-content;
+}
+
+
+
+.nominations:last-child:after{
+  content: "new";
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--nipigasColorAdditional);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transform: translateX(100%);
+  padding: 0 0 0 5px;
+}
+
+
+
+
+
+
+
+
 
 
 
