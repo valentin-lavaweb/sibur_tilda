@@ -63,17 +63,25 @@ export default {
         <div class="corporate-item_filter tempelBlock">
             {{ item.company }}
         </div>
-        <div class="corporate-item_reward tempelBlock">
+        <div class="corporate-item_reward tempelBlock" v-if="item.issued">
             <span class="imgBlock"> 
-                <img src="/img/cup.svg" alt="cup">
+                <img src="/img/degree_left.svg" alt="cup">
             </span>
             {{ item.award }}
+            <span class="imgBlock"> 
+                <img src="/img/degree_right.svg" alt="cup">
+            </span>
         </div>
         <div class="corporate-item_date tempelBlock" v-if="item.grade">
-            <span>Степень: </span>{{ item.grade }}
+            <span class="degreeBlock">
+                {{ item.grade }}
+            </span>
         </div>
         <div class="corporate-item_date tempelBlock" v-if="item.issued">
-            <span>Выдана: </span>{{ item.issued }}
+            <span>Награда выдана: </span>{{ item.issued }}
+        </div>
+        <div class="corporate-item_date tempelBlock">
+            {{ item.award }}
         </div>
     </div>
 </template>
@@ -108,6 +116,7 @@ export default {
     font-size: 14px;
     display: block;
     text-align: center;
+    line-height: normal;
 }
 .corporate-item_filter{
     font-weight: 600;
@@ -131,14 +140,23 @@ export default {
     font-weight: 600;
 }
 .corporate-item_reward.imgBlock{
-    display: block;
+    display: flex;
 }
 .imgBlock img{
-    width: 16px;
-    height: 16px;
+    display: flex;
+    width: 24px;
+    height: 24px;
+    /* transform: translateY(2px); */
+    margin: 0 5px;
+}
+.corporate-item_reward.tempelBlock{
+    display: flex;
+    flex-direction: row;
 }
 .corporate-item_reward{
-    margin: 10px 0;
+    margin: 0 0 10px 0;
+    color: var(--nipigasColorAdditional);
+    font-weight: 700;
 }
 .corporate-item_reward span{
     font-weight: 600;
@@ -147,6 +165,27 @@ export default {
 .corporate-item_date span{
     font-weight: 600;
     color: var(--nipigasColorMain);
+}
+
+.corporate-item_date.tempelBlock{
+    display: flex;
+}
+.degreeBlock{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background: url(/img/degree.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 5px 0 0px 0;
+}
+.corporate-item_date span.degreeBlock{
+    color: var(--nipigasColorAdditional);
+    font-size: 16px;
+    font-weight: 800;
 }
 
 @media (max-width: 1440px) {
