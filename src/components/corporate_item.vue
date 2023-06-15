@@ -69,6 +69,9 @@ export default {
             </span>
             {{ item.award }}
         </div>
+        <div class="corporate-item_date tempelBlock" v-if="item.grade">
+            <span>Степень: </span>{{ item.grade }}
+        </div>
         <div class="corporate-item_date tempelBlock" v-if="item.issued">
             <span>Выдана: </span>{{ item.issued }}
         </div>
