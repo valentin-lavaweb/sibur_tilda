@@ -230,6 +230,17 @@ export default {
             {{issuer}}
             </button>
         </div>
+        <div class="years-container" v-if="gradeFilterEnabled">
+            <button class="year"
+            v-for="grade in availableGrades"
+            :value="grade"
+            :key="grade"
+
+            @click="filterGrade == grade ? filterGrade = undefined : filterGrade = grade"
+            :class="{active: filterGrade == grade}">
+            Степень {{grade}}
+            </button>
+        </div>
         <div class="filter_AND_search-block" v-if="companyFilterEnabled">
             <button class="filterButton" 
             :class="{active: filterHoverStatus}"
@@ -274,7 +285,7 @@ export default {
                             степень {{ grade }}
                         </option>
                 </select>
-            </div>
+            </div> -->
             <div class="filter-block" :class="{active: filterHoverStatus}">
                 <div class="filter-container_content">
                     <label class="custom-checkbox"
@@ -308,7 +319,7 @@ export default {
                 />
             </transition-group>
             <div class="block-changePage">
-                
+
             </div>
         </div>
     </div>
@@ -648,6 +659,9 @@ option{
     .filter-selection{
         margin: 0 30px;
     }
+    .filter_AND_search-block{
+        justify-content: space-between;
+    }
 }
 @media (max-width: 1024px) {
     .wrapper-block{
@@ -675,7 +689,7 @@ option{
         flex-direction: column;
         height: fit-content;
     }
-    .filter-selection{
+    .filter-selection, .search_panel{
         margin: 20px 0;
     }
     .years-container{
@@ -708,19 +722,19 @@ option{
         justify-content: space-between;
     }
     .year{
-        width: calc(50% - 2vw);
+        width: 100%
     }
     .year:nth-child(1){
-        margin: 0 2vw 10px 0;
+        margin: 0 0 10px 0;
     }
     .year:nth-child(2){
-        margin: 0 0 10px 2vw;
+        margin: 0 0 10px 0;
     }
     .year:nth-child(3){
-        margin: 0 2vw 10px 0;
+        margin: 0 0 10px 0;
     }
     .year:nth-child(4){
-        margin: 0 0 10px 2vw;
+        margin: 0 0 10px 0;
     }
 
     .year.name{
