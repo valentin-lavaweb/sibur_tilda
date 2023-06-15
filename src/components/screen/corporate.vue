@@ -212,6 +212,12 @@ export default {
         </h1>
         <div class="years-container">
             <button class="year"
+ 
+            @click="filterYear = undefined"
+            :class="{active: filterYear == undefined}">
+            Все
+            </button>
+            <button class="year"
             v-for="year in availableYears"
             :key="year"
 
@@ -222,6 +228,12 @@ export default {
         </div>
         <div class="years-container" v-if="issuerFilterEnabled">
             <button class="year"
+ 
+            @click="filterIssuers = []"
+            :class="{active: filterIssuers?.length == 0}">
+            Все
+            </button>
+            <button class="year"
             v-for="issuer in availableIssuers"
             :key="issuer"
 
@@ -231,6 +243,12 @@ export default {
             </button>
         </div>
         <div class="years-container" v-if="gradeFilterEnabled">
+            <button class="year"
+ 
+            @click="filterGrade = undefined"
+            :class="{active: filterGrade == undefined}">
+            Все
+            </button>
             <button class="year"
             v-for="grade in availableGrades"
             :value="grade"
