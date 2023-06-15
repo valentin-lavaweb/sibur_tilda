@@ -131,9 +131,12 @@ export default {
   <Teleport to="body">
     <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px' }" v-if="isEdit">
       <div class="edit-header" ref="editor">
-        Нажмите чтобы сохранить
         <button class="btn-save" title="Сохранить" @click="save()">
           <img src="/src/assets/icons/save.png" alt="Сохранить" class="save" />
+        </button>
+        Нажмите чтобы сохранить
+        <button class="btn-save" title="Сохранить" @click="save()">
+          <img src="/src/assets/icons/close.png" alt="закрыть" class="close" />
         </button>
       </div>
       <div class="edit-content">
@@ -204,6 +207,7 @@ textarea {
   background-color: rgb(236, 236, 236);
   color: var(--nipigasColorMain);
   font-weight: 600;
+  cursor: move;
 }
 
 .btn-save {}
