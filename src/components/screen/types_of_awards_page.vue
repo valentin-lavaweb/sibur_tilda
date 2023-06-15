@@ -4,6 +4,7 @@ import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 
 import gsap from "gsap";
+import editable_text from '../editable_text.vue';
 
 export default {
   name: "types_of_awards_page",
@@ -16,7 +17,8 @@ export default {
   components:{
     header_comp,
     footer_comp,
-  },
+    editable_text
+},
   methods: {
 
   },
@@ -36,11 +38,17 @@ export default {
     });
   },
   computed:{
-    
+    availableNominations(){
+      return this.interaction.availableNominations;
+    }
   },
-  watch:{
-
-  },
+  async beforeRouteEnter(to, from, next){
+    let interaction = useGameStore();
+    if(!interaction.commandAwards){
+        await interaction.loadCommandAwards();
+    }
+    next();
+  }
 };
 </script>
 
@@ -53,11 +61,10 @@ export default {
     <header_comp/>
     <div class="wrapper-block">
       <h1 class="title text-animate-gsap">
-        ВИДЫ НАГРАД
+        <editable_text dictionary_key="awards_title"/>
       </h1>
       <span class="text description_title text-animate-gsap">
-        Каждая награда — это способ выразить благодарность за ключевые достижения и мотивировать вас на дальнейшее развитие,
-        профессиональный рост. СИБУР поощряет сотрудников сразу на нескольких уровнях.
+        <editable_text dictionary_key="awards_desc"/>
       </span>
       <video 
         class="videoBlock video-animate-gsap" 
@@ -68,51 +75,52 @@ export default {
 
       </video>
       <h2 class="subTitle text-animate-gsap">
-        ВЕДОМСТВЕННЫЕ
+        <editable_text dictionary_key="department_title"/>
       </h2>
       <span class="text description_subTitle text-animate-gsap">
-        Награды вручаются за весомый вклад в развитие компании и индустрии в целом. Достижения подчеркиваются 
-        орденами, благодарностями и дипломами от Минпромторга, Минэнерго, Российского союза химиков, 
-        а также органов местного самоуправления.
+        <editable_text dictionary_key="department_desc"/>
       </span>
       <h2 class="subTitle m_top-60 text-animate-gsap">
-        КОРПОРАТИВНЫЕ
+        <editable_text dictionary_key="corporate_title"/>
       </h2>
       <div class="text-container">
         <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
-            Командные
+            <editable_text dictionary_key="command_title"/>
           </h3>
           <span class="text text-animate-gsap">
-            Поощрение значимых командных достижений
-            и вклад участников в развитие отрасли.
+            <editable_text dictionary_key="command_desc"/>
           </span>
-          <span class="text nipigas text-animate-gsap">
-            Номинация «Производственное решение года»
+          <span class="text nipigas text-animate-gsap"
+          v-for="nomination in availableNominations"
+          :key="nomination"
+          >
+            Номинация «{{nomination}}»
           </span>
-          <span class="text nipigas text-animate-gsap">
+          <!-- <span class="text nipigas text-animate-gsap">
             Номинация «Решение в области по работе 
             с клиентами»
           </span>
           <span class="text nipigas text-animate-gsap">
             Номинация «Организационное решение»
-          </span>
+          </span> -->
         </div>
+        
         <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
-            Индивидуальные
+            <editable_text dictionary_key="individual_title"/>
           </h3>
           <span class="text text-animate-gsap">
-            За личные достижения и высокую квалификацию.
+            <editable_text dictionary_key="individual_desc"/>
           </span>
           <span class="text text-animate-gsap">
-            1 степень. Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника, которые сделали уникальный вклад в развитие компании и отрасли, продемонстрировали достижения, выходящие за рамки занимаемой должности.
+            <editable_text dictionary_key="individual_desc_grade_1"/>
           </span>
           <span class="text text-animate-gsap">
-            2 степень. Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды2 степени.
+            <editable_text dictionary_key="individual_desc_grade_2"/>
           </span>
           <span class="text text-animate-gsap">
-            3 степень. Награду получают как опытные специалисты, так и новички – те сотрудники, которые внесли значимый вклад в развитие своего предприятия и получили признание в коллективе.
+            <editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
         </div>
       </div>
