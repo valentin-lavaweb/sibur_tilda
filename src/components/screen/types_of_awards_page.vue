@@ -59,15 +59,15 @@ export default {
         Каждая награда — это способ выразить благодарность за ключевые достижения и мотивировать вас на дальнейшее развитие,
         профессиональный рост. СИБУР поощряет сотрудников сразу на нескольких уровнях.
       </span>
-      <video 
+      <!-- <video 
         class="videoBlock video-animate-gsap" 
         src="/video/video.mp4"
         poster="https://static.tildacdn.com/tild3264-6339-4339-a463-323162643665/photo.jpg"
         controls
       >
 
-      </video>
-      <h2 class="subTitle text-animate-gsap">
+      </video> -->
+      <h2 class="subTitle m_top-60 text-animate-gsap">
         ВЕДОМСТВЕННЫЕ
       </h2>
       <span class="text description_subTitle text-animate-gsap">
@@ -130,7 +130,7 @@ export default {
 .wrapper-block{
    width: 1160px;
    height: fit-content;
-   margin: 130px 0 0 0;
+   margin: 230px 0 0 0;
 }
 
 

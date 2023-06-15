@@ -69,7 +69,7 @@ export default {
         <div class="certificates-container">
             <div class="certificates-block">
                 <h3 class="titleBlock text-subTitle-animate-gsap">
-                    сертификат
+                    Сертификат
                 </h3>
                 <div class="block-img">
                     <img src="/img/certificate.svg" alt="certificate"/>
@@ -94,6 +94,9 @@ export default {
                 <span class="text text-text-animate-gsap">
                     Вы можете скачать рамку для социальных сетей и поделиться своими профессиональными достижениями с друзьями.
                 </span>
+                <div class="before-text">
+                    *Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.
+                </div>
             </div>
         </div>
     </div>
@@ -138,7 +141,7 @@ export default {
     border-radius: 10px;
     padding: 0 30px;
 }
-.certificates-block:nth-child(2)::before{
+.before-text{
     content: "*Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.";
     width: 100%;
     padding: 0 30px;
@@ -208,13 +211,13 @@ export default {
         padding: 1.5vw;
         justify-content: flex-start;
     }
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(5vw);
         padding: 0 1.5vw;
     }
 }
 @media (max-width: 1200px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(8vw);
         padding: 0 1.5vw;
     }
@@ -238,7 +241,7 @@ export default {
     .certificates-block:nth-child(1){
         margin: 0 0 50px 0;
     }
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(50px);
         padding: 0 20px;
     }
@@ -250,7 +253,7 @@ export default {
 
 }
 @media (max-width: 640px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(70px);
     }
     .title {
@@ -261,7 +264,7 @@ export default {
     }
 }
 @media (max-width: 480px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(100px);
     }
     .wrapper-block{
