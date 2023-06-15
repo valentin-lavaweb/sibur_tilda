@@ -318,16 +318,76 @@ export default {
                 :item = "item"
                 />
             </transition-group>
-            <div class="block-changePage">
-
-            </div>
         </div>
+        <div class="block-changePage">
+                <div class="changePage-arrow left">
+                    <img src="/img/arrow_page.svg" alt="arrow">
+                </div>
+                <div class="changePage-block">
+                    <div class="changePage_page" v-for="numberPage in "
+                    :key="numberPage.id">
+                        {{ numberPage }}
+                    </div>
+                </div>
+                <div class="changePage-arrow right">
+                    <img src="/img/arrow_page.svg" alt="arrow">
+                </div>
+            </div>
     </div>
     <footer_comp/>
   </div>
 </template>
 
 <style scoped>
+
+
+.block-changePage{
+    flex-direction: row;
+    margin: 0 0 100px 0;
+}
+.changePage-block{
+    flex-direction: row;
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 5px;
+    overflow-x: hidden;
+}
+.changePage_page{
+    width: 30px;
+    height: 30px;
+    background-color: var(--white);
+    color: var(--nipigasColorMain);
+    font-size: 14px;
+    border-right: 1px solid rgb(201, 201, 201);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.changePage_page:hover{
+    background-color: var(--nipigasColorMain);
+    color: var(--white);
+}
+.changePage_page:last-child{
+    border-right: none;
+}
+
+.changePage-arrow{
+    width: 10px;
+}
+.changePage-arrow.left{
+    transform: rotate(180deg);
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.changePage-arrow.right{
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.changePage-arrow.disactive{
+    filter: grayscale(1);
+}
+
+
 .wrapper{
   width: 100%;
   height: 100%;
@@ -611,7 +671,7 @@ option{
     width: 100%;
     height: fit-content;
     min-height: 450px;
-    margin: 0 0 100px 0;
+    margin: 0 0 20px 0;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
