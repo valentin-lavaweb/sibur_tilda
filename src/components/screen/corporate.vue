@@ -428,7 +428,7 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: var(--filterColor);
+    background-color: var(--nipigasColorMain);
     border: none;
     border-radius: 5px;
     padding: 0 30px;
@@ -439,7 +439,7 @@ export default {
     cursor: pointer;
 }
 .filterButton:hover{
-    background-color: var(--filterColor-hover);
+    background-color: var(--nipigasColorMain-hover);
 }
 .blockImg{
     margin: 0 6px 0 0;
