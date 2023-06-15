@@ -4,6 +4,8 @@ import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore } from '@/stores/interface-interaction.js';
 import login_comp from "@/components/admin/login.vue";
 
+import gallery_edit_many from "@/components/admin/tables/gallery_edit_many.vue";
+
 // import personal_awards from "@/components/admin/tables/personal_awards.vue";
 // import command_awards from "@/components/admin/tables/command_awards.vue";
 // import personal_award_sections from "@/components/admin/tables/personal_award_sections.vue";
@@ -20,6 +22,7 @@ export default {
     },
     components: {
         login_comp,
+        gallery_edit_many,
         // Vue3EasyDataTable,
         // personal_awards,
         // command_awards,
@@ -103,6 +106,7 @@ export default {
                 <login_comp v-if="!interaction.admin" />
             </transition>
         </Teleport>
+        <!-- <gallery_edit_many/> -->
         <div class="wrapper-block" v-show="interaction.admin">
             <div class="content-block">
                 <nav>
@@ -144,7 +148,10 @@ export default {
                 <section class="content_table" ref="tableContainer">
                     <div class="control-panel">
                         <button class="btn">
-                            добавить
+                            добавить записаь
+                        </button>
+                        <button class="btn">
+                            добавить несколько записей
                         </button>
                     </div>
                     <RouterView :search="searchValue" />
@@ -336,20 +343,32 @@ section {
 }
 
 
-.control-panel{
+.content_table div.control-panel{
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     border: 1px solid var(--nipigasColorMain);
     border-bottom: none;
-    padding: 5px 10px 0 10px;
+    padding: 5px 10px;
 }
 .btn{
     position: relative;
     display: flex;
+    background-color: var(--white);
+    border: 1px solid var(--nipigasColorMain);
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
-
+.btn:hover{
+    background-color: var(--nipigasColorMain-hover);
+    color: var(--white);
+}
 
 
 @media (max-width: 1700px) {

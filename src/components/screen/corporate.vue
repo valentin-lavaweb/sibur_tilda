@@ -341,7 +341,7 @@ export default {
                     <img src="/img/arrow_page.svg" alt="arrow">
                 </div>
                 <div class="changePage-block">
-                    <div class="changePage_page" v-for="numberPage in "
+                    <div class="changePage_page" v-for="numberPage in 5"
                     :key="numberPage.id">
                         {{ numberPage }}
                     </div>
