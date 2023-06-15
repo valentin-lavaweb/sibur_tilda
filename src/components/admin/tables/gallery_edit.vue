@@ -44,7 +44,7 @@ export default {
                 return url;
             }
         }else if(this.editItem.image === null){
-          return new URL('files/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+          return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
         }
         else{
             return URL.createObjectURL(this.editItem.image);
