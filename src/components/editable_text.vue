@@ -136,7 +136,7 @@ export default {
   <Teleport to="body">
 
     <Transition name="openPage" mode="out-in">
-      <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }" @click="interaction.focusedEditPopup = id" v-if="isEdit" >
+      <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }" @pointerdown="interaction.focusedEditPopup = id" v-if="isEdit" >
         <div class="edit-header" ref="editor">
           <div class="edit-left_block">
             <button class="btn-save" title="Сохранить" @click="save()">
