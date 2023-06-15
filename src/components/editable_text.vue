@@ -54,6 +54,10 @@ export default {
       this.isEdit = !saved;
 
     },
+    close() {
+      this.restoreText();
+      this.isEdit = !saved;
+    },
     startEdit() {
       let buttonRect = this.$refs.button.getBoundingClientRect();
       this.editLeft = buttonRect.left;
@@ -68,7 +72,7 @@ export default {
 
           pos.start = pos.current = pos.end = {x:e.clientX, y:e.clientY};
 
-          editor.style.cursor = 'grabbing';
+          // editor.style.cursor = 'grabbing';
           editor.style.userSelect = 'none';
 
           editor.setPointerCapture(e.pointerId);
@@ -89,7 +93,7 @@ export default {
               editor.removeEventListener('pointermove', movelistener);
               editor.removeEventListener('pointerup', uplistener);
 
-              editor.style.cursor = 'auto';
+              // editor.style.cursor = 'auto';
               editor.style.userSelect = 'all';
 
           }
