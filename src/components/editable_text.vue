@@ -40,9 +40,9 @@ export default {
         return newItem;
 
       } catch (e) {
-        setTimeout(() => {
-          this.restoreText();
-        }, 500);
+        // setTimeout(() => {
+        //   this.restoreText();
+        // }, 500);
         this.$toast.error(e.message);
         return false;
       }
