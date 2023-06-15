@@ -54,6 +54,10 @@ export default {
       this.isEdit = !saved;
 
     },
+    close() {
+      this.restoreText();
+      this.isEdit = !saved;
+    },
     startEdit() {
       let buttonRect = this.$refs.button.getBoundingClientRect();
       this.editLeft = buttonRect.left;
