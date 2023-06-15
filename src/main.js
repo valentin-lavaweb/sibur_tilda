@@ -34,6 +34,10 @@ const store = useGameStore();
         await store.loadSections();
     }
 
+    if(!store.dictionary){
+      await store.loadDictionary();
+  }
+
     const isAdmin = Boolean(store.admin);
     const reqAuth = to.matched.some((record) => record.meta.requiresAuth);
     const loginQuery = { name: 'admin_page' };
@@ -54,6 +58,6 @@ const store = useGameStore();
 
 
 
-// store.login();
+store.getAuthAdmin().catch(e=>console.info("Не авторизован"));
 
 app.mount("#app");

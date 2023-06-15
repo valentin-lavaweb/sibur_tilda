@@ -2,6 +2,7 @@
 import { useGameStore } from '@/stores/interface-interaction.js';
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
+import editable_text from '../editable_text.vue';
 
 import gsap from "gsap";
 
@@ -16,6 +17,7 @@ export default {
   components:{
     header_comp,
     footer_comp,
+    editable_text
   },
   methods: {
 
@@ -51,19 +53,17 @@ export default {
     <div class="wrapper-block">
       <div class="content-block">
         <h2 class="subTitle text-animate-gsap">
-          НАГРАДНАЯ КАМПАНИЯ
+          <editable_text dictionary_key="main_subtitle"/>
         </h2>
         <h1 class="title text-animate-gsap">
           ЭНЕРГИЯ <br> 
           ПРИЗНАНИЯ
         </h1>
-        <span class="text text-animate-gsap">  
-          — это возможность поощрить лучших профессионалов компании <br>
-          и вдохновить остальных! СИБУР ежегодно подчеркивает вклад <br>
-          сотрудников в развитие холдинга: как благодарственными грамотами, <br>
-          так и материальным вознаграждением.
+        <span class="text text-animate-gsap ">  
+          <editable_text dictionary_key="main_desc"/>
         </span>
         <span class="pinata text-animate-gsap">
+          <editable_text dictionary_key="main_subdesc"/>
           Сделаем успех видимым для каждого!
         </span>
       </div>
@@ -112,6 +112,7 @@ export default {
   font-size: 16px;
   color: var(--textColorBlack);
   margin: 14px 0;
+  white-space: pre-line;
 }
 .pinata{
   font-size: 16px;
