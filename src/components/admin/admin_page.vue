@@ -146,14 +146,6 @@ export default {
                     </div>
                 </section>
                 <section class="content_table" ref="tableContainer">
-                    <div class="control-panel">
-                        <button class="btn">
-                            добавить записаь
-                        </button>
-                        <button class="btn">
-                            добавить несколько записей
-                        </button>
-                    </div>
                     <RouterView :search="searchValue" />
                     <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
             <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
@@ -211,6 +203,43 @@ export default {
 .easy-data-table__rows-selector .rows-input__wrapper{
     flex-direction: row;
 } */
+
+
+
+
+
+
+.content_table div.control-panel{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border: 1px solid var(--nipigasColorMain);
+    border-bottom: none;
+    padding: 5px 10px;
+}
+.content_table div.control-panel .btn{
+    position: relative;
+    display: flex;
+    background-color: var(--white);
+    border: 1px solid var(--nipigasColorMain);
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.content_table div.control-panel .btn:hover{
+    background-color: var(--nipigasColorMain-hover);
+    color: var(--white);
+}
+
+
+
+
+
 </style>
 <style scoped>
 .content_table div {
@@ -352,7 +381,7 @@ section {
     border-bottom: none;
     padding: 5px 10px;
 }
-.btn{
+.content_table div.control-panel .btn{
     position: relative;
     display: flex;
     background-color: var(--white);
@@ -365,10 +394,11 @@ section {
     cursor: pointer;
     transition: all 0.25s ease;
 }
-.btn:hover{
+.content_table div.control-panel .btn:hover{
     background-color: var(--nipigasColorMain-hover);
     color: var(--white);
 }
+
 
 
 @media (max-width: 1700px) {

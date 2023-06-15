@@ -3,31 +3,31 @@ import { useGameStore } from '@/stores/interface-interaction.js';
 
 
 export default {
-  props:{
+  props: {
     dictionary_key: String,
   },
   name: "editable_text",
   data() {
     let interaction = useGameStore();
-    return{
-        interaction: interaction,
-        editableText: interaction.dictionary[this.dictionary_key],
-        isEdit: false,
-        editLeft: 0,
-        editTop: 0,
+    return {
+      interaction: interaction,
+      editableText: interaction.dictionary[this.dictionary_key],
+      isEdit: false,
+      editLeft: 0,
+      editTop: 0,
     }
   },
-  components:{
+  components: {
 
   },
-  methods:{
-    restoreText(){
+  methods: {
+    restoreText() {
       this.editableText = this.interaction.dictionary[this.dictionary_key];
     },
-    async updateText(){
+    async updateText() {
 
-      if(this.interaction.dictionary[this.dictionary_key] == this.editableText) return true;
-      
+      if (this.interaction.dictionary[this.dictionary_key] == this.editableText) return true;
+
       try {
 
         let res = await this.interaction.api.updateText(this.dictionary_key, this.editableText);
@@ -45,95 +45,172 @@ export default {
         }, 500);
         this.$toast.error(e.message);
         return false;
-      } 
-      
-    },
-    async save(){
+      }
 
-        let saved = await this.updateText();
-        this.isEdit = !saved;
-      
     },
-    startEdit(){
-        let buttonRect = this.$refs.button.getBoundingClientRect();
-        this.editLeft = buttonRect.left;
-        this.editTop = buttonRect.top;
-        this.isEdit = true;
+    async save() {
+
+      let saved = await this.updateText();
+      this.isEdit = !saved;
+
+    },
+    startEdit() {
+      let buttonRect = this.$refs.button.getBoundingClientRect();
+      this.editLeft = buttonRect.left;
+      this.editTop = buttonRect.top;
+      this.isEdit = true;
+
+      setTimeout(()=>{
+        let editor = this.$refs.editor;
+        let pos = { start: {x:0, y:0}, current: {x:0, y:0}, end: {x:0, y:0} };
+
+        editor.addEventListener('pointerdown', (e) => {
+
+          pos.start = pos.current = pos.end = {x:e.clientX, y:e.clientY};
+
+          editor.style.cursor = 'grabbing';
+          editor.style.userSelect = 'none';
+
+          editor.setPointerCapture(e.pointerId);
+
+          const movelistener = (e) => {
+
+              pos.end = {x:e.clientX, y:e.clientY};
+              let deltaX = pos.end.x - pos.current.x;
+              let deltaY = pos.end.y - pos.current.y;
+              pos.current = {x:e.clientX, y:e.clientY};
+              this.editLeft += deltaX;
+              this.editTop += deltaY;
+          }
+
+          const uplistener = (e) => {
+              pos.end = {x:e.clientX, y:e.clientY};
+
+              editor.removeEventListener('pointermove', movelistener);
+              editor.removeEventListener('pointerup', uplistener);
+
+              editor.style.cursor = 'auto';
+              editor.style.userSelect = 'all';
+
+          }
+
+
+
+          editor.addEventListener('pointermove', movelistener);
+
+          editor.addEventListener('pointerup', uplistener);
+
+        });
+      }, 10)
+
+
     }
-
-
   },
-  mounted() {
+    mounted() {
 
-  },
-  computed:{
-    isAdmin(){
-        return this.interaction.isAdmin;
     },
-  },
-  watch:{
+    computed: {
+      isAdmin() {
+        return this.interaction.isAdmin;
+      },
+    },
+    watch: {
 
-  },
-};
+    },
+  };
 </script>
 
 
 <template>
-    <div class="editor" v-if="isAdmin">
-        <button title="Редактировать"  @click="startEdit()" :class="{edit: isEdit}" ref="button" v-if="!isEdit"> 
-          <img src="/src/assets/icons/edit.png" alt="Редактировать" class="edit"/>
+  <div class="editor" v-if="isAdmin">
+    <button title="Редактировать" @click="startEdit()" :class="{ edit: isEdit }" ref="button" v-if="!isEdit">
+      <img src="/src/assets/icons/edit.png" alt="Редактировать" class="edit" />
+    </button>
+  </div>
+
+  <Teleport to="body">
+    <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px' }" v-if="isEdit">
+      <div class="edit-header" ref="editor">
+        Нажмите чтобы сохранить
+        <button class="btn-save" title="Сохранить" @click="save()">
+          <img src="/src/assets/icons/save.png" alt="Сохранить" class="save" />
         </button>
+      </div>
+      <div class="edit-content">
+        <textarea v-model="editableText" />
+      </div>
     </div>
 
-    <Teleport to="body">
-      <div class="edit-wrapper"  :style="{left: editLeft + 'px', top: editTop + 'px'}"  v-if="isEdit">
-        <button title="Сохранить"  @click="save()"> 
-          <img src="/src/assets/icons/save.png" alt="Сохранить" class="save"/>
-        </button>
-        <textarea v-model="editableText" >
-        </textarea>
-      </div>
-      
-    </Teleport>
-        
-    
-    {{editableText}}
+  </Teleport>
+
+
+  {{ editableText }}
 </template>
 
 <style scoped>
-.editor{
-    position: absolute;
-    right: -3vh;
-    top: 0%;
-    width: auto;
-    height: auto;
-    z-index: 500;
+.editor {
+  position: absolute;
+  right: -3vh;
+  top: 0%;
+  width: auto;
+  height: auto;
+  z-index: 500;
+  cursor: pointer;
 }
 
-.edit-wrapper{
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: auto;
-    height: auto;
-    z-index: 500;
+.edit-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: fit-content;
+  height: auto;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--nipigasColorMain);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 
 button {
   width: 3vh;
+  cursor: pointer;
 }
 
 textarea {
-  position: absolute;
-  left: 100%;
-  top: 0;
+  position: relative;
   display: flex;
   height: fit-content;
+  min-width: 300px;
+  min-height: 100px;
+  width: 100%;
+  height: 100%;
   padding: 5px;
   color: var(--textColorBlack);
   resize: both;
   background-color: white;
+  border: none;
+}
 
+.edit-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+  background-color: rgb(236, 236, 236);
+  color: var(--nipigasColorMain);
+  font-weight: 600;
+}
+
+.btn-save {}
+
+.edit-content {
+  width: fit-content;
+  height: fit-content;
+  background-color: rgb(236, 236, 236);
 }
 </style>

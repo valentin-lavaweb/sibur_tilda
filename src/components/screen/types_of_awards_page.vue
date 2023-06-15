@@ -83,7 +83,7 @@ export default {
         <editable_text dictionary_key="corporate_title"/>
       </h2>
       <div class="text-container">
-        <div class="text-block">
+        <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="command_title"/>
           </h3>
@@ -96,16 +96,9 @@ export default {
           >
             Номинация «{{nomination}}»
           </span>
-          <!-- <span class="text nipigas text-animate-gsap">
-            Номинация «Решение в области по работе 
-            с клиентами»
-          </span>
-          <span class="text nipigas text-animate-gsap">
-            Номинация «Организационное решение»
-          </span> -->
-        </div>
+        </div> -->
         
-        <div class="text-block">
+        <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
           </h3>
@@ -121,6 +114,11 @@ export default {
           <span class="text text-animate-gsap">
             <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
+        </div> -->
+        <div class="text-block">
+          <h3 class="miniTitle text-animate-gsap">
+            <editable_text dictionary_key="individual_title"/>
+          </h3>
         </div>
       </div>
     </div>
