@@ -142,6 +142,11 @@ export default {
                     </div>
                 </section>
                 <section class="content_table" ref="tableContainer">
+                    <div class="control-panel">
+                        <button class="btn">
+                            добавить
+                        </button>
+                    </div>
                     <RouterView :search="searchValue" />
                     <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
             <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
@@ -326,11 +331,24 @@ section {
     margin: 0;
     width: 100%;
     height: fit-content;
+    flex-direction: column;
     /* border-top: 1px solid var(--nipigasColorMain); */
 }
 
 
-
+.control-panel{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border: 1px solid var(--nipigasColorMain);
+    border-bottom: none;
+    padding: 5px 10px 0 10px;
+}
+.btn{
+    position: relative;
+    display: flex;
+}
 
 
 

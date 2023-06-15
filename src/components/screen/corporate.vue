@@ -25,8 +25,7 @@ export default {
     footer_comp,
     corporate_item,
   },
-  methods: {
-
+  methods: { 
     toggleIssuerFilter(issuer){
         if(!this.filterIssuers.includes(issuer)){
             this.filterIssuers = [...this.filterIssuers, issuer];
