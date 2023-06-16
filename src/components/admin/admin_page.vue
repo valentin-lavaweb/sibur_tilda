@@ -4,6 +4,8 @@ import 'vue3-easy-data-table/dist/style.css';
 import { useGameStore } from '@/stores/interface-interaction.js';
 import login_comp from "@/components/admin/login.vue";
 
+import gallery_edit_many from "@/components/admin/tables/gallery_edit_many.vue";
+
 // import personal_awards from "@/components/admin/tables/personal_awards.vue";
 // import command_awards from "@/components/admin/tables/command_awards.vue";
 // import personal_award_sections from "@/components/admin/tables/personal_award_sections.vue";
@@ -20,6 +22,7 @@ export default {
     },
     components: {
         login_comp,
+        gallery_edit_many,
         // Vue3EasyDataTable,
         // personal_awards,
         // command_awards,
@@ -103,14 +106,19 @@ export default {
                 <login_comp v-if="!interaction.admin" />
             </transition>
         </Teleport>
+        <!-- <gallery_edit_many/> -->
         <div class="wrapper-block" v-show="interaction.admin">
             <div class="content-block">
                 <nav>
                     <div class="logo" @click="checkAuth">
-                        <img src="/img/logo.svg" alt="logo" />
+                        <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                            <img src="/img/logo.svg" alt="logo" />
+                        </RouterLink>
                         <div class="logo-text">
-                            энергия<br>
-                            признания
+                            <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                                энергия<br>
+                                признания
+                            </RouterLink>
                         </div>
                     </div>
                     <div class="login" @click="interaction.logout(), $router.push({ name: 'admin_page' })">
@@ -199,6 +207,43 @@ export default {
 .easy-data-table__rows-selector .rows-input__wrapper{
     flex-direction: row;
 } */
+
+
+
+
+
+
+.content_table div.control-panel{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border: 1px solid var(--nipigasColorMain);
+    border-bottom: none;
+    padding: 5px 10px;
+}
+.content_table div.control-panel .btn{
+    position: relative;
+    display: flex;
+    background-color: var(--white);
+    border: 1px solid var(--nipigasColorMain);
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.content_table div.control-panel .btn:hover{
+    background-color: var(--nipigasColorMain-hover);
+    color: var(--white);
+}
+
+
+
+
+
 </style>
 <style scoped>
 .content_table div {
@@ -238,6 +283,46 @@ nav {
     height: 100px;
 }
 
+a:active {
+    color: var(--nipigasColorAdditional);
+}
+
+a:visited {
+    color: var(--nipigasColorMain);
+}
+
+.router-link-active:visited {
+    color: var(--nipigasColorAdditional);
+}
+
+a {
+    color: var(--nipigasColorMain);
+    font-weight: 700;
+}
+
+.router-link {
+    color: var(--nipigasColorMain);
+
+}
+
+a.active {
+    color: var(--nipigasColorAdditional);
+}
+
+.router-link-active {
+    color: var(--nipigasColorAdditional);
+}
+
+.hover-link a {
+    text-decoration: underline;
+}
+.logo a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .logo {
     flex-direction: row;
 }
@@ -326,11 +411,37 @@ section {
     margin: 0;
     width: 100%;
     height: fit-content;
+    flex-direction: column;
     /* border-top: 1px solid var(--nipigasColorMain); */
 }
 
 
-
+.content_table div.control-panel{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    border: 1px solid var(--nipigasColorMain);
+    border-bottom: none;
+    padding: 5px 10px;
+}
+.content_table div.control-panel .btn{
+    position: relative;
+    display: flex;
+    background-color: var(--white);
+    border: 1px solid var(--nipigasColorMain);
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.content_table div.control-panel .btn:hover{
+    background-color: var(--nipigasColorMain-hover);
+    color: var(--white);
+}
 
 
 

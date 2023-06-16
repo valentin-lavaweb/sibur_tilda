@@ -25,15 +25,14 @@ export default {
     footer_comp,
     corporate_item,
   },
-  methods: {
-
-    // toggleIssuerFilter(issuer){
-    //     if(!this.filterIssuers.includes(issuer)){
-    //         this.filterIssuers = [...this.filterIssuers, issuer];
-    //     }else{
-    //         this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
-    //     }
-    // },
+  methods: { 
+    toggleIssuerFilter(issuer){
+        if(!this.filterIssuers.includes(issuer)){
+            this.filterIssuers = [...this.filterIssuers, issuer];
+        }else{
+            this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
+        }
+    },
     // toggleCompanyFilter(company){
     //     if(!this.filterCompanies.includes(company)){
     //         this.filterCompanies = [...this.filterCompanies, company];
@@ -56,6 +55,15 @@ export default {
 
         this.awardsList = awards
         this.searching = false;
+    },
+    changePage(button){
+        if (button.type === 'button' && !button.active) this.page = button.page;
+    },
+    prevPage(){
+        this.page = Math.max(1, this.page - 1);
+    },
+    nextPage(){
+        this.page = Math.min(this.meta?.last_page, this.page + 1);
     }
 
   },
@@ -87,7 +95,8 @@ export default {
         let filter = {
             name: query.name,
             companies: query.companies,
-            issuers: query.issuer ? [query.issuer] : undefined,
+            // issuers: query.issuer ? [query.issuer] : undefined,
+            issuers: query.issuers,
             grade: query.grade,
             year: query.year,
         }
@@ -125,18 +134,18 @@ export default {
     },
     filterIssuers:{
         get(){
-            return this.$route.query.issuer ?? undefined;
-            // let issuers = this.$route.query.issuers;
-            // if(issuers){
-            //     return String(issuers).split(',');
-            // }else{
-            //     return [];
-            // }
+            // return this.$route.query.issuer ?? undefined;
+            let issuers = this.$route.query.issuers;
+            if(issuers){
+                return String(issuers).split(',');
+            }else{
+                return [];
+            }
         },
-        set(value){
-            this.$router.replace({query:{...this.$route.query, issuer: value}})
-            // let string = issuers.length > 0 ? issuers.join(',') : undefined;
-            // this.$router.replace({query:{...this.$route.query, issuers: string}})
+        set(issuers){
+            // this.$router.replace({query:{...this.$route.query, issuer: value}})
+            let string = issuers.length > 0 ? issuers.join(',') : undefined;
+            this.$router.replace({query:{...this.$route.query, issuers: string}})
         },
     },
     filterGrade:{
@@ -177,14 +186,148 @@ export default {
     },
 
 
+
+
+
+    paginationButtons() {
+            const totalVisible = 7;
+
+            const meta = this.meta;
+
+            if(!meta) return [];
+
+            const paginationItems = [];
+            if (meta.last_page <= totalVisible) {
+                // x,x,x,x
+                for (let i = 1; i <= meta.last_page; i += 1) {
+                    paginationItems.push({
+                        type: 'button',
+                        page: i,
+                        active: i === meta.current_page,
+                        activePrev: (i + 1) === meta.current_page,
+                    });
+                }
+            } else if ([1, 2, meta.last_page, meta.last_page - 1].includes(meta.current_page)) {
+                // x,x,x,...,x,x,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i <= 3) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: i,
+                            active: i === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 4) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else {
+                        const page = meta.last_page - (totalVisible - i);
+                        paginationItems.push({
+                            type: 'button',
+                            page,
+                            active: page === meta.current_page,
+                            activePrev: (page + 1) === meta.current_page,
+                        });
+                    }
+                }
+            } else if ([3, 4].includes(meta.current_page)) {
+                // x,x,x,x,x,...,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i <= 5) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: i,
+                            active: i === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 6) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else {
+                        paginationItems.push({
+                            type: 'button',
+                            page: meta.last_page,
+                            active: meta.last_page === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    }
+                }
+            } else if ([meta.last_page - 2, meta.last_page - 3].includes(meta.current_page)) {
+                // x,...,x,x,x,x,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i === 1) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: 1,
+                            active: meta.current_page === 1,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 2) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else {
+                        const page = meta.last_page - (totalVisible - i);
+                        paginationItems.push({
+                            type: 'button',
+                            page,
+                            active: page === meta.current_page,
+                            activePrev: (page + 1) === meta.current_page,
+                        });
+                    }
+                }
+            } else {
+                // x,...,x,x,x,...,x
+                for (let i = 1; i <= totalVisible; i += 1) {
+                    if (i === 1) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: 1,
+                            active: meta.current_page === 1,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else if (i === 2 || i === 6) {
+                        paginationItems.push({
+                            type: 'omission',
+                        });
+                    } else if (i === 7) {
+                        paginationItems.push({
+                            type: 'button',
+                            page: meta.last_page,
+                            active: meta.last_page === meta.current_page,
+                            activePrev: (i + 1) === meta.current_page,
+                        });
+                    } else {
+                        const diff = 4 - i;
+                        const page = meta.current_page - diff;
+                        paginationItems.push({
+                            type: 'button',
+                            page,
+                            active: page === meta.current_page,
+                            activePrev: (page + 1) === meta.current_page,
+                        });
+                    }
+                }
+            }
+            return paginationItems;
+        }
+
+
   },
   watch:{
     queryFilter(){
         if(!this.searching){
+            this.page = 1;
             this.debouncedUpdateAwardsList();
         }
     },
+    page(){
+        this.updateAwardsList();
+    },
     thisSection(){
+        this.page = 1;
         this.updateAwardsList();
     }
   },
@@ -208,12 +351,51 @@ export default {
         </h1>
         <div class="years-container">
             <button class="year"
+ 
+            @click="filterYear = undefined"
+            :class="{active: filterYear == undefined}">
+            Все
+            </button>
+            <button class="year"
             v-for="year in availableYears"
             :key="year"
 
             @click="filterYear == year ? filterYear = undefined : filterYear = year"
             :class="{active: filterYear == year}">
             {{year}}
+            </button>
+        </div>
+        <div class="years-container" v-if="issuerFilterEnabled">
+            <button class="year"
+ 
+            @click="filterIssuers = []"
+            :class="{active: filterIssuers?.length == 0}">
+            Все
+            </button>
+            <button class="year"
+            v-for="issuer in availableIssuers"
+            :key="issuer"
+
+            @click="toggleIssuerFilter(issuer)"
+            :class="{active: filterIssuers.includes(issuer)}">
+            {{issuer}}
+            </button>
+        </div>
+        <div class="years-container" v-if="gradeFilterEnabled">
+            <button class="year"
+ 
+            @click="filterGrade = undefined"
+            :class="{active: filterGrade == undefined}">
+            Все
+            </button>
+            <button class="year"
+            v-for="grade in availableGrades"
+            :value="grade"
+            :key="grade"
+
+            @click="filterGrade == grade ? filterGrade = undefined : filterGrade = grade"
+            :class="{active: filterGrade == grade}">
+            Степень {{grade}}
             </button>
         </div>
         <div class="filter_AND_search-block" v-if="companyFilterEnabled">
@@ -236,10 +418,10 @@ export default {
                 </div>
                 Все предприятия
             </button>
-            <div class="filter-selection" v-if="issuerFilterEnabled">
+            <!-- <div class="filter-selection" v-if="issuerFilterEnabled">
                 <select v-model="filterIssuers">
                         <option :value="undefined">
-                            --кем выдана--
+                            --Тип награды--
                         </option>
                         <option
                             v-for="issuer in availableIssuers"
@@ -247,11 +429,11 @@ export default {
                             {{ issuer }}
                         </option>
                 </select>
-            </div>
-            <div class="filter-selection" v-if="gradeFilterEnabled">
+            </div> -->
+            <!-- <div class="filter-selection" v-if="gradeFilterEnabled">
                 <select  v-model="filterGrade">
                         <option :value="undefined">
-                            --степень--
+                            --Степень--
                         </option>
                         <option
                             v-for="grade in availableGrades"
@@ -260,7 +442,7 @@ export default {
                             степень {{ grade }}
                         </option>
                 </select>
-            </div>
+            </div> -->
             <div class="filter-block" :class="{active: filterHoverStatus}">
                 <div class="filter-container_content">
                     <label class="custom-checkbox"
@@ -293,14 +475,92 @@ export default {
                 :item = "item"
                 />
             </transition-group>
-            
         </div>
+        <div class="block-changePage" v-if="meta">
+                <div class="changePage-arrow left" @click="prevPage" :class="{disactive: this.page == 1}">
+                    <img src="/img/arrow_page.svg" alt="arrow">
+                </div>
+                <div class="changePage-block">
+                    <div class="changePage_page"                   
+
+
+                    v-for="(item, i) in paginationButtons"
+                    :key="i"
+                    :class="{
+                      button: item.type === 'button',
+                      active: item.type === 'button' && item.active,
+                      'active-prev': item.type === 'button' && item.activePrev,
+                      omission: item.type === 'omission',
+                    }"
+                    @click="changePage(item)"
+                    >
+                         {{ item.type === 'button' ? item.page : '...' }}
+                    </div>
+                </div>
+                <div class="changePage-arrow right" @click="nextPage" :class="{disactive: this.page == this.meta.last_page}">
+                    <img src="/img/arrow_page.svg" alt="arrow">
+                </div>
+            </div>
     </div>
     <footer_comp/>
   </div>
 </template>
 
 <style scoped>
+
+
+.block-changePage{
+    flex-direction: row;
+    margin: 0 0 100px 0;
+}
+.changePage-block{
+    flex-direction: row;
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 5px;
+    overflow-x: hidden;
+}
+.changePage_page{
+    width: 30px;
+    height: 30px;
+    background-color: var(--white);
+    color: var(--nipigasColorMain);
+    font-size: 14px;
+    border-right: 1px solid rgb(201, 201, 201);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.changePage_page:hover{
+    background-color: rgb(236, 236, 236);
+    color: var(--white);
+}
+.changePage_page.active{
+    background-color: var(--nipigasColorMain);
+    color: var(--white);
+}
+.changePage_page:last-child{
+    border-right: none;
+}
+
+.changePage-arrow{
+    width: 10px;
+}
+.changePage-arrow.left{
+    transform: rotate(180deg);
+    margin: 0 10px 0 0;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.changePage-arrow.right{
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.changePage-arrow.disactive{
+    filter: grayscale(1);
+    cursor: auto;
+}
+
+
 .wrapper{
   width: 100%;
   height: 100%;
@@ -337,8 +597,8 @@ export default {
   color: var(--white);
 }
 .year{
-  margin: 0 0 0 40px;
-  width: 100px;
+  margin: 0 0 0 30px;
+  width: 120px;
   height: 30px;
   font-weight: 500;
   border-radius: 5px;
@@ -383,7 +643,7 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: var(--filterColor);
+    background-color: var(--nipigasColorMain);
     border: none;
     border-radius: 5px;
     padding: 0 30px;
@@ -394,7 +654,7 @@ export default {
     cursor: pointer;
 }
 .filterButton:hover{
-    background-color: var(--filterColor-hover);
+    background-color: var(--nipigasColorMain-hover);
 }
 .blockImg{
     margin: 0 6px 0 0;
@@ -584,7 +844,7 @@ option{
     width: 100%;
     height: fit-content;
     min-height: 450px;
-    margin: 0 0 100px 0;
+    margin: 0 0 20px 0;
     flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
@@ -632,6 +892,9 @@ option{
     .filter-selection{
         margin: 0 30px;
     }
+    .filter_AND_search-block{
+        justify-content: space-between;
+    }
 }
 @media (max-width: 1024px) {
     .wrapper-block{
@@ -659,7 +922,7 @@ option{
         flex-direction: column;
         height: fit-content;
     }
-    .filter-selection{
+    .filter-selection, .search_panel{
         margin: 20px 0;
     }
     .years-container{
@@ -692,19 +955,19 @@ option{
         justify-content: space-between;
     }
     .year{
-        width: calc(50% - 2vw);
+        width: 100%
     }
     .year:nth-child(1){
-        margin: 0 2vw 10px 0;
+        margin: 0 0 10px 0;
     }
     .year:nth-child(2){
-        margin: 0 0 10px 2vw;
+        margin: 0 0 10px 0;
     }
     .year:nth-child(3){
-        margin: 0 2vw 10px 0;
+        margin: 0 0 10px 0;
     }
     .year:nth-child(4){
-        margin: 0 0 10px 2vw;
+        margin: 0 0 10px 0;
     }
 
     .year.name{

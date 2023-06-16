@@ -2,53 +2,79 @@
 import TextEdit from '../cells/textEdit.vue';
 
 export default {
-  name: "gallery_edit",
-  emits:['done', 'cancel'],
+  name: "gallery_edit_many",
+  emits:['cancel'],
   props:{
-    item: Object,
+    initialYear: Number,
+    createItem: Function
   },
   data() {
     return{
-      editItem: Object.assign({}, this.item)
+      editItem: {year: this.initialYear},
+      images: [],
+      loading: false
     }
   },
   components:{
     TextEdit
   },
   methods:{
+    async startLoad(){
+      this.loading = true;
+
+      let allImages = this.images;
+
+      while(allImages.length > 0 && this.loading){
+        let image = allImages[0];
+
+        let ok = await this.createItem({...this.editItem, image: image.img});
+        if(!ok){
+          break;
+        }
+        allImages.shift();
+      }
+
+
+      this.loading = false;
+
+    },
     endEdit(event){
       this.$emit('done', this.editItem);
     },
-    async updateImage(event) {
+    async updateImages(event) {
 
         let files = event.target.files || event.dataTransfer.files;
         if (!files.length){
-            this.editItem.image = null;
+            this.images = [];
         }else{
-            this.editItem.image = files[0];
+            this.images = [...files].map((img, idx) => {return {img, idx}});
         }
     },
-    setItem(item){
-      this.editItem = Object.assign({}, item);
-    }
+    // setItem(item){
+    //   this.editItem = Object.assign({}, item);
+    // }
 
   },
   computed:{
-    imagePath(){
-        if(typeof this.editItem.image === 'string'){
-            try{
-                let url = new URL(this.editItem.image);
-                return url;
-            }catch{
-                let url = new URL('files/' + this.editItem.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
-                return url;
-            }
-        }else if(this.editItem.image === null){
-          return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
-        }
-        else{
-            return URL.createObjectURL(this.editItem.image);
-        }
+    imagesToLoad(){
+
+        return this.images.map(i => {return {...i, src: URL.createObjectURL(i.img)}});
+
+
+        // if(typeof this.editItem.image === 'string'){
+        //     try{
+        //         let url = new URL(this.editItem.image);
+        //         return url;
+        //     }catch{
+        //         let url = new URL('files/' + this.editItem.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
+        //         return url;
+        //     }
+        // }else if(this.editItem.image === null){
+        //   return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+        // }
+        // else{
+        //     return URL.createObjectURL(this.editItem.image);
+        // }
     }
 
   }
@@ -59,27 +85,34 @@ export default {
 
 
 <template >
-      <div class="container">
+      <div class="container" @click.self="$emit('cancel')">
 
         <div class="Main_block-content">
           <div class="block-content">
-          <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
           <div class="content">
             <h2>Фото</h2>
             <div class="photoDownlouad-box">            
                 <div class="input__wrapper">
-                  <input name="file" accept="image/*" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" :multiple="false"
-                    @change="updateImage($event)">
-                  <label :for="`input_edit_${editItem.id}`" class="input__file-button">
+                  <input name="file" accept="image/*" type="file" id="input_edit_many" class="input input__file" :multiple="true"
+                    @change="updateImages($event)">
+                  <label for="input_edit_many" class="input__file-button">
                       <span class="input__file-icon-wrapper">
                         <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
                       </span>
-                      <span class="input__file-button-text">Выберите файл</span>
+                      <span class="input__file-button-text">Выберите файлы</span>
                   </label>
                 </div>
-                <div class="img-block">
-                  <img :src="imagePath" :alt="editItem.name">
+                <div class="container_img-block">
+                  <transition-group name="imgAnimation_Admin" appear >
+                    <div class="img-block"
+                    v-for="img of imagesToLoad"
+                    :key="img.idx"
+                    >
+                        <img :src="img.src">
+                    </div>
+                  </transition-group>
+                    
                 </div>
             </div>
           </div>
@@ -91,8 +124,8 @@ export default {
 
 
           <div class="content-btn">
-            <button class="btn" @click="$emit('cancel')">Отменить</button>
-            <button class="btn" @click="endEdit">Завершить</button>
+            <button class="btn" @click="$emit('cancel')" :class="{active: !loading}">Отменить</button>
+            <button class="btn" @click="startLoad" :class="{active: !loading}">Загрузить</button>
           </div>
           </div>
         </div>
@@ -230,6 +263,14 @@ button{
   font-size: 14px;
   font-weight: 600;
   transition: all 0.25s ease;
+
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
+button.active{
+  pointer-events: all;
+  filter: none;
 }
 
 .btn:nth-child(1) {
@@ -331,7 +372,7 @@ img {
 .photoDownlouad-box{
   width: 100%;
   padding: 0 0 0 10px;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
 }
 .input__wrapper {
@@ -393,5 +434,33 @@ img {
   cursor: pointer;
   margin: 0 auto;
 }
+
+
+.container_img-block{
+    margin: 20px 0 0 0;
+    width: 100%;
+    height: fit-content;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+}
+.img-block{
+    width: 140px;
+    height: 140px;
+    margin: 0 5px 10px 0;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+.img-block img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+
+
 
 </style>

@@ -4,9 +4,10 @@ import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 
 import gsap from "gsap";
+import editable_text from '../editable_text.vue';
 
 export default {
-  name: "certificates",
+  name: "certificates_screen",
   data() {
     let interaction = useGameStore();
     return{
@@ -16,7 +17,8 @@ export default {
   components:{
     header_comp,
     footer_comp,
-  },
+    editable_text
+},
   methods: {
 
   },
@@ -64,12 +66,12 @@ export default {
     </div>
     <div class="wrapper-block">
         <h1 class="title text-animate-gsap">
-            СЕРТИФИКАТЫ
+            <editable_text dictionary_key="sertificates_title"/>
         </h1>
         <div class="certificates-container">
             <div class="certificates-block">
                 <h3 class="titleBlock text-subTitle-animate-gsap">
-                    сертификат
+                    Сертификат
                 </h3>
                 <div class="block-img">
                     <img src="/img/certificate.svg" alt="certificate"/>
@@ -78,7 +80,7 @@ export default {
                     Скачать сертификат
                 </button>
                 <span class="text text-text-animate-gsap">
-                    Уважаемые коллеги, вы можете скачать сертификат участника наградной кампании«Энергия признания СИБУР» 2022.
+                    <editable_text dictionary_key="sertificate_desc"/>
                 </span>
             </div>
             <div class="certificates-block">
@@ -92,8 +94,11 @@ export default {
                     Скачать рамку
                 </button>
                 <span class="text text-text-animate-gsap">
-                    Вы можете скачать рамку для социальных сетей и поделиться своими профессиональными достижениями с друзьями.
+                    <editable_text dictionary_key="frame_desc"/>
                 </span>
+                <div class="before-text">
+                    <editable_text dictionary_key="frame_note"/>
+                </div>
             </div>
         </div>
     </div>
@@ -138,8 +143,8 @@ export default {
     border-radius: 10px;
     padding: 0 30px;
 }
-.certificates-block:nth-child(2)::before{
-    content: "*Рекомендуем делать фоторамки с личных мобильных устройств и планшетов.С корпоративного ноутбука может некорректно отображаться изображение.";
+
+.before-text{
     width: 100%;
     padding: 0 30px;
     font-size: 12px;
@@ -150,7 +155,6 @@ export default {
     transform: translateY(60px);
     text-align: center;
 }
-
 .titleBlock{
     font-size: 36px;
     font-weight: 600;
@@ -165,6 +169,7 @@ export default {
     background-color: var(--nipigasColorAdditional);
     border: none;
     padding: 10px;
+    border-radius: 5px;
     margin: 25px 0 20px 0;
     transition: all 0.25s ease;
     cursor: pointer;
@@ -208,13 +213,13 @@ export default {
         padding: 1.5vw;
         justify-content: flex-start;
     }
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(5vw);
         padding: 0 1.5vw;
     }
 }
 @media (max-width: 1200px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(8vw);
         padding: 0 1.5vw;
     }
@@ -238,7 +243,7 @@ export default {
     .certificates-block:nth-child(1){
         margin: 0 0 50px 0;
     }
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(50px);
         padding: 0 20px;
     }
@@ -250,7 +255,7 @@ export default {
 
 }
 @media (max-width: 640px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(70px);
     }
     .title {
@@ -261,7 +266,7 @@ export default {
     }
 }
 @media (max-width: 480px) {
-    .certificates-block:nth-child(2)::before{
+    .before-text{
         transform: translateY(100px);
     }
     .wrapper-block{

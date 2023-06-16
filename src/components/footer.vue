@@ -22,8 +22,13 @@ export default {
 <template>
   <div class="footer">
     <div class="footer-content">
-        <div class="footer-logo">
-            <img src="/img/sibur_white.svg" alt="sibur_white"/>
+        <div class="footer-logo_block">
+            <div class="footer-logo">
+                <img src="/img/sibur_white.svg" alt="sibur_white"/>
+            </div>
+            <span>
+                Сделаем успех видимым для каждого!
+            </span>
         </div>
         <div class="footer-block-link">
             <div class="link">
@@ -91,12 +96,15 @@ export default {
 }
 
 
+.footer-logo_block{
+    align-items: flex-start;
+}
 .footer-logo{
-    width: 260px;
+    width: 200px;
     height: 48px;
     align-items: flex-start;
 }
-.footer-logo::after{
+.footer-logo_block span{
     content: "Сделаем успех видимым для каждого!";
     font-size: 14px;
     margin: 10px 0 0 0;
@@ -170,8 +178,8 @@ a{
         width: 100%;
         align-items: center;
     }
-    .footer-logo{
-        height: 112px;
+    .footer-logo_block{
+        align-items: center;
     }
 }
 @media (max-width: 640px) {

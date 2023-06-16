@@ -33,9 +33,9 @@ export default {
             }
         }else{
             if(this.item.gender){
-                return new URL('files/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
             }else{
-                return new URL('files/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
             }
             
         }
@@ -58,23 +58,37 @@ export default {
             {{ item.name }}
         </div>
         <div class="corporate-item_post tempelBlock">
-            <span>Должность: </span>{{ item.position }}
+            {{ item.position }}
         </div>
         <div class="corporate-item_filter tempelBlock">
             {{ item.company }}
         </div>
-        <div class="corporate-item_reward tempelBlock">
-            <span>Награда: </span>{{ item.award }}
+        <div class="corporate-item_reward tempelBlock" v-if="item.issued">
+            <span class="imgBlock"> 
+                <img src="/img/degree_left.svg" alt="cup">
+            </span>
+            {{ item.award }}
+            <span class="imgBlock"> 
+                <img src="/img/degree_right.svg" alt="cup">
+            </span>
+        </div>
+        <div class="corporate-item_date tempelBlock" v-if="item.grade">
+            <span class="degreeBlock">
+                {{ item.grade }}
+            </span>
         </div>
         <div class="corporate-item_date tempelBlock" v-if="item.issued">
-            <span>Выдана: </span>{{ item.issued }}
+            <span>Награда выдана: </span>{{ item.issued }}
+        </div>
+        <div class="corporate-item_date tempelBlock" v-if="!item.issued">
+            {{ item.award }}
         </div>
     </div>
 </template>
 
 <style scoped>
 .corporate-item{
-  width: calc(20% - 20px);
+  width: calc(25% - 20px);
   height: fit-content;
   min-height: 240px;
   color: var(--textColorBlack);
@@ -93,19 +107,56 @@ export default {
     color: var(--nipigasColorMain);
     font-size: 16px;
     font-weight: 700;
-    margin: 0 0 10px 0;
+    margin: 0 0 5px 0;
     text-align: center;
 }
 
 .tempelBlock{
-    width: 100%;
+    width: 90%;
+    font-size: 14px;
     display: block;
+    text-align: center;
+    line-height: normal;
 }
 .corporate-item_filter{
     font-weight: 600;
 }
+.corporate-item_post.tempelBlock{
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+.corporate-item_filter.tempelBlock{
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    margin: 0 0 10px 0;
+}
 .corporate-item_post span{
     font-weight: 600;
+}
+.corporate-item_reward.imgBlock{
+    display: flex;
+}
+.imgBlock img{
+    display: flex;
+    width: 24px;
+    height: 24px;
+    /* transform: translateY(2px); */
+    margin: 0 5px;
+}
+.corporate-item_reward.tempelBlock{
+    display: flex;
+    flex-direction: row;
+}
+.corporate-item_reward{
+    margin: 0 0 10px 0;
+    color: var(--nipigasColorAdditional);
+    font-weight: 700;
 }
 .corporate-item_reward span{
     font-weight: 600;
@@ -116,12 +167,33 @@ export default {
     color: var(--nipigasColorMain);
 }
 
+.corporate-item_date.tempelBlock{
+    display: flex;
+}
+.degreeBlock{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background: url(/img/degree.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 5px 0 0px 0;
+}
+.corporate-item_date span.degreeBlock{
+    color: var(--nipigasColorAdditional);
+    font-size: 16px;
+    font-weight: 800;
+}
+
 @media (max-width: 1440px) {
     .corporate-item{
-        min-width: 212px;
+        min-width: 270px;
     }
 }
-@media (max-width: 580px) {
+@media (max-width: 725px) {
     .corporate-item{
         width: 100%;
     }

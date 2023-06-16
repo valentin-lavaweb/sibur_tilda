@@ -248,6 +248,7 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
+        if(!updItem) return;
         this.editItem(updItem);
       }
       this.editedItem = item;
@@ -257,6 +258,7 @@ export default {
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
+        if(!newItem) return;
         this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
@@ -282,9 +284,9 @@ export default {
             }
         } else {
           if (item.gender) {
-            return new URL('files/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+            return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
           } else {
-            return new URL('files/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+            return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
           }
         }
       }
@@ -315,6 +317,25 @@ export default {
           <Personal_awards_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem" ref="editForm" :availableSections="availableSections"/>
         </transition>
       </Teleport>
+
+      <div class="control-panel">
+        <button class="btn" @click="duplicateItem(
+          { 
+            name: null,
+            position: null,
+            company: null,
+            award: null,
+            grade: null,
+            issued: null,
+            gender: null,
+            image: null,
+            personal_award_section_id: availableSections[0]?.id,
+            year: (new Date()).getFullYear() 
+          }
+          )">
+            добавить запись
+        </button>
+      </div>
 
     <Vue3EasyDataTable 
     v-model:server-options="serverOptions" 
@@ -387,7 +408,7 @@ export default {
       <template #item-image="item">
         <div class="photoDownlouad-box">            
           <div class="input__wrapper">
-            <input name="file" type="file" :id="`input_img_${item.id}`" class="input input__file" multiple="false"
+            <input name="file" accept="image/*" type="file" :id="`input_img_${item.id}`" class="input input__file" multiple="false"
               @change="updateImage(item, $event)">
             <label :for="`input_img_${item.id}`" class="input__file-button">
                 <span class="input__file-icon-wrapper">

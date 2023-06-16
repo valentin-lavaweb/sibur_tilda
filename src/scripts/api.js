@@ -108,6 +108,10 @@ export default {
         return apiClient.get("/gallery");
       },
 
+      getDictionary() {
+        return apiClient.get("/dictionary");
+      },
+
       
 
 
@@ -266,6 +270,23 @@ export default {
        */
       deleteImage(id) {
         return apiClient.delete("/image/" + id);
+      },
+
+
+
+
+
+      /**
+       * Description
+       * @param {string} key
+       * @param {string} text
+       * @returns {Promise}
+       */
+      updateText(key, text) {
+        let payload = new FormData();
+        payload.append('_method', 'PUT');
+        payload.append('text', text);
+        return apiClient.post("/dictionary/" + key, payload);
       },
 
 

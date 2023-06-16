@@ -176,6 +176,7 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
+        if(!updItem) return;
         this.editItem(updItem);
       }
       this.editedItem = item;
@@ -185,6 +186,7 @@ export default {
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
+        if(!newItem) return;
         this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
@@ -225,6 +227,20 @@ export default {
           <personal_award_sections_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem" ref="editForm"/>
         </transition>
       </Teleport>
+
+
+      <div class="control-panel">
+        <button class="btn" @click="duplicateItem({title: null, issuer_filter: null, company_filter: null, grade_filter: null})">
+            добавить запись
+        </button>
+
+      </div>
+
+
+
+
+
+
 
     <Vue3EasyDataTable
       :search-value="searchValue"

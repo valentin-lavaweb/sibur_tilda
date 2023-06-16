@@ -4,6 +4,7 @@ import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 
 import gsap from "gsap";
+import editable_text from '../editable_text.vue';
 
 export default {
   name: "types_of_awards_page",
@@ -16,7 +17,8 @@ export default {
   components:{
     header_comp,
     footer_comp,
-  },
+    editable_text
+},
   methods: {
 
   },
@@ -36,11 +38,17 @@ export default {
     });
   },
   computed:{
-    
+    availableNominations(){
+      return this.interaction.availableNominations;
+    }
   },
-  watch:{
-
-  },
+  async beforeRouteEnter(to, from, next){
+    let interaction = useGameStore();
+    if(!interaction.commandAwards){
+        await interaction.loadCommandAwards();
+    }
+    next();
+  }
 };
 </script>
 
@@ -53,67 +61,128 @@ export default {
     <header_comp/>
     <div class="wrapper-block">
       <h1 class="title text-animate-gsap">
-        ВИДЫ НАГРАД
+        <editable_text dictionary_key="awards_title"/>
       </h1>
       <span class="text description_title text-animate-gsap">
-        Каждая награда — это способ выразить благодарность за ключевые достижения и мотивировать вас на дальнейшее развитие,
-        профессиональный рост. СИБУР поощряет сотрудников сразу на нескольких уровнях.
+        <editable_text dictionary_key="awards_desc"/>
       </span>
-      <video 
+      <!-- <video 
         class="videoBlock video-animate-gsap" 
         src="/video/video.mp4"
         poster="https://static.tildacdn.com/tild3264-6339-4339-a463-323162643665/photo.jpg"
         controls
       >
-
-      </video>
-      <h2 class="subTitle text-animate-gsap">
-        ВЕДОМСТВЕННЫЕ
+      </video> -->
+      <h2 class="subTitle  m_top-60 text-animate-gsap">
+        <editable_text dictionary_key="department_title"/>
       </h2>
       <span class="text description_subTitle text-animate-gsap">
-        Награды вручаются за весомый вклад в развитие компании и индустрии в целом. Достижения подчеркиваются 
-        орденами, благодарностями и дипломами от Минпромторга, Минэнерго, Российского союза химиков, 
-        а также органов местного самоуправления.
+        <editable_text dictionary_key="department_desc"/>
       </span>
       <h2 class="subTitle m_top-60 text-animate-gsap">
-        КОРПОРАТИВНЫЕ
+        <editable_text dictionary_key="corporate_title"/>
       </h2>
       <div class="text-container">
-        <div class="text-block">
+        <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
-            Командные
+            <editable_text dictionary_key="command_title"/>
           </h3>
           <span class="text text-animate-gsap">
-            Поощрение значимых командных достижений
-            и вклад участников в развитие отрасли.
+            <editable_text dictionary_key="command_desc"/>
           </span>
-          <span class="text nipigas text-animate-gsap">
-            Номинация «Производственное решение года»
+          <span class="text nipigas text-animate-gsap nominations"
+          v-for="nomination in availableNominations"
+          :key="nomination"
+          >
+            Номинация «{{nomination}}»
           </span>
-          <span class="text nipigas text-animate-gsap">
-            Номинация «Решение в области по работе 
-            с клиентами»
-          </span>
-          <span class="text nipigas text-animate-gsap">
-            Номинация «Организационное решение»
-          </span>
-        </div>
-        <div class="text-block">
+        </div> -->
+        
+        <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
-            Индивидуальные
+            <editable_text dictionary_key="individual_title"/>
           </h3>
           <span class="text text-animate-gsap">
-            За личные достижения и высокую квалификацию.
+            <editable_text dictionary_key="individual_desc"/>
           </span>
           <span class="text text-animate-gsap">
-            1 степень. Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника, которые сделали уникальный вклад в развитие компании и отрасли, продемонстрировали достижения, выходящие за рамки занимаемой должности.
+            <b>Степень 1.</b><editable_text dictionary_key="individual_desc_grade_1"/>
           </span>
           <span class="text text-animate-gsap">
-            2 степень. Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды2 степени.
+            <b>Степень 2.</b><editable_text dictionary_key="individual_desc_grade_2"/>
           </span>
           <span class="text text-animate-gsap">
-            3 степень. Награду получают как опытные специалисты, так и новички – те сотрудники, которые внесли значимый вклад в развитие своего предприятия и получили признание в коллективе.
+            <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
+        </div> -->
+        <div class="text-block">
+          <h3 class="miniTitle text-animate-gsap">
+            <editable_text dictionary_key="individual_title"/>
+          </h3>
+          <div class="awards-container">
+            <div class="block-awards text-animate-gsap">
+              <div class="awards-title">
+                <span>
+                  <img src="/img/degree_left.svg" alt="degree">
+                </span>
+                1
+                <span>
+                  <img src="/img/degree_right.svg" alt="degree">
+                </span>
+              </div>
+              <div class="awards-text">
+                <b>Степень 1.</b><editable_text dictionary_key="individual_desc_grade_1"/>
+              </div>
+            </div>
+            <div class="block-awards text-animate-gsap">
+              <div class="awards-title">
+                <span>
+                  <img src="/img/degree_left.svg" alt="degree">
+                </span>
+                  2
+                <span>
+                  <img src="/img/degree_right.svg" alt="degree">
+                </span>
+              </div>
+              <div class="awards-text">
+                <b>Степень 2.</b><editable_text dictionary_key="individual_desc_grade_2"/>
+              </div>
+            </div>
+            <div class="block-awards text-animate-gsap">
+              <div class="awards-title">
+                <span>
+                  <img src="/img/degree_left.svg" alt="degree">
+                </span>
+                  3
+                <span>
+                  <img src="/img/degree_right.svg" alt="degree">
+                </span>
+              </div>
+              <div class="awards-text">
+                <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
+              </div>
+            </div>
+          </div>
+          <h3 class="miniTitle mar-30 text-animate-gsap">
+            <editable_text dictionary_key="command_title"/>
+          </h3>
+          <div class="awards-container column">
+            <span class="text centerline text-animate-gsap">
+              <editable_text dictionary_key="command_desc"/>
+            </span>
+            <span class="text nipigasAprivel text-animate-gsap nominations"
+              v-for="nomination in availableNominations"
+              :key="nomination"
+              >
+              <span class="degree">
+                <img src="/img/degree_left.svg" alt="degree">
+              </span>
+               «{{nomination}}»
+              <span class="degree">
+                <img src="/img/degree_right.svg" alt="degree">
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -130,9 +199,8 @@ export default {
 .wrapper-block{
    width: 1160px;
    height: fit-content;
-   margin: 130px 0 0 0;
+   margin: 200px 0 0 0;
 }
-
 
 
 .title{
@@ -145,6 +213,21 @@ export default {
   font-size: 16px;
   color: var(--textColorBlack);
   text-align: center;
+}
+.text-block span.text.nominations.nipigasAprivel{
+  width: fit-content;
+  margin: 0 0 35px 0;
+  color: var(--nipigasColorAdditional);
+  font-size: 20px;
+  font-weight: 700;
+  align-items: center;
+}
+.text-block span.degree{
+  width: fit-content;
+  margin: 0 10px;
+}
+.nipigasAprivel span img{
+  width: 20px;
 }
 .subTitle{
   font-size: 36px;
@@ -159,6 +242,14 @@ export default {
   font-size: 24px;
   font-weight: 700;
   color: var(--nipigasColorMain);
+}
+.mar-30{
+  margin: 30px 0 0 0;
+}
+.text-block span.text.centerline{
+  width: 100%;
+  text-align: center;
+  margin: 0 0 40px 0;
 }
 .nipigas{
   font-weight: 700;
@@ -178,21 +269,11 @@ export default {
 
 
 .text-container{
-  width: 840px;
+  width: 100%;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 0 0 225px 0;
-}
-.text-block:first-child{
-  width: calc(50% - 60px);
-  align-items: flex-start;
-  margin: 0 30px 0 0;
-}
-.text-block:last-child{
-  width: calc(50% - 60px);
-  align-items: flex-start;
-  margin: 0 0 0 30px;
+  margin: 10px 0 225px 0;
 }
 .text-block h3:first-child{
   margin: 0 0 20px 0;
@@ -207,6 +288,20 @@ export default {
 }
 .text-block span.text{
   margin: 0 0 20px 0;
+  display: block;
+  word-wrap: break-word;
+  word-break: normal;
+  text-align: left;
+  
+}
+
+b{
+  width: fit-content;
+  word-wrap: break-word;
+  word-break: normal;
+  text-align: left;
+  color: var(--nipigasColorMain);
+  font-weight: 600;
 }
 
 .videoBlock{
@@ -242,6 +337,78 @@ export default {
 
 
 
+
+
+.awards-container{
+  width: 100%;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 20px 0 0 0;
+}
+.awards-container.column{
+  flex-direction: column;
+  margin: 16px 0 0 0;
+  justify-content: center;
+  align-items: center;
+}
+.block-awards{
+  width: 30%;
+}
+.awards-title{
+  flex-direction: row;
+  color: var(--nipigasColorAdditional);
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+.awards-title span{
+    width: 20px;
+    margin: 0 5px;
+}
+
+.awards-text{
+  display: block;
+  color: var(--textColorBlack);
+  text-align: center;
+}
+
+
+
+
+
+
+
+.text-block span.text.nominations{
+  display: flex;
+  width: fit-content;
+}
+
+
+
+.nominations:last-child:after{
+  content: "Новая номинация";
+  position: absolute;
+  width: 100%;
+  top: 0;
+  color: var(--nipigasColorMain);
+  font-size: 10px;
+  font-weight: 600;
+  transform: translateY(-30%);
+  padding: 0 0 0 0;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 1440px) {
   .wrapper-block, .text-container, .description_subTitle, .description_title {
     width: 70vw;
@@ -263,8 +430,17 @@ export default {
   .subTitle, .miniTitle{
     font-size: 1.8vw;
   }
-  .text{
+  .text, .awards-text{
     font-size: 1vw;
+  }
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 1.2vw;
+  }
+  .awards-title{
+    font-size: 1.6vw;
+  }
+  .awards-title span, .nipigasAprivel span img{
+    width: 1vw;
   }
 }
 @media (max-width: 1024px) {
@@ -283,16 +459,24 @@ export default {
   .subTitle, .miniTitle{
     font-size: 32px;
   }
-  .text{
+  .text, .awards-text{
     font-size: 16px;
   }
-  .text-block:first-child{
-    width: calc(50% - 30px);
-    margin: 0 15px 0 0;
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 20px;
   }
-  .text-block:last-child{
-      width: calc(50% - 30px);
-      margin: 0 0 0 15px;
+  .awards-title{
+    font-size: 24px;
+  }
+  .awards-title span, .nipigasAprivel span img{
+    width: 16px;
+  }
+  .awards-container{
+    flex-direction: column;
+  }
+  .block-awards{
+    width: 100%;
+    margin: 0 0 40px 0;
   }
 }
 @media (max-width: 980px) {
@@ -314,8 +498,8 @@ export default {
     width: 100%;
     margin: 0;
   }
-  .text {
-    text-align: left;
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 15px;
   }
 }
 @media (max-width: 480px) {
@@ -328,17 +512,31 @@ export default {
   .title{
     font-size: 32px;
   }
-  .subTitle, .miniTitle{
-    font-size: 24px;
+  .subTitle{
+    font-size: 20px;
+  } 
+  .miniTitle{
+    font-size: 18px;
   }
   .text{
     font-size: 16px;
+  }
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 3.1vw;
+  }
+  .nipigasAprivel span img{
+    width: 3.3vw;
   }
 }
 @media (max-width: 420px) {
 
 }
-@media (max-width: 380px) {
-
+@media (max-width: 340px) {
+  .text-block span.text.nominations.nipigasAprivel{
+    font-size: 3.0vw;
+  }
+  .nipigasAprivel span img{
+    width: 3.0vw;
+  }
 }
 </style>

@@ -175,15 +175,22 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
+        if(!updItem) return;
         this.editItem(updItem);
       }
       this.editedItem = item;
       this.$refs.editForm?.setItem(item)
 
     },
+
+
+
+
+
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
+        if(!newItem) return;
         this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
@@ -225,7 +232,11 @@ export default {
         </transition>
       </Teleport>
 
-    
+      <div class="control-panel">
+        <button class="btn" @click="duplicateItem({nomination: null, description: null, authors: null, year: (new Date()).getFullYear() })">
+            добавить запись
+        </button>
+      </div>
 
 
     <Vue3EasyDataTable :search-value="searchValue" :headers="headers" :items="items" border-cell

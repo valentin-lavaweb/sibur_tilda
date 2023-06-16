@@ -47,9 +47,9 @@ export default {
             }
         }else if(this.editItem.image === null){
             if (this.editItem.gender) {
-                return new URL('files/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
             } else {
-                return new URL('files/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
+                return new URL('storage/default_women.svg', import.meta.env.VITE_VUE_APP_API_URL);
             }
         }
         else{
@@ -130,7 +130,7 @@ export default {
               <h2>Фото</h2>
               <div class="photoDownlouad-box">            
                 <div class="input__wrapper">
-                  <input name="file" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" multiple="false"
+                  <input name="file" accept="image/*" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" :multiple="false"
                     @change="updateImage($event)">
                   <label :for="`input_edit_${editItem.id}`" class="input__file-button">
                       <span class="input__file-icon-wrapper">

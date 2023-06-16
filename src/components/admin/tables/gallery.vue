@@ -5,6 +5,7 @@ import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 
 import TextEdit from '../cells/textEdit.vue';
 import gallery_edit from './gallery_edit.vue';
+import gallery_edit_many from './gallery_edit_many.vue';
 // import CheckBoxEdit from '../cells/checkBoxEdit.vue';
 
 
@@ -33,12 +34,14 @@ export default {
       headers: headers,
       editedItem: null,
       onEditDone: null,
+      manyUpload: false
     }
   },
   components: {
     Vue3EasyDataTable,
     TextEdit,
-    gallery_edit
+    gallery_edit,
+    gallery_edit_many
   },
   methods: {
     async createItem(item) {
@@ -197,6 +200,7 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
+        if(!updItem) return;
         this.editItem(updItem);
       }
       this.editedItem = item;
@@ -206,10 +210,14 @@ export default {
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
+        if(!newItem) return;
         this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
 
+    },
+    async openManyUpload() {
+      this.manyUpload = true;
     },
   },
   created() {
@@ -250,11 +258,35 @@ export default {
 <template>
   <div class="gallery_table">
 
-    <Teleport to="body" >
+      <Teleport to="body" >
         <transition name="openPage" mode="out-in" appear>
           <gallery_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem" ref="editForm"/>
         </transition>
       </Teleport>
+
+      <Teleport to="body" >
+        <transition name="openPage" mode="out-in" appear>
+          <gallery_edit_many :initialYear="(new Date()).getFullYear()" :createItem="createItem" @cancel="manyUpload = false" v-if="manyUpload"/>
+        </transition>
+      </Teleport>
+
+
+
+
+      <div class="control-panel">
+        <button class="btn" @click="duplicateItem({year: (new Date()).getFullYear()})">
+            добавить запись
+        </button>
+        <button class="btn" @click="openManyUpload()">
+            добавить несколько записей
+        </button>
+      </div>
+
+
+
+
+
+
 
     <Vue3EasyDataTable 
       :search-value="searchValue"
@@ -269,7 +301,7 @@ export default {
       <template #item-image="item">
         <div class="photoDownlouad-box">            
           <div class="input__wrapper">
-            <input name="file" type="file" :id="`input_img_${item.id}`"  class="input input__file" multiple="false"
+            <input name="file" accept="image/*" type="file" :id="`input_img_${item.id}`"  class="input input__file" multiple="false"
               @change="updateImage(item, $event)">
             <label :for="`input_img_${item.id}`" class="input__file-button">
                 <span class="input__file-icon-wrapper">
