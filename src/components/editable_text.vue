@@ -1,7 +1,6 @@
 <script>
 import { useGameStore } from '@/stores/interface-interaction.js';
 
-
 export default {
   props: {
     dictionary_key: String,
@@ -182,7 +181,7 @@ export default {
   border: 1px solid var(--nipigasColorMain);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 5px rgba(0, 140, 149, 0.5);
 }
 
 
@@ -198,7 +197,7 @@ textarea {
   font-family: "Dinpro", sans-serif;
   color: var(--textColorBlack);
   resize: both;
-  background-color: white;
+  background-color: transparent;
   border: none;
 }
 
@@ -209,11 +208,18 @@ textarea {
   padding: 0 10px;
   width: 100%;
   height: 50px;
-  background-color: rgb(236, 236, 236);
+  background-color: rgba(236, 236, 236, 0.5);
   color: var(--nipigasColorMain);
   font-weight: 600;
   cursor: move;
+  backdrop-filter: blur(10px);
 }
+.edit-content {
+  width: fit-content;
+  height: fit-content;
+  background-color: rgb(255, 255, 255);
+}
+
 .edit-left_block{
   flex-direction: row;
   color: var(--nipigasColorMain);
@@ -305,11 +311,4 @@ button::before {
 
 
 
-
-
-.edit-content {
-  width: fit-content;
-  height: fit-content;
-  background-color: rgb(236, 236, 236);
-}
 </style>
