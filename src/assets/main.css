@@ -32,6 +32,37 @@
 }
 
 
+@font-face {
+  font-family: Roboto;
+  src: url(../assets/fonts/Roboto-400.ttf) format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(../assets/fonts/Roboto-500.ttf) format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(../assets/fonts/Roboto-600.ttf) format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(../assets/fonts/Roboto-700.ttf) format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: Roboto;
+  src: url(../assets/fonts/Roboto-800.ttf) format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+
 
 
 * {-webkit-tap-highlight-color: rgba(0, 0, 0, 0)}
@@ -72,7 +103,7 @@ body {
   justify-content: center;
   align-items: center;
   place-items: center;
-  font-family: "Dinpro", sans-serif;
+  font-family: "Roboto", "Dinpro", sans-serif;
 }
 body div{
   display: flex;
