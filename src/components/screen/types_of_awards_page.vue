@@ -217,7 +217,7 @@ export default {
 .text-block span.text.nominations.nipigasAprivel{
   width: fit-content;
   margin: 0 0 35px 0;
-  color: var(--nipigasColorAdditional);
+  color: var(--nipigasColorMain);
   font-size: 20px;
   font-weight: 700;
   align-items: center;
@@ -391,7 +391,7 @@ b{
   position: absolute;
   width: 100%;
   top: 0;
-  color: var(--nipigasColorMain);
+  color: var(--nipigasColorAdditional);
   font-size: 10px;
   font-weight: 600;
   transform: translateY(-30%);

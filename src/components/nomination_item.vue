@@ -103,7 +103,7 @@ span img{
   align-items: center;
   font-size: 20px;
   font-weight: 700;
-  color: var(--nipigasColorAdditional);
+  color: var(--nipigasColorMain);
   margin: 0 0 25px 0;
 }
 .text{
