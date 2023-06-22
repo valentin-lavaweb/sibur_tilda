@@ -62,7 +62,7 @@ export default {
         <span class="text text-animate-gsap ">  
           <editable_text dictionary_key="main_desc"/>
         </span>
-        <span class="pinata text-animate-gsap">
+        <span class="nigascol text-animate-gsap">
           <editable_text dictionary_key="main_subdesc"/>
         </span>
       </div>
@@ -117,6 +117,11 @@ export default {
   font-size: 16px;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
+}
+.nigascol{
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--nipigasColorMain);
 }
 
 

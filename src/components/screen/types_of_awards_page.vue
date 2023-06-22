@@ -204,13 +204,13 @@ export default {
 
 
 .title{
-  font-size: 96px;
+  font-size: 48px;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 0 0 20px 0;
 }
 .text{
-  font-size: 16px;
+  font-size: 18px;
   color: var(--textColorBlack);
   text-align: center;
 }

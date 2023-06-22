@@ -26,9 +26,9 @@ export default {
             <div class="footer-logo">
                 <img src="/img/sibur_white.svg" alt="sibur_white"/>
             </div>
-            <span>
+            <!-- <span>
                 Сделаем успех видимым для каждого!
-            </span>
+            </span> -->
         </div>
         <div class="footer-block-link">
             <div class="link">
@@ -100,16 +100,16 @@ export default {
     align-items: flex-start;
 }
 .footer-logo{
-    width: 200px;
+    width: 150px;
     height: 48px;
     align-items: flex-start;
 }
-.footer-logo_block span{
+/* .footer-logo_block span{
     content: "Сделаем успех видимым для каждого!";
     font-size: 14px;
     margin: 10px 0 0 0;
     font-weight: 600;
-}
+} */
 
 .footer-block-link{
     align-items: flex-start;
