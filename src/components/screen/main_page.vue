@@ -135,14 +135,14 @@ export default {
 }
 .wreath{
   position: absolute;
-  bottom: 150px;
-  left: 29%;
+  bottom: 200px;
+  left: 35%;
   width: 180px;
   animation: wreathMove 3s ease infinite;
 }
 .wreath.right{
   left: unset;
-  right: 22%;
+  right: 12%;
   animation: wreathMove2 3s ease infinite;
 }
 
