@@ -36,6 +36,11 @@ export default {
         <div class="header-back_block"></div>
         <div class="back_block"></div>
         <div class="header-content">
+            <div class="header-link" v-if="interaction.isAdmin">
+                    <RouterLink :to="{ name: 'command_awards_table' }" active-class="active">
+                        Админка
+                    </RouterLink>
+                </div>
             <div class="header-logo">
                 <div class="logo">
                     <RouterLink :to="{ name: 'main_page' }" active-class="active">

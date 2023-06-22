@@ -6,6 +6,24 @@ export default {
     item: Object,
   },
   name: "nomination_item",
+  computed:{
+    imagePath(){
+        if(this.item.image){
+            try{
+                let url = new URL(this.item.image);
+                return url;
+            }catch{
+                let url = new URL('files/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                return url;
+            }
+        }else{
+                return new URL('storage/default_command.jpg', import.meta.env.VITE_VUE_APP_API_URL);
+          
+            
+        }
+        
+    }
+  }
 };
 </script>
 
@@ -37,7 +55,7 @@ export default {
         </div>
       </div>
       <div class="back-item-content">
-        <img src="/test.jpg" alt="test">
+        <img :src="imagePath" alt="backImage">
       </div>
     </div>
 </template>

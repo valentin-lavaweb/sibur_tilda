@@ -19,10 +19,37 @@ export default {
     endEdit(event){
       this.$emit('done', this.editItem);
     },
+    async updateImage(event) {
+
+    let files = event.target.files || event.dataTransfer.files;
+    if (!files.length){
+        this.editItem.image = null;
+    }else{
+        this.editItem.image = files[0];
+    }
+    },
     setItem(item){
       this.editItem = Object.assign({}, item);
     }
   },
+  computed:{
+    imagePath(){
+        if(typeof this.editItem.image === 'string'){
+            try{
+                let url = new URL(this.editItem.image);
+                return url;
+            }catch{
+                let url = new URL('files/' + this.editItem.image, import.meta.env.VITE_VUE_APP_API_URL);
+                return url;
+            }
+        }else if(this.editItem.image === null){
+          return new URL('storage/default_command.jpg', import.meta.env.VITE_VUE_APP_API_URL);
+        }
+        else{
+            return URL.createObjectURL(this.editItem.image);
+        }
+    }
+  }
 };
 </script>
 
@@ -51,6 +78,25 @@ export default {
           <h2>Авторы</h2>
           <TextEdit :item="editItem" editProp="authors" @updateItem="editItem = $event"/>
         </div>
+
+        <div class="content">
+              <h2>Фото</h2>
+              <div class="photoDownlouad-box">            
+                <div class="input__wrapper">
+                  <input name="file" accept="image/*" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" :multiple="false"
+                    @change="updateImage($event)">
+                  <label :for="`input_edit_${editItem.id}`" class="input__file-button">
+                      <span class="input__file-icon-wrapper">
+                        <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
+                      </span>
+                      <span class="input__file-button-text">Выберите файл</span>
+                  </label>
+                </div>
+                <div class="img-block">
+                  <img :src="imagePath" :alt="editItem.name">
+                </div>
+              </div>
+            </div>
 
         <div class="content">
           <h2>Год</h2>
@@ -233,4 +279,87 @@ img {
     width: 100px;
     height: 100px;
 }
+
+
+
+
+
+
+
+
+
+.photoDownlouad-box{
+  width: 100%;
+  padding: 0 0 0 10px;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.input__wrapper {
+  width: fit-content;
+  position: relative;
+  margin: 0px 20px 0px 0px;
+}
+ 
+.input__file {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+ 
+.input__file-icon-wrapper {
+  height: 40px;
+  width: 40px;
+  margin-right: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-right: 1px solid #fff;
+}
+.input__file-icon-wrapper img{
+  width: 20px;
+  height: 20px;
+}
+ 
+.input__file-button-text {
+  line-height: 1;
+  margin-top: 1px;
+}
+ 
+.input__file-button {
+  width: 100%;
+  max-width: 290px;
+  height: 40px;
+  background: #1bbc9b;
+  color: #fff;
+  padding: 0 5px 0 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
 </style>

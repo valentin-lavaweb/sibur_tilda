@@ -15,7 +15,7 @@ const headers = [
   { text: "Номинация", value: "nomination", fixed: true, width: 100 },
   { text: "Описание проекта", value: "description", width: 200 },
   { text: "Авторы", value: "authors", width: 200 },
-  // { text: "Фото", value: "image", width: 200 },
+  { text: "Фото", value: "image", width: 300 },
   { text: "Год", value: "year", width: 75 },
 ]
 
@@ -147,6 +147,28 @@ export default {
 
 
     },
+    async updateImage(item, event) {
+
+      let oldItem = this.items.find(i => i.id == item.id);
+      let oldItemRestore = Object.assign({}, oldItem);
+    try {
+
+      let files = event.target.files || event.dataTransfer.files;
+      if (!files.length) return;
+
+      let res = await this.interaction.api.updateCommandAward(item.id, { image: files[0] });
+      let newItem = res.data.data;
+      Object.assign(oldItem, newItem);
+
+      this.$toast.success("Изображение обновлено");
+    } catch (e) {
+      setTimeout(() => {
+          let oldIdx = this.interaction.commandAwards.findIndex(i => i.id == item.id);
+          this.interaction.commandAwards[oldIdx] = oldItemRestore;
+        }, 500);
+      this.$toast.error(e.message);
+    }
+    },
     async deleteItem(item) {
 
       if (!confirm(`Удалить ${item.nomination}?`)) return;
@@ -213,7 +235,22 @@ export default {
     },
     searchValue() {
       return (this.search && this.search != "") ? this.search : undefined;
-    }
+    },
+    imagePath() {
+      return function (item) {
+        if (item.image) {
+          try{
+                let url = new URL(item.image);
+                return url;
+            }catch{
+                let url = new URL('files/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                return url;
+            }
+        } else {
+            return new URL('storage/default_command.jpg', import.meta.env.VITE_VUE_APP_API_URL);
+        }
+      }
+    },
 
   },
   watch: {
@@ -233,7 +270,7 @@ export default {
       </Teleport>
 
       <div class="control-panel">
-        <button class="btn" @click="duplicateItem({nomination: null, description: null, authors: null, year: (new Date()).getFullYear() })">
+        <button class="btn" @click="duplicateItem({nomination: null, description: null, authors: null, year: (new Date()).getFullYear(), image: null })">
             добавить запись
         </button>
       </div>
@@ -277,25 +314,28 @@ export default {
         </div>
       </template>
 
+      <template #item-image="item">
+        <div class="photoDownlouad-box">            
+          <div class="input__wrapper">
+            <input name="file" accept="image/*" type="file" :id="`input_img_${item.id}`" class="input input__file" multiple="false"
+              @change="updateImage(item, $event)">
+            <label :for="`input_img_${item.id}`" class="input__file-button">
+                <span class="input__file-icon-wrapper">
+                  <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
+                </span>
+                <span class="input__file-button-text">Выберите файл</span>
+            </label>
+          </div>
+          <div class="img-block">
+            <img :src="imagePath(item)" :alt="item.name">
+          </div>
+        </div>
+      </template>
+
 
     </Vue3EasyDataTable>
   </div>
 </template>
-
-
-
-
-<!-- { text: "Id", value: "id", fixed: true },
-{ text: "Имя", value: "name" },
-{ text: "Должность", value: "position" },
-{ text: "Компания", value: "company",  },
-{ text: "Награда", value: "award", },
-{ text: "Степень", value: "grade", },
-{ text: "Выдана", value: "issued", },
-{ text: "Фото", value: "image", },
-{ text: "Год", value: "year" },
-{ text: "Раздел", value: "section" }, -->
-
 
 
 
@@ -396,6 +436,95 @@ option {
 
 .actions button{
   margin: 0 0 20px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.img-block{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 20px 0;
+}
+.img-block img{
+  width: 150px;
+  height: auto;
+}
+.photoDownlouad-box{
+  width: 100%;
+  padding: 0 0 0 10px;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+}
+.input__wrapper {
+  width: fit-content;
+  position: relative;
+  margin: 0px 0px 0px 0px;
+}
+ 
+.input__file {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+ 
+.input__file-icon-wrapper {
+  height: 40px;
+  width: 40px;
+  margin-right: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-right: 1px solid #fff;
+}
+.input__file-icon-wrapper img{
+  width: 20px;
+  height: 20px;
+}
+ 
+.input__file-button-text {
+  line-height: 1;
+  margin-top: 1px;
+}
+ 
+.input__file-button {
+  width: 100%;
+  max-width: 290px;
+  height: 40px;
+  background: #1bbc9b;
+  color: #fff;
+  padding: 0 5px 0 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 auto;
 }
 
 </style>
