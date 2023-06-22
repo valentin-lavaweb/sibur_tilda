@@ -26,13 +26,13 @@ export default {
     corporate_item,
   },
   methods: { 
-    toggleIssuerFilter(issuer){
-        if(!this.filterIssuers.includes(issuer)){
-            this.filterIssuers = [...this.filterIssuers, issuer];
-        }else{
-            this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
-        }
-    },
+    // toggleIssuerFilter(issuer){
+    //     if(!this.filterIssuers.includes(issuer)){
+    //         this.filterIssuers = [...this.filterIssuers, issuer];
+    //     }else{
+    //         this.filterIssuers = this.filterIssuers.filter(i => i != issuer);
+    //     }
+    // },
     // toggleCompanyFilter(company){
     //     if(!this.filterCompanies.includes(company)){
     //         this.filterCompanies = [...this.filterCompanies, company];
@@ -95,8 +95,8 @@ export default {
         let filter = {
             name: query.name,
             companies: query.companies,
-            // issuers: query.issuer ? [query.issuer] : undefined,
-            issuers: query.issuers,
+            issuers: query.issuer ? [query.issuer] : undefined,
+            // issuers: query.issuers,
             grade: query.grade,
             year: query.year,
             limit: 32,
@@ -135,18 +135,18 @@ export default {
     },
     filterIssuers:{
         get(){
-            // return this.$route.query.issuer ?? undefined;
-            let issuers = this.$route.query.issuers;
-            if(issuers){
-                return String(issuers).split(',');
-            }else{
-                return [];
-            }
+            return this.$route.query.issuer ?? undefined;
+            // let issuers = this.$route.query.issuers;
+            // if(issuers){
+            //     return String(issuers).split(',');
+            // }else{
+            //     return [];
+            // }
         },
-        set(issuers){
-            // this.$router.replace({query:{...this.$route.query, issuer: value}})
-            let string = issuers.length > 0 ? issuers.join(',') : undefined;
-            this.$router.replace({query:{...this.$route.query, issuers: string}})
+        set(value){
+            this.$router.replace({query:{...this.$route.query, issuer: value}})
+            // let string = issuers.length > 0 ? issuers.join(',') : undefined;
+            // this.$router.replace({query:{...this.$route.query, issuers: string}})
         },
     },
     filterGrade:{
@@ -457,7 +457,9 @@ export default {
                         </option>
                         <option
                             v-for="issuer in availableIssuers"
-                            :key="issuer">
+                            :value="issuer"
+                            :key="issuer"
+                            >
                             {{ issuer }}
                         </option>
                 </select>
