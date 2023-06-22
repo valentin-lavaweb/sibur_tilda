@@ -31,6 +31,9 @@ export default {
               </span>
               {{ item.authors }}
           </span>  
+          <!-- <button class="show_winers">
+            Показать победителей
+          </button> -->
         </div>
       </div>
       <div class="back-item-content">
@@ -40,6 +43,25 @@ export default {
 </template>
 
 <style scoped>
+/* .show_winers{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin: 30px 0 0 0;
+  padding: 5px 35px;
+  font-weight: 600;
+  border-radius: 5px;
+  background-color: var(--nipigasColorMain);
+  color: var(--white);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.show_winers:hover{
+  background-color: var(--nipigasColorMain-hover);
+} */
 
 .front-item-content{
   width: 100%;
@@ -102,7 +124,7 @@ span img{
   transition: all 0.25s ease;
 }
 .nomination-item:hover{
-  border: 1px solid rgba(252, 194, 23, 1);
+  border: 1px solid rgba(252, 194, 23, 0);
 }
 .nomination-item:hover span:first-child img{
   animation: wreathMove 3s ease infinite;
