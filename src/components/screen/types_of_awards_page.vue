@@ -39,7 +39,7 @@ export default {
   },
   computed:{
     availableNominations(){
-      return this.interaction.availableNominations;
+      return this.interaction.availableNominations.filter(n => n != "Приз зрительских симпатий");
     }
   },
   async beforeRouteEnter(to, from, next){
