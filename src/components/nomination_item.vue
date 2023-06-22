@@ -111,7 +111,7 @@ span img{
   animation: wreathMove2 3s ease infinite;
 }
 
-@keyframes wreathMove {
+/* @keyframes wreathMove {
   0% {
     animation-timing-function: ease-out;
   }
@@ -133,7 +133,7 @@ span img{
   100% {
 
   }
-}
+} */
 
 
 .item-content{
