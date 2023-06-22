@@ -99,6 +99,7 @@ export default {
             issuers: query.issuers,
             grade: query.grade,
             year: query.year,
+            limit: 32,
         }
         return filter;
     },
