@@ -457,25 +457,6 @@ export default {
 </template>
 
 
-
-
-<!-- { text: "Id", value: "id", fixed: true },
-{ text: "Имя", value: "name" },
-{ text: "Должность", value: "position" },
-{ text: "Компания", value: "company",  },
-{ text: "Награда", value: "award", },
-{ text: "Степень", value: "grade", },
-{ text: "Выдана", value: "issued", },
-{ text: "Фото", value: "image", },
-{ text: "Год", value: "year" },
-{ text: "Раздел", value: "section" }, -->
-
-
-
-
-
-
-
 <style scoped>
 
 

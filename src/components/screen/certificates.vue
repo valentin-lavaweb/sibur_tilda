@@ -123,7 +123,7 @@ export default {
 
 .title{
     margin: 66px 0 0 0;
-    font-size: 96px;
+    font-size: 48px;
     font-weight: 700;
     color: var(--nipigasColorAdditional);
 }

@@ -62,7 +62,7 @@ export default {
         <span class="text text-animate-gsap ">  
           <editable_text dictionary_key="main_desc"/>
         </span>
-        <span class="pinata text-animate-gsap">
+        <span class="nigascol text-animate-gsap">
           <editable_text dictionary_key="main_subdesc"/>
         </span>
       </div>
@@ -118,6 +118,11 @@ export default {
   font-weight: 700;
   color: var(--nipigasColorAdditional);
 }
+.nigascol{
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--nipigasColorMain);
+}
 
 
 .img-block{
@@ -130,14 +135,14 @@ export default {
 }
 .wreath{
   position: absolute;
-  bottom: 150px;
-  left: 29%;
+  bottom: 200px;
+  left: 35%;
   width: 180px;
   animation: wreathMove 3s ease infinite;
 }
 .wreath.right{
   left: unset;
-  right: 22%;
+  right: 12%;
   animation: wreathMove2 3s ease infinite;
 }
 

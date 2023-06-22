@@ -72,11 +72,11 @@ export default {
                 <img src="/img/degree_right.svg" alt="cup">
             </span>
         </div>
-        <div class="corporate-item_date tempelBlock" v-if="item.grade">
+        <!-- <div class="corporate-item_date tempelBlock" v-if="item.grade">
             <span class="degreeBlock">
                 {{ item.grade }}
             </span>
-        </div>
+        </div> -->
         <div class="corporate-item_date tempelBlock" v-if="item.issued">
             <span>Награда выдана: </span>{{ item.issued }}
         </div>

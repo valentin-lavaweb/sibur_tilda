@@ -39,7 +39,7 @@ export default {
   },
   computed:{
     availableNominations(){
-      return this.interaction.availableNominations;
+      return this.interaction.availableNominations.filter(n => n != "Приз зрительских симпатий");
     }
   },
   async beforeRouteEnter(to, from, next){
@@ -204,20 +204,20 @@ export default {
 
 
 .title{
-  font-size: 96px;
+  font-size: 48px;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 0 0 20px 0;
 }
 .text{
-  font-size: 16px;
+  font-size: 18px;
   color: var(--textColorBlack);
   text-align: center;
 }
 .text-block span.text.nominations.nipigasAprivel{
   width: fit-content;
   margin: 0 0 35px 0;
-  color: var(--nipigasColorAdditional);
+  color: var(--nipigasColorMain);
   font-size: 20px;
   font-weight: 700;
   align-items: center;
@@ -391,7 +391,7 @@ b{
   position: absolute;
   width: 100%;
   top: 0;
-  color: var(--nipigasColorMain);
+  color: var(--nipigasColorAdditional);
   font-size: 10px;
   font-weight: 600;
   transform: translateY(-30%);

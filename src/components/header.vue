@@ -36,18 +36,23 @@ export default {
         <div class="header-back_block"></div>
         <div class="back_block"></div>
         <div class="header-content">
+            <div class="header-link" v-if="interaction.isAdmin">
+                    <RouterLink :to="{ name: 'command_awards_table' }" active-class="active">
+                        Админка
+                    </RouterLink>
+                </div>
             <div class="header-logo">
                 <div class="logo">
                     <RouterLink :to="{ name: 'main_page' }" active-class="active">
-                        <img src="/img/logo.svg" alt="logo" />
+                        <img src="/img/logo.png" alt="logo" />
                     </RouterLink>
                 </div>
-                <div class="logo-text">
+                <!-- <div class="logo-text">
                     <RouterLink :to="{ name: 'main_page' }" active-class="active">
                         энергия<br>
                         признания
                     </RouterLink>
-                </div>
+                </div> -->
             </div>
             <div class="header-block-link">
                 <div class="header-link">
@@ -92,15 +97,15 @@ export default {
                 <div class="header-logo mobile">
                     <div class="logo">
                         <RouterLink :to="{ name: 'main_page' }" active-class="active">
-                            <img src="/img/logo.svg" alt="logo" />
+                            <img src="/img/logo.png" alt="logo" />
                         </RouterLink>
                     </div>
-                    <div class="logo-text">
+                    <!-- <div class="logo-text">
                         <RouterLink :to="{ name: 'main_page' }" active-class="active">
                             энергия<br>
                             признания
                         </RouterLink>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="header-mobile-close" @click="statusMobileMenu = false">
                     <img src="/img/close_grey.svg" alt="close" />
@@ -170,7 +175,7 @@ export default {
 }
 
 .logo {
-    width: 50px;
+    width: 150px;
     height: 50px;
 }
 
