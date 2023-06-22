@@ -99,6 +99,7 @@ export default {
             issuers: query.issuers,
             grade: query.grade,
             year: query.year,
+            limit: 32,
         }
         return filter;
     },
@@ -349,6 +350,7 @@ export default {
         <h1 class="title text-animate-gsap">
             {{ thisSection.title }}
         </h1>
+
         <div class="years-container">
             <button class="year"
  
@@ -365,6 +367,36 @@ export default {
             {{year}}
             </button>
         </div>
+
+        <!-- <div class="container-filter-selection">
+            <div class="filter-selection" v-if="issuerFilterEnabled">
+                <select v-model="filterIssuers">
+                        <option :value="undefined">
+                            --Тип награды--
+                        </option>
+                        <option
+                            v-for="issuer in availableIssuers"
+                            :key="issuer">
+                            {{ issuer }}
+                        </option>
+                </select>
+            </div>
+            <div class="filter-selection" v-if="gradeFilterEnabled">
+                <select  v-model="filterGrade">
+                        <option :value="undefined">
+                            --Степень--
+                        </option>
+                        <option
+                            v-for="grade in availableGrades"
+                            :value="grade"
+                            :key="grade">
+                            степень {{ grade }}
+                        </option>
+                </select>
+            </div>
+        </div> -->
+
+        <!-- 
         <div class="years-container" v-if="issuerFilterEnabled">
             <button class="year"
  
@@ -397,7 +429,7 @@ export default {
             :class="{active: filterGrade == grade}">
             Степень {{grade}}
             </button>
-        </div>
+        </div> -->
         <div class="filter_AND_search-block" v-if="companyFilterEnabled">
             <button class="filterButton" 
             :class="{active: filterHoverStatus}"
@@ -418,7 +450,7 @@ export default {
                 </div>
                 Все предприятия
             </button>
-            <!-- <div class="filter-selection" v-if="issuerFilterEnabled">
+            <div class="filter-selection" v-if="issuerFilterEnabled">
                 <select v-model="filterIssuers">
                         <option :value="undefined">
                             --Тип награды--
@@ -429,8 +461,8 @@ export default {
                             {{ issuer }}
                         </option>
                 </select>
-            </div> -->
-            <!-- <div class="filter-selection" v-if="gradeFilterEnabled">
+            </div>
+            <div class="filter-selection" v-if="gradeFilterEnabled">
                 <select  v-model="filterGrade">
                         <option :value="undefined">
                             --Степень--
@@ -442,7 +474,7 @@ export default {
                             степень {{ grade }}
                         </option>
                 </select>
-            </div> -->
+            </div>
             <div class="filter-block" :class="{active: filterHoverStatus}">
                 <div class="filter-container_content">
                     <label class="custom-checkbox"
@@ -461,6 +493,9 @@ export default {
                 <input type="text" placeholder="Введите запрос" v-model="filterName">
             </div>
         </div>
+
+
+        
         <div class="corporate-container_content">
             <div class="placeholder" v-if="searching">
                 Поиск...
@@ -807,8 +842,8 @@ select{
     background-color: var(--white);
     font-size: 16px;
     font-weight: 500;
-    color: var(--filterColor);
-    border: 1px solid var(--filterColor);
+    color: var(--nipigasColorMain);
+    border: 1px solid var(--nipigasColorMain);
     padding: 0 10px 0 5px;
 }
 option{
@@ -852,7 +887,12 @@ option{
     align-items: flex-start;
 }
 
-
+.container-filter-selection{
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 0 20px 0;
+}
 
 
 .bg-element{
