@@ -11,30 +11,76 @@ export default {
 
 <template>
     <div class="nomination-item">
-      <div class="item-content">
-        <h3 class="subTitle">
-          <span>
-            <img src="/img/degree_left.svg" alt="degree">
+      <div class="front-item-content">
+        <div class="item-content">
+          <h3 class="subTitle">
+            <span>
+              <img src="/img/degree_left.svg" alt="degree">
+            </span>  
+            {{ item.nomination }}
+            <span>
+              <img src="/img/degree_right.svg" alt="degree">
+            </span>  
+          </h3>
+          <span class="text">
+            {{ item.description }}
+          </span>
+          <span class="autorText">
+              <span class="autorBlock">
+                  Авторы:
+              </span>
+              {{ item.authors }}
           </span>  
-          {{ item.nomination }}
-          <span>
-            <img src="/img/degree_right.svg" alt="degree">
-          </span>  
-        </h3>
-        <span class="text">
-          {{ item.description }}
-        </span>
-        <span class="autorText">
-            <span class="autorBlock">
-                Авторы:
-            </span>
-            {{ item.authors }}
-        </span>  
+        </div>
+      </div>
+      <div class="back-item-content">
+        <img src="/test.jpg" alt="test">
       </div>
     </div>
 </template>
 
 <style scoped>
+
+.front-item-content{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 2;
+  border-radius: 10px;
+  background-color: rgba(246, 246, 246, 1);
+  padding: 25px 15px;
+  transition: all 0.5s ease;
+}
+.back-item-content{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1;
+  border-radius: 10px;
+  background-color: rgba(246, 246, 246, 1);
+  transition: all 0.5s ease;
+  opacity: 0;
+}
+.back-item-content img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.front-item-content:hover{
+  opacity: 0;
+}
+.front-item-content:hover~.back-item-content{
+  opacity: 1;
+}
+
+
 .nomination-item{
   width: 545px;
   height: 240px;
@@ -95,6 +141,7 @@ span img{
   height: 100%;
   justify-content: flex-start;
   overflow-y: auto;
+  z-index: 2;
 }
 .subTitle{
   width: 100%;
