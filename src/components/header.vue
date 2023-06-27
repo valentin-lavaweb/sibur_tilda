@@ -41,19 +41,19 @@ export default {
                         Админка
                     </RouterLink>
                 </div>
-            <div class="header-logo">
+            <!-- <div class="header-logo">
                 <div class="logo">
                     <RouterLink :to="{ name: 'main_page' }" active-class="active">
                         <img src="/img/logo.png" alt="logo" />
                     </RouterLink>
                 </div>
-                <!-- <div class="logo-text">
+                <div class="logo-text">
                     <RouterLink :to="{ name: 'main_page' }" active-class="active">
                         энергия<br>
                         признания
                     </RouterLink>
-                </div> -->
-            </div>
+                </div>
+            </div> -->
             <div class="header-block-link">
                 <div class="header-link">
                     <RouterLink :to="{ name: 'types_of_awards_page' }" active-class="active">
@@ -79,6 +79,13 @@ export default {
                         </div>
                     </div>
                 </div>
+                <div class="header-logo">
+                    <div class="logo">
+                        <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                            <img src="/img/logo.png" alt="logo" />
+                        </RouterLink>
+                    </div>
+                </div>
                 <div class="header-link">
                     <RouterLink :to="{ name: 'photo_gallery' }" active-class="active">
                         Фотогалерея
@@ -90,6 +97,13 @@ export default {
                     </RouterLink>
                 </div>
             </div>
+            <div class="header-logo mobile_left">
+                    <div class="logo">
+                        <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                            <img src="/img/logo.png" alt="logo" />
+                        </RouterLink>
+                    </div>
+                </div>
             <div class="header-mobile-menu" @click="statusMobileMenu = true">
                 <img src="/img/menu_grey.svg" alt="menu" />
             </div>
@@ -162,7 +176,7 @@ export default {
 }
 
 .header-content {
-    width: 970px;
+    width: 1100px;
     height: 100%;
     flex-direction: row;
     justify-content: space-between;
@@ -172,6 +186,7 @@ export default {
 
 .header-logo {
     flex-direction: row;
+    margin: 0 50px 0;
 }
 
 .logo {
@@ -194,7 +209,9 @@ export default {
 }
 
 .header-block-link {
+    width: 100%;
     flex-direction: row;
+    justify-content: space-between;
 }
 
 .header-link:first-child {
@@ -387,6 +404,9 @@ a.active {
     opacity: 1;
     pointer-events: auto;
 }
+.header-logo.mobile_left{
+    display: none;
+}
 
 .bg-header-mobile {
     position: fixed;
@@ -420,7 +440,7 @@ a.active {
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1060px) {
     .header {
         width: 100vw;
         top: 0;
@@ -433,6 +453,10 @@ a.active {
         width: 90vw;
     }
 
+    .header-logo.mobile_left{
+        display: flex;
+        margin: 0;
+    }
     .header-block-link {
         display: none;
     }
