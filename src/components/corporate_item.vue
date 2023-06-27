@@ -58,12 +58,12 @@ export default {
             {{ item.name }}
         </div>
         <div class="corporate-item_post tempelBlock">
-            {{ item.position }}
+            <span>Должность: </span>{{ item.position }}
         </div>
         <div class="corporate-item_filter tempelBlock">
             {{ item.company }}
         </div>
-        <div class="corporate-item_reward tempelBlock" v-if="item.issued">
+        <!-- <div class="corporate-item_reward tempelBlock" v-if="item.issued">
             <span class="imgBlock"> 
                 <img src="/img/degree_left.svg" alt="cup">
             </span>
@@ -71,17 +71,17 @@ export default {
             <span class="imgBlock"> 
                 <img src="/img/degree_right.svg" alt="cup">
             </span>
-        </div>
+        </div> -->
         <!-- <div class="corporate-item_date tempelBlock" v-if="item.grade">
             <span class="degreeBlock">
                 {{ item.grade }}
             </span>
         </div> -->
-        <div class="corporate-item_date tempelBlock" v-if="item.issued">
-            <span>Награда выдана: </span>{{ item.issued }}
+        <div class="corporate-item_date tempelBlock">
+            <span>Награда: </span>{{ item.award }}
         </div>
-        <div class="corporate-item_date tempelBlock" v-if="!item.issued">
-            {{ item.award }}
+        <div class="corporate-item_date tempelBlock">
+            <span>Выдана: </span>{{ item.issued }}
         </div>
     </div>
 </template>
@@ -107,7 +107,7 @@ export default {
     color: var(--nipigasColorMain);
     font-size: 16px;
     font-weight: 700;
-    margin: 0 0 5px 0;
+    margin: 0 0 15px 0;
     text-align: center;
 }
 
@@ -115,26 +115,29 @@ export default {
     width: 90%;
     font-size: 14px;
     display: block;
-    text-align: center;
-    line-height: normal;
+    text-align: left;
+    font-weight: 500;
 }
 .corporate-item_filter{
-    font-weight: 600;
+    font-weight: 800;
 }
 .corporate-item_post.tempelBlock{
     width: 100%;
     text-transform: uppercase;
     font-size: 12px;
-    text-align: center;
+    text-align: left;
     justify-content: center;
-    display: flex;
+    display: block;
 }
 .corporate-item_filter.tempelBlock{
     width: 100%;
-    text-align: center;
-    justify-content: center;
-    display: flex;
-    margin: 0 0 10px 0;
+    text-align: left;
+    justify-content: flex-start;
+    display: block;
+    margin: 0 0 0 0;
+}
+.corporate-item_post.tempelBlock span{
+    font-weight: 800;
 }
 .corporate-item_post span{
     font-weight: 600;
@@ -168,7 +171,8 @@ export default {
 }
 
 .corporate-item_date.tempelBlock{
-    display: flex;
+    width: 100%;
+    display: block;
 }
 .degreeBlock{
     display: flex;
