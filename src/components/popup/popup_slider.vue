@@ -1,5 +1,6 @@
 <script>
 import { useGameStore } from '@/stores/interface-interaction.js';
+import swiper from "@/components/swiper.vue";
 
 export default {
   name: "popup_slider",
@@ -14,7 +15,7 @@ export default {
     }
   },
   components:{
-
+    swiper,
   },
   methods:{
     backSlide(){
@@ -53,13 +54,16 @@ export default {
   <div class="popup_slider" @click.self="closeSlider">
     <div class="slider-container">
         <div class="slider-close" @click="closeSlider">
-            Закрыть
+          <img src="/img/close_swiper.svg" alt="close"/>
         </div>
         <div class="slider-arrow left" @click="backSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
         </div>
-        <div class="slider">
+        <!-- <div class="slider">
             <img :src="selectedSlide.originalSrc" alt="img"/>
+        </div> -->
+        <div class="slider">
+          <swiper :image="selectedSlide.originalSrc"/>
         </div>
         <div class="slider-arrow" @click="nextSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
