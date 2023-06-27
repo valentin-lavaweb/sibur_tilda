@@ -66,8 +66,11 @@ export default {
           <editable_text dictionary_key="main_subdesc"/>
         </span>
       </div>
+      <div class="img-bg img-animate-gsap">
+        <img src="/img/background_page/bg-main.svg" alt="bg-main"/>
+      </div>
       <div class="img-block img-animate-gsap">
-        <img src="/img/the_energy_of_recognition.svg" alt="the_energy_of_recognition"/>
+        <img src="/img/the_energy_of_recognition.svg" class="men" alt="the_energy_of_recognition"/>
 
         <img src="/img/wreath.svg" class="wreath left" alt="wreath"/>
         <img src="/img/wreath_right.svg" class="wreath right" alt="wreath"/>
@@ -91,7 +94,7 @@ export default {
 
 
 .content-block{
-  margin: 250px 0 0 0;
+  margin: 150px 0 0 0;
   width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
@@ -99,17 +102,17 @@ export default {
 }
 .subTitle{
   font-size: 36px;
-  color: var(--nipigasColorMain);
+  color: var(--white);
 }
 .title{
   font-size: 96px;
   font-weight: 700;
-  color: var(--nipigasColorAdditional);
+  color: var(--nipigasColorMainv2);
   line-height: 100%;
 }
 .text{
   font-size: 16px;
-  color: var(--textColorBlack);
+  color: var(--nipigasColorMainv2);
   margin: 14px 0;
   white-space: pre-line;
 }
@@ -119,9 +122,10 @@ export default {
   color: var(--nipigasColorAdditional);
 }
 .nigascol{
-  font-size: 16px;
+  margin: 150px 0 0 0;
+  font-size: 32px;
   font-weight: 700;
-  color: var(--nipigasColorMain);
+  color: var(--nipigasColorAdditional);
 }
 
 
@@ -132,6 +136,9 @@ export default {
   margin: 50px 0 0 0;
   transform: translateX(120px);
   z-index: 1;
+}
+.men{
+  width: 850px;
 }
 .wreath{
   position: absolute;
@@ -173,7 +180,13 @@ export default {
   }
 }
 
-
+.img-bg{
+  position: absolute;
+  top: 80px;
+  width: 100vw;
+  height: 530px;
+  overflow: hidden;
+}
 
 
 @media (max-width: 1440px) {
