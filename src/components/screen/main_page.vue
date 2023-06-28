@@ -70,10 +70,10 @@ export default {
         <img src="/img/background_page/bg-main.svg" alt="bg-main"/>
       </div>
       <div class="img-block img-animate-gsap">
-        <img src="/img/the_energy_of_recognition.svg" class="men" alt="the_energy_of_recognition"/>
-
+        <img src="/img/bg-men.svg" class="men" alt="bg-men"/>
+        <!-- <img src="/img/the_energy_of_recognition.svg" class="men" alt="the_energy_of_recognition"/>
         <img src="/img/wreath.svg" class="wreath left" alt="wreath"/>
-        <img src="/img/wreath_right.svg" class="wreath right" alt="wreath"/>
+        <img src="/img/wreath_right.svg" class="wreath right" alt="wreath"/> -->
       </div>
     </div>
     <footer_comp/>
@@ -115,6 +115,7 @@ export default {
   color: var(--nipigasColorMainv2);
   margin: 14px 0;
   white-space: pre-line;
+  font-weight: 600;
 }
 .pinata{
   font-size: 16px;
@@ -138,7 +139,7 @@ export default {
   z-index: 1;
 }
 .men{
-  width: 850px;
+  width: 635px;
 }
 .wreath{
   position: absolute;
