@@ -36,7 +36,8 @@ export default {
   },
   mounted() {
     let sliderIdx = this.images.findIndex(i => i.id == this.interaction.enableSlide);
-    this.swiperInstance?.slideTo(sliderIdx);
+    // this.swiperInstance?.slideTo(sliderIdx);
+    this.swiperInstance.activeIndex = sliderIdx;
   },
   computed:{
     // selectedSlide:{
