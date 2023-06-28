@@ -75,7 +75,7 @@ export default {
             <swiper-slide v-for="image of images"
             :key="image.id"
             >
-              <img :src="image.originalSrc">
+              <img :src="image.originalSrc" loading="lazy">
             </swiper-slide>
           </swiper>
         </div>
