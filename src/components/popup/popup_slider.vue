@@ -14,7 +14,7 @@ export default {
         // sliderIndex: (9995 + interaction.enableSlide),
         interaction: interaction,
         swiperInstance: null,
-        sliderId:  interaction.enableSlide,
+        // sliderId:  interaction.enableSlide,
     }
   },
   components:{
@@ -35,7 +35,8 @@ export default {
     }
   },
   mounted() {
-    this.swiperInstance?.slideTo(this.sliderId);
+    let sliderIdx = this.images.findIndex(i => i.id == this.interaction.enableSlide);
+    this.swiperInstance?.slideTo(sliderIdx);
   },
   computed:{
     // selectedSlide:{
