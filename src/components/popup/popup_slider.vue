@@ -1,6 +1,7 @@
 <script>
 import { useGameStore } from '@/stores/interface-interaction.js';
-import swiper from "@/components/swiper.vue";
+// import swiper from "@/components/swiper.vue";
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
 export default {
   name: "popup_slider",
@@ -10,38 +11,43 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
-        sliderIndex: (9995 + interaction.enableSlide),
+        // sliderIndex: (9995 + interaction.enableSlide),
         interaction: interaction,
+        swiperInstance: null,
+        sliderId:  interaction.enableSlide,
     }
   },
   components:{
-    swiper,
+    Swiper,
+    SwiperSlide,
   },
   methods:{
     backSlide(){
-      this.sliderIndex--;
+      // this.sliderIndex--;
+      this.swiperInstance?.slidePrev();
     },
     nextSlide(){
-      this.sliderIndex++;
+      // this.sliderIndex++;
+      this.swiperInstance?.slideNext();
     },
     closeSlider(){
       this.interaction.popupSlider = false;
     }
   },
   mounted() {
-
+    this.swiperInstance?.slideTo(this.sliderId);
   },
   computed:{
-    selectedSlide:{
-      get(){
-          return this.images[this.sliderIndex % this.images.length];
-      },
-      set(value){
-          let imgIndex = this.images.indexOf(value);
-          let resultIndex = imgIndex + 1000*this.images.length;
-          this.sliderIndex = resultIndex;
-      }
-    },
+    // selectedSlide:{
+    //   get(){
+    //       return this.images[this.sliderIndex % this.images.length];
+    //   },
+    //   set(value){
+    //       let imgIndex = this.images.indexOf(value);
+    //       let resultIndex = imgIndex + 1000*this.images.length;
+    //       this.sliderIndex = resultIndex;
+    //   }
+    // },
   },
   watch:{
 
@@ -63,7 +69,14 @@ export default {
             <img :src="selectedSlide.originalSrc" alt="img"/>
         </div> -->
         <div class="slider">
-          <swiper :image="selectedSlide.originalSrc"/>
+          <!-- <swiper :image="selectedSlide.originalSrc"/> -->
+          <swiper class="mySwiper" @swiper="(swiper)=>{swiperInstance = swiper}">
+            <swiper-slide v-for="image of images"
+            :key="image.id"
+            >
+              <img :src="image.originalSrc">
+            </swiper-slide>
+          </swiper>
         </div>
         <div class="slider-arrow" @click="nextSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
