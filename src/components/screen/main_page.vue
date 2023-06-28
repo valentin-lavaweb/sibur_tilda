@@ -219,7 +219,7 @@ export default {
       font-size: 1.1vw;
     }
     .nigascol {
-      margin: 3vw 0 0 0;
+      margin: 5vw 0 0 0;
     }
     .img-bg{
       height: 50vw;
