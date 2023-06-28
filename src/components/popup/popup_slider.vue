@@ -89,6 +89,8 @@ export default {
 .swiper {
   width: 100%;
   height: 100%;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 .swiper-wrapper{
   justify-content: flex-start;
