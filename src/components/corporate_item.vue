@@ -166,7 +166,7 @@ export default {
     color: var(--nipigasColorMain);
 }
 .corporate-item_date span{
-    font-weight: 600;
+    font-weight: 800;
     color: var(--nipigasColorMain);
 }
 
