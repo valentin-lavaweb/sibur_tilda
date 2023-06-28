@@ -41,7 +41,7 @@ export default {
             </span>  
           </h3>
           <span class="text">
-            {{ item.description }}
+            <span class="descBlock">Проект </span>«{{ item.description }}»
           </span>
           <span class="autorText">
               <span class="autorBlock">
@@ -197,7 +197,7 @@ span img{
   width: 100%;
   text-align: center;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--textColorBlack);
   margin: 0 0 20px 0;
   line-height: 110%;
@@ -206,14 +206,18 @@ span img{
   width: 100%;
   height: fit-content;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--textColorBlack);
   text-align: center;
 }
 .autorBlock{
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--nipigasColorMain);
+}
+
+.descBlock{
+  font-weight: 800;
 }
 
 
