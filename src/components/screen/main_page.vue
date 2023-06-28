@@ -67,10 +67,11 @@ export default {
         </span>
       </div>
       <div class="img-bg img-animate-gsap">
-        <img src="/img/background_page/bg-main.svg" alt="bg-main"/>
+        <!-- <img src="/img/background_page/bg-main.svg" alt="bg-main"/> -->
+        <img src="/img/background_page/bg-main_men.svg" alt="bg-main_men"/>
       </div>
       <div class="img-block img-animate-gsap">
-        <img src="/img/bg-men.svg" class="men" alt="bg-men"/>
+        <!-- <img src="/img/bg-men.svg" class="men" alt="bg-men"/> -->
         <!-- <img src="/img/the_energy_of_recognition.svg" class="men" alt="the_energy_of_recognition"/>
         <img src="/img/wreath.svg" class="wreath left" alt="wreath"/>
         <img src="/img/wreath_right.svg" class="wreath right" alt="wreath"/> -->
@@ -94,37 +95,37 @@ export default {
 
 
 .content-block{
-  margin: 150px 0 0 0;
+  margin: 200px 0 0 0;
   width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
   z-index: 2;
 }
 .subTitle{
-  font-size: 36px;
+  font-size: 1.9vw;
   color: var(--white);
 }
 .title{
-  font-size: 96px;
+  font-size: 4.8vw;
   font-weight: 700;
   color: var(--nipigasColorMainv2);
   line-height: 100%;
 }
 .text{
-  font-size: 16px;
+  font-size: 0.8vw;
   color: var(--nipigasColorMainv2);
   margin: 14px 0;
   white-space: pre-line;
-  font-weight: 600;
+  font-weight: 700;
 }
 .pinata{
-  font-size: 16px;
+  font-size: 0.9vw;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
 }
 .nigascol{
-  margin: 150px 0 0 0;
-  font-size: 32px;
+  margin: 5vw 0 0 0;
+  font-size: 1.7vw;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
 }
@@ -185,8 +186,8 @@ export default {
   position: absolute;
   top: 80px;
   width: 100vw;
-  height: 530px;
-  overflow: hidden;
+  height: 39vw;
+  /* overflow: hidden; */
 }
 
 
@@ -208,17 +209,24 @@ export default {
       margin: 16vw 0 0 0;
     }
     .subTitle{
-      font-size: 2.8vw;
+      font-size: 1.8vw;
     }
     .title{
-      font-size: 6.8vw;
+      font-size: 5.0vw;
     }
     .text{
       font-size: 1.1vw;
     }
+    .nigascol {
+      margin: 3vw 0 0 0;
+    }
+    .img-bg{
+      height: 50vw;
+    }
 }
-@media (max-width: 1024px) {
+@media (max-width: 1060px) {
     .subTitle{
+      color: var(--nipigasColorAdditional);
       font-size: 36px;
     }
     .title{
@@ -227,7 +235,13 @@ export default {
     .text{
       font-size: 16px;
     }
+    .nigascol{
+      font-size: 20px;
+    }
     .img-block {
+      display: none;
+    }
+    .img-bg{
       display: none;
     }
 }
