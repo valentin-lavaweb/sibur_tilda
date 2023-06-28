@@ -127,6 +127,7 @@ export default {
   margin: 5vw 0 0 0;
   font-size: 1.7vw;
   font-weight: 700;
+  white-space: pre-line;
   color: var(--nipigasColorAdditional);
 }
 
