@@ -84,6 +84,33 @@ export default {
     </div>
   </div>
 </template>
+<style>
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+.swiper-wrapper{
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
 
 <style scoped>
 .popup_slider{
