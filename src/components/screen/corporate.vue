@@ -386,7 +386,7 @@ export default {
                 Все предприятия
             </button> -->
             <div class="filter-selection">
-                <select class="yearSelect" v-model="filterIssuers">
+                <select class="yearSelect" v-model="filterYear">
                         <option :value="undefined">
                             Год
                         </option>
