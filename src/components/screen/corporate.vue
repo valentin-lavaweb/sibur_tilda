@@ -402,7 +402,7 @@ export default {
             <div class="filter-selection" v-if="issuerFilterEnabled">
                 <select v-model="filterIssuers">
                         <option :value="undefined">
-                            Тип награды
+                            Кем выдана
                         </option>
                         <option
                             v-for="issuer in availableIssuers"
@@ -963,14 +963,12 @@ option{
     border-bottom: 1px solid var(--nipigasColorMain);
     font-size: 14px;
     color: var(--nipigasColorMain);
-    font-style: italic;
-    font-weight: 600;
+    font-weight: 500;
 }
 .search_panel input::placeholder{
     font-size: 14px;
     color: var(--nipigasColorMain);
-    font-style: italic;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 

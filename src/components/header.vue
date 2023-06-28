@@ -33,8 +33,8 @@ export default {
 
 <template>
     <div class="header">
-        <div class="header-back_block"></div>
-        <div class="back_block"></div>
+        <div class="header-back_block"/>
+        <div class="back_block" v-if="this.$route.name != 'main_page'"/>
         <div class="header-content">
             <div class="header-link" v-if="interaction.isAdmin">
                     <RouterLink :to="{ name: 'command_awards_table' }" active-class="active">
@@ -347,7 +347,8 @@ a.active {
 }
 
 .hover-link a {
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    font-weight: 500;
 }
 
 .header-mobile-menu {
