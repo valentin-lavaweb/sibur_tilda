@@ -352,13 +352,13 @@ export default {
         </h1>
 
         <div class="years-container">
-            <button class="year"
+            <!-- <button class="year"
  
             @click="filterYear = undefined"
             :class="{active: filterYear == undefined}">
             Все
-            </button>
-            <button class="year"
+            </button> -->
+            <!-- <button class="year"
             v-for="year in availableYears"
             :key="year"
 
@@ -366,6 +366,96 @@ export default {
             :class="{active: filterYear == year}">
             {{year}}
             </button>
+            <button class="filterButton" 
+            :class="{active: filterHoverStatus}"
+            @click="filterHoverStatus = !filterHoverStatus"
+            >
+                <div class="blockImg" v-if="!filterHoverStatus">
+                    <div class="img_ser">
+                        <img src="/img/menu.svg" alt="menu"/>
+                    </div>
+                    <div class="img_ser">
+                        <img src="/img/search.svg" alt="search" v-if="!filterHoverStatus"/>
+                    </div>
+                </div>
+                <div class="blockImg" v-else>
+                    <div class="img_ser">
+                        <img src="/img/close.svg" alt="close"/>
+                    </div>
+                </div>
+                Все предприятия
+            </button> -->
+            <div class="filter-selection">
+                <select class="yearSelect" v-model="filterYear">
+                        <option :value="undefined">
+                            Год
+                        </option>
+                        <option
+                            v-for="year in availableYears"
+                            :value="year"
+                            :key="year"
+                            >
+                            {{ year }}
+                        </option>
+                </select>
+            </div>
+            <div class="filter-selection" v-if="issuerFilterEnabled">
+                <select v-model="filterIssuers">
+                        <option :value="undefined">
+                            Кем выдана
+                        </option>
+                        <option
+                            v-for="issuer in availableIssuers"
+                            :value="issuer"
+                            :key="issuer"
+                            >
+                            {{ issuer }}
+                        </option>
+                </select>
+            </div>
+            <div class="filter-selection" v-if="gradeFilterEnabled">
+                <select  v-model="filterGrade">
+                        <option :value="undefined">
+                            Степень
+                        </option>
+                        <option
+                            v-for="grade in availableGrades"
+                            :value="grade"
+                            :key="grade">
+                            степень {{ grade }}
+                        </option>
+                </select>
+            </div>
+            <button class="filterButton" 
+            :class="{active: filterHoverStatus}"
+            @click="filterHoverStatus = !filterHoverStatus"
+            >
+                <div class="blockImg" v-if="!filterHoverStatus">
+                    <div class="img_ser">
+                        <img src="/img/menu.svg" alt="menu"/>
+                    </div>
+                    <div class="img_ser">
+                        <img src="/img/search.svg" alt="search" v-if="!filterHoverStatus"/>
+                    </div>
+                </div>
+                <div class="blockImg" v-else>
+                    <div class="img_ser">
+                        <img src="/img/close.svg" alt="close"/>
+                    </div>
+                </div>
+                Все предприятия
+            </button>
+            <div class="filter-block" :class="{active: filterHoverStatus}">
+                <div class="filter-container_content">
+                    <label class="custom-checkbox"
+                    v-for="company in availableCompanies"
+                    :key="company"
+                    >
+                        <input type="checkbox" :value="company" v-model="filterCompanies">
+                        <span>{{company}}</span>
+                    </label>
+                </div>
+            </div>
         </div>
 
         <!-- <div class="container-filter-selection">
@@ -431,7 +521,7 @@ export default {
             </button>
         </div> -->
         <div class="filter_AND_search-block" v-if="companyFilterEnabled">
-            <button class="filterButton" 
+            <!-- <button class="filterButton" 
             :class="{active: filterHoverStatus}"
             @click="filterHoverStatus = !filterHoverStatus"
             >
@@ -487,10 +577,10 @@ export default {
                         <span>{{company}}</span>
                     </label>
                 </div>
-            </div>
+            </div> -->
             <div class="search_panel">
                 <div class="search-img">
-                    <img src="/img/search_grey.svg" alt="search"/>
+                    <img src="/img/search_nipigas.svg" alt="search"/>
                 </div>
                 <input type="text" placeholder="Введите запрос" v-model="filterName">
             </div>
@@ -617,7 +707,7 @@ export default {
 }
 .years-container{
   margin: 0 0 20px 0;
-  width: 550px;
+  width: fit-content;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
@@ -666,7 +756,7 @@ export default {
 .filter_AND_search-block{
     width: 100%;
     flex-direction: row;
-    margin: 0 0 40px 0;
+    margin: 30px 0 40px 0;
 }
 .filterButton.active{
     background-color: var(--nipigasColorMain);
@@ -684,6 +774,7 @@ export default {
     border: none;
     border-radius: 5px;
     padding: 0 30px;
+    margin: 0 0 0 30px;
     font-size: 16px;
     font-weight: 500;
     color: var(--white);
@@ -835,16 +926,20 @@ export default {
     height: 30px;
     margin: 0 0 0 30px;
 }
+select.yearSelect{
+    background-color: var(--nipigasColorAdditional);
+    border: 1px solid var(--nipigasColorAdditional);
+}
 select{
     position: relative;
     display: flex;
     width: 100%;
     height: 100%;
     border-radius: 5px;
-    background-color: var(--white);
+    background-color: var(--nipigasColorMain);
     font-size: 16px;
     font-weight: 500;
-    color: var(--nipigasColorMain);
+    color: var(--white);
     border: 1px solid var(--nipigasColorMain);
     padding: 0 10px 0 5px;
 }
@@ -865,15 +960,15 @@ option{
 .search_panel input{
     width: 140px;
     border: none;
-    border-bottom: 1px solid #D6D6D6;
+    border-bottom: 1px solid var(--nipigasColorMain);
     font-size: 14px;
     color: var(--nipigasColorMain);
-    font-style: italic;
+    font-weight: 500;
 }
 .search_panel input::placeholder{
     font-size: 14px;
-    color: #D9D9D9;
-    font-style: italic;
+    color: var(--nipigasColorMain);
+    font-weight: 500;
 }
 
 
@@ -935,7 +1030,7 @@ option{
         margin: 0 30px;
     }
     .filter_AND_search-block{
-        justify-content: space-between;
+        justify-content: flex-end;
     }
 }
 @media (max-width: 1024px) {
@@ -953,22 +1048,29 @@ option{
 }
 @media (max-width: 980px) {
     .filter_AND_search-block{
-        justify-content: space-between;
+        justify-content: flex-end;
     }
     .filter-selection{
-        margin: 0;
+        margin: 0 0 0 30px;
     }
 }
 @media (max-width: 768px) {
     .filter_AND_search-block{
+        margin: 0 0 40px 0;
         flex-direction: column;
         height: fit-content;
     }
     .filter-selection, .search_panel{
-        margin: 20px 0;
+        margin: 0 0 20px 0;
+    }
+    .filterButton{
+        margin: 0;
     }
     .years-container{
         width: 80vw;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     .filter_AND_search-block{
         justify-content: space-around;

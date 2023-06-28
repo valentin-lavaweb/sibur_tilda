@@ -1,5 +1,7 @@
 <script>
 import { useGameStore } from '@/stores/interface-interaction.js';
+// import swiper from "@/components/swiper.vue";
+import { Swiper, SwiperSlide } from 'swiper/vue';
 
 export default {
   name: "popup_slider",
@@ -9,38 +11,45 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
-        sliderIndex: (9995 + interaction.enableSlide),
+        // sliderIndex: (9995 + interaction.enableSlide),
         interaction: interaction,
+        swiperInstance: null,
+        // sliderId:  interaction.enableSlide,
     }
   },
   components:{
-
+    Swiper,
+    SwiperSlide,
   },
   methods:{
     backSlide(){
-      this.sliderIndex--;
+      // this.sliderIndex--;
+      this.swiperInstance?.slidePrev();
     },
     nextSlide(){
-      this.sliderIndex++;
+      // this.sliderIndex++;
+      this.swiperInstance?.slideNext();
     },
     closeSlider(){
       this.interaction.popupSlider = false;
     }
   },
   mounted() {
-
+    let sliderIdx = this.images.findIndex(i => i.id == this.interaction.enableSlide);
+    // this.swiperInstance?.slideTo(sliderIdx);
+    this.swiperInstance.activeIndex = sliderIdx;
   },
   computed:{
-    selectedSlide:{
-      get(){
-          return this.images[this.sliderIndex % this.images.length];
-      },
-      set(value){
-          let imgIndex = this.images.indexOf(value);
-          let resultIndex = imgIndex + 1000*this.images.length;
-          this.sliderIndex = resultIndex;
-      }
-    },
+    // selectedSlide:{
+    //   get(){
+    //       return this.images[this.sliderIndex % this.images.length];
+    //   },
+    //   set(value){
+    //       let imgIndex = this.images.indexOf(value);
+    //       let resultIndex = imgIndex + 1000*this.images.length;
+    //       this.sliderIndex = resultIndex;
+    //   }
+    // },
   },
   watch:{
 
@@ -53,13 +62,23 @@ export default {
   <div class="popup_slider" @click.self="closeSlider">
     <div class="slider-container">
         <div class="slider-close" @click="closeSlider">
-            Закрыть
+          <img src="/img/close_swiper.svg" alt="close"/>
         </div>
         <div class="slider-arrow left" @click="backSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
         </div>
-        <div class="slider">
+        <!-- <div class="slider">
             <img :src="selectedSlide.originalSrc" alt="img"/>
+        </div> -->
+        <div class="slider">
+          <!-- <swiper :image="selectedSlide.originalSrc"/> -->
+          <swiper class="mySwiper" @swiper="(swiper)=>{swiperInstance = swiper}">
+            <swiper-slide v-for="image of images"
+            :key="image.id"
+            >
+              <img :src="image.originalSrc" loading="lazy">
+            </swiper-slide>
+          </swiper>
         </div>
         <div class="slider-arrow" @click="nextSlide()">
             <img src="/img/arrow.svg" alt="arrow"/>
@@ -67,6 +86,35 @@ export default {
     </div>
   </div>
 </template>
+<style>
+.swiper {
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.swiper-wrapper{
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
 
 <style scoped>
 .popup_slider{

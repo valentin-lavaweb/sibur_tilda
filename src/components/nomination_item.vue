@@ -190,7 +190,7 @@ span img{
   align-items: center;
   font-size: 20px;
   font-weight: 700;
-  color: var(--nipigasColorMain);
+  color: var(--nipigasColorAdditional);
   margin: 0 0 25px 0;
 }
 .text{
@@ -198,7 +198,7 @@ span img{
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  color: var(--nipigasColorMain);
+  color: var(--textColorBlack);
   margin: 0 0 20px 0;
   line-height: 110%;
 }
@@ -213,7 +213,7 @@ span img{
 .autorBlock{
   font-size: 16px;
   font-weight: 700;
-  color: var(--nipigasColorAdditional);
+  color: var(--nipigasColorMain);
 }
 
 
