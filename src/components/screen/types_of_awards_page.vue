@@ -318,7 +318,10 @@ export default {
             <div class="bottom_block-main-item" 
               v-for="nomination in availableNominations"
               :key="nomination">
-              <div class="awards-title mini">
+              <div class="awards-title mini" v-if="nomination.nomination == 'Организационный проект'">
+                  {{ nomination.nomination }} (2023)
+              </div>
+              <div class="awards-title mini" v-else>
                   {{ nomination.nomination }}
               </div>
               <div class="awards-content_block">
@@ -505,7 +508,7 @@ b{
   font-size: 16px;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0 0 5px 0;
+  padding: 0 0 10px 0;
 }
 .awards-title{
   flex-direction: row;
@@ -513,7 +516,7 @@ b{
   color: var(--nipigasColorAdditional);
   font-size: 20px;
   font-weight: 700;
-  padding: 0 0 10px 0;
+  padding: 0 0 24px 0;
   width: 100%;
 }
 .awards-title span{
@@ -612,7 +615,7 @@ b{
 .bottom_block-main{
   width: 100%;
   max-width: 450px;
-  min-height: 150px;
+  min-height: 200px;
   height: fit-content;
   border-radius: 6px;
   background: #F6F6F6;
@@ -625,6 +628,18 @@ b{
   width: 100%;
   height: auto;
 }
+
+/* .bottom_block-main-item:last-child .awards-title.mini::after{
+  content: 'Новая номинация 2023';
+  font-size: 10px;
+  color: var(--nipigasColorMain);
+  position: absolute;
+  top: -25%;
+  left: 10%;
+} */
+
+
+
 .awards-title.mini::before{
   content: "";
   position: absolute;
@@ -674,7 +689,7 @@ b{
 .awards-title:hover~.awards-content_block{
   /* height: auto; */
   max-height: 1000px;
-  padding: 0px 0 15px 0;
+  padding: 0px 0 24px 0;
   opacity: 1;
   pointer-events: auto;
   transition: all 0.5s, opacity 0.25s 0.25s;
@@ -682,7 +697,6 @@ b{
 .awards-title:hover::before{
   opacity: 1;
 }
-
 
 
 
