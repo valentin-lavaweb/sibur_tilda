@@ -464,7 +464,7 @@ b{
   color: var(--nipigasColorAdditional);
   font-size: 20px;
   font-weight: 700;
-  padding: 0 0 25px 0;
+  padding: 0 0 10px 0;
   width: 100%;
 }
 .awards-title span{
@@ -563,12 +563,13 @@ b{
 .bottom_block-main{
   width: 100%;
   max-width: 450px;
-  min-height: 210px;
+  min-height: 150px;
   height: fit-content;
   border-radius: 6px;
   background: #F6F6F6;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
   padding: 15px 50px;
+  margin: 25px 0 0 0;
   justify-content: flex-start;
 }
 .bottom_block-main-item{
