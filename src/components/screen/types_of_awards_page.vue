@@ -47,13 +47,62 @@ export default {
       duration: 0.25,
       stagger: 0.15,
       delay: 0.25,
-    }),
-    gsap.from(".video-animate-gsap", {
-      y: -50,
-      opacity: 0,
-      duration: 0.5,
-      delay: 0.35,
     });
+    // gsap.from(".video-animate-gsap", {
+    //   y: -50,
+    //   opacity: 0,
+    //   duration: 0.5,
+    //   delay: 0.35,
+    // });
+
+
+    // let arrayelToggle = document.querySelectorAll('.bottom_block-main-item');
+    // let arrayelBlock = document.querySelectorAll('.awards-content_block');
+
+
+    // for (const elToggle of arrayelToggle) {
+
+    //   for (const elBlock of arrayelBlock) {
+        
+    //       elToggle.addEventListener("click", () => {
+    //           if (elBlock.style.height === "0px") {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`
+    //           } else {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`;
+    //               window.getComputedStyle(elBlock, null).getPropertyValue("height");
+    //               elBlock.style.height = "0";
+    //           }
+    //       });
+
+    //       elBlock.addEventListener("transitionend", () => {
+    //         if (elBlock.style.height !== "0px") {
+    //             elBlock.style.height = "auto"
+    //         }
+    //       });
+
+    //     }
+    // }
+
+
+
+
+
+    // elToggle.addEventListener("click", () => {
+    //           if (elBlock.style.height === "0px") {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`
+    //           } else {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`;
+    //               window.getComputedStyle(elBlock, null).getPropertyValue("height");
+    //               elBlock.style.height = "0";
+    //           }
+    //       });
+
+    //       elBlock.addEventListener("transitionend", () => {
+    //         if (elBlock.style.height !== "0px") {
+    //             elBlock.style.height = "auto"
+    //         }
+    //       });
+
   },
   computed:{
     availableNominations(){
@@ -605,27 +654,30 @@ b{
     transition: all 0.15s ease;
 }
 .awards-content_block{
-  height: 0;
+  max-height: 0;
   padding: 0px 0 0px 0;
   color: var(--textColorBlack);
   font-size: 16px;
   font-weight: 600;
   line-height: 150%;
   opacity: 0;
+  /* opacity: 1; */
   pointer-events: none;
-  transition: all 0.25s 0.0s, opacity 0.0s 0.0s ease;
+  transition: all 0.0s 0.0s, opacity 0.0s 0.0s;
   cursor: auto;
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  overflow: hidden;
 }
 
 .awards-title:hover~.awards-content_block{
-  height: fit-content;
+  /* height: auto; */
+  max-height: 1000px;
   padding: 0px 0 15px 0;
   opacity: 1;
   pointer-events: auto;
-  transition: all 0.25s, opacity 0.25s 0.25s ease;
+  transition: all 0.5s, opacity 0.25s 0.25s;
 }
 .awards-title:hover::before{
   opacity: 1;
