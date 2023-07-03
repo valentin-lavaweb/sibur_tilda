@@ -13,6 +13,7 @@ const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 75 },
   { text: "Номинация", value: "nomination", fixed: true, width: 100 },
+  { text: "Название проекта", value: "project", width: 200 },
   { text: "Описание проекта", value: "description", width: 200 },
   { text: "Авторы", value: "authors", width: 200 },
   { text: "Фото", value: "image", width: 300 },
@@ -270,7 +271,7 @@ export default {
       </Teleport>
 
       <div class="control-panel">
-        <button class="btn" @click="duplicateItem({nomination: null, description: null, authors: null, year: (new Date()).getFullYear(), image: null })">
+        <button class="btn" @click="duplicateItem({nomination: null, description: null, project: null, authors: null, year: (new Date()).getFullYear(), image: null })">
             добавить запись
         </button>
       </div>
@@ -287,6 +288,10 @@ export default {
 
       <template #item-description="item">
         <TextEdit :item="item" editProp="description" @updateItem="updateItem($event)" />
+      </template>
+
+      <template #item-project="item">
+        <TextEdit :item="item" editProp="project" @updateItem="updateItem($event)" />
       </template>
 
       <template #item-authors="item">

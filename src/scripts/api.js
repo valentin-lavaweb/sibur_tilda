@@ -37,6 +37,7 @@ export const apiClient = axios.create({
    * @typedef {Object} CommandAwardPayload
    * @property {string} nomination 
    * @property {string} description
+   * @property {string} project
    * @property {string} authors
    * @property {File} image   
    * @property {number} year    

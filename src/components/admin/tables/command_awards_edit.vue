@@ -70,6 +70,11 @@ export default {
         </div>
 
         <div class="content">
+          <h2>Название проекта</h2>
+          <TextEdit :item="editItem" editProp="project" @updateItem="editItem = $event" />
+        </div>
+
+        <div class="content">
           <h2>Описание проекта</h2>
           <TextEdit :item="editItem" editProp="description" @updateItem="editItem = $event" />
         </div>
