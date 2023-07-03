@@ -6,11 +6,29 @@ import footer_comp from "@/components/footer.vue";
 import gsap from "gsap";
 import editable_text from '../editable_text.vue';
 
+
 export default {
   name: "types_of_awards_page",
   data() {
     let interaction = useGameStore();
     return{
+        arrayDegree:[
+          {
+            id: 1,
+            title: '1 Степень',
+            description: 'Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника, которые сделали уникальный вклад в развитие компании и отрасли, продемонстрировали достижения, выходящие за рамки занимаемой должности.',
+          },
+          {
+            id: 2,
+            title: '2 Степень',
+            description: 'Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды 2 степени.',
+          },
+          {
+            id: 3,
+            title: '3 Степень',
+            description: 'Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды 2 степени.',
+          }
+        ],
         interaction: interaction,
     }
   },
@@ -29,17 +47,66 @@ export default {
       duration: 0.25,
       stagger: 0.15,
       delay: 0.25,
-    }),
-    gsap.from(".video-animate-gsap", {
-      y: -50,
-      opacity: 0,
-      duration: 0.5,
-      delay: 0.35,
     });
+    // gsap.from(".video-animate-gsap", {
+    //   y: -50,
+    //   opacity: 0,
+    //   duration: 0.5,
+    //   delay: 0.35,
+    // });
+
+
+    // let arrayelToggle = document.querySelectorAll('.bottom_block-main-item');
+    // let arrayelBlock = document.querySelectorAll('.awards-content_block');
+
+
+    // for (const elToggle of arrayelToggle) {
+
+    //   for (const elBlock of arrayelBlock) {
+        
+    //       elToggle.addEventListener("click", () => {
+    //           if (elBlock.style.height === "0px") {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`
+    //           } else {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`;
+    //               window.getComputedStyle(elBlock, null).getPropertyValue("height");
+    //               elBlock.style.height = "0";
+    //           }
+    //       });
+
+    //       elBlock.addEventListener("transitionend", () => {
+    //         if (elBlock.style.height !== "0px") {
+    //             elBlock.style.height = "auto"
+    //         }
+    //       });
+
+    //     }
+    // }
+
+
+
+
+
+    // elToggle.addEventListener("click", () => {
+    //           if (elBlock.style.height === "0px") {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`
+    //           } else {
+    //               elBlock.style.height = `${ elBlock.scrollHeight }px`;
+    //               window.getComputedStyle(elBlock, null).getPropertyValue("height");
+    //               elBlock.style.height = "0";
+    //           }
+    //       });
+
+    //       elBlock.addEventListener("transitionend", () => {
+    //         if (elBlock.style.height !== "0px") {
+    //             elBlock.style.height = "auto"
+    //         }
+    //       });
+
   },
   computed:{
     availableNominations(){
-      return this.interaction.availableNominations.filter(n => n != "Приз зрительских симпатий");
+      return this.interaction.availableNominations.filter(({nomination}) => nomination != "Приз зрительских симпатий");
     }
   },
   async beforeRouteEnter(to, from, next){
@@ -82,6 +149,9 @@ export default {
       <h2 class="subTitle m_top-60 text-animate-gsap">
         <editable_text dictionary_key="corporate_title"/>
       </h2>
+      <span class="text description_subTitle text-animate-gsap">
+        <editable_text dictionary_key="corporate_desc"/>
+      </span>
       <div class="text-container">
         <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
@@ -115,7 +185,7 @@ export default {
             <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
         </div> -->
-        <div class="text-block">
+        <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
           </h3>
@@ -183,6 +253,84 @@ export default {
               </span>
             </span>
           </div>
+        </div> -->
+        <div class="bottom_block text-animate-gsap">
+          <div class="bottom_block-left">
+            <h3 class="bottom_block-title">Индивидуальные награды</h3>
+            <div class="bottom_block-main">
+
+
+              <div class="bottom_block-main-item"
+              v-for="degree in arrayDegree"
+              :key="degree.id">
+                <div class="awards-title">
+                  <span>
+                    <img src="/img/degree_left.svg" alt="degree">
+                  </span>
+                    {{ degree.title }}
+                  <span>
+                    <img src="/img/degree_right.svg" alt="degree">
+                  </span>
+                </div>
+                <div class="awards-content_block">
+                    {{ degree.description }}
+                </div>
+              </div>
+
+              <!-- <div class="bottom_block-main-item">
+                <div class="awards-title">
+                  <span>
+                    <img src="/img/degree_left.svg" alt="degree">
+                  </span>
+                    2 Степень
+                  <span>
+                    <img src="/img/degree_right.svg" alt="degree">
+                  </span>
+                </div>
+                <div class="awards-content_block">
+                  Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды 2 степени.
+                </div>
+              </div>
+
+              <div class="bottom_block-main-item">
+                <div class="awards-title">
+                  <span>
+                    <img src="/img/degree_left.svg" alt="degree">
+                  </span>
+                    3 Степень
+                  <span>
+                    <img src="/img/degree_right.svg" alt="degree">
+                  </span>
+                </div>
+                <div class="awards-content_block">
+                  Награду получают как опытные специалисты, так и новички – те сотрудники, которые внесли значимый вклад в развитие своего предприятия и получили признание в коллективе.
+                </div>
+              </div> -->
+
+
+            </div>
+          </div>
+          <div class="bottom_block-right">
+            <h3 class="bottom_block-title">Командные номинации</h3>
+            <div class="bottom_block-main">
+
+
+            <div class="bottom_block-main-item" 
+              v-for="nomination in availableNominations"
+              :key="nomination">
+              <div class="awards-title mini" v-if="nomination.nomination == 'Организационный проект'">
+                  {{ nomination.nomination }} (2023)
+              </div>
+              <div class="awards-title mini" v-else>
+                  {{ nomination.nomination }}
+              </div>
+              <div class="awards-content_block">
+                  {{ nomination.description }}
+              </div>
+            </div>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -204,13 +352,14 @@ export default {
 
 
 .title{
-  font-size: 48px;
+  font-size: 64px;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 0 0 20px 0;
 }
 .text{
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--textColorBlack);
   text-align: center;
 }
@@ -236,7 +385,7 @@ export default {
   margin: 0 0 20px 0;
 }
 .m_top-60{
-  margin: 60px 0 20px 0;
+  margin: 60px 0 0px 0;
 }
 .miniTitle{
   font-size: 24px;
@@ -273,7 +422,7 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 10px 0 225px 0;
+  margin: 10px 0 525px 0;
 }
 .text-block h3:first-child{
   margin: 0 0 20px 0;
@@ -355,16 +504,25 @@ b{
 .block-awards{
   width: 30%;
 }
+.awards-title.mini{
+  font-size: 16px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 0 10px 0;
+}
 .awards-title{
   flex-direction: row;
+  align-items: center;
   color: var(--nipigasColorAdditional);
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 700;
-  margin: 0 0 10px 0;
+  padding: 0 0 24px 0;
+  width: 100%;
 }
 .awards-title span{
-    width: 20px;
+    width: 12px;
     margin: 0 5px;
+    display: flex;
 }
 
 .awards-text{
@@ -400,12 +558,145 @@ b{
 }
 
 
+.description_title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--nipigasColorMainv2);
+}
+
+.subTitle {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--nipigasColorMainv2);
+}
 
 
 
 
 
+.bottom_block{
+  width: 100%;
+  flex-direction: row;
+  align-items: flex-start;
+  margin: 30px 0 0 0;
+}
+.bottom_block-left{
+  width: 50%;
+  justify-content: flex-start;
+}
+.bottom_block-right{
+  width: 50%;
+  justify-content: flex-start;
+}
+.bottom_block-title{
+  width: 100%;
+  color: var(--nipigasColorMain);
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.bottom_block-title::after{
+  content: "";
+  display: flex;
+  width: 12px;
+  height: 12px;
+  background-image: url(/img/mini_arrow_btm.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
 
+
+
+
+.bottom_block-main{
+  width: 100%;
+  max-width: 450px;
+  min-height: 200px;
+  height: fit-content;
+  border-radius: 6px;
+  background: #F6F6F6;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
+  padding: 15px 50px;
+  margin: 25px 0 0 0;
+  justify-content: flex-start;
+}
+.bottom_block-main-item{
+  width: 100%;
+  height: auto;
+}
+
+/* .bottom_block-main-item:last-child .awards-title.mini::after{
+  content: 'Новая номинация 2023';
+  font-size: 10px;
+  color: var(--nipigasColorMain);
+  position: absolute;
+  top: -25%;
+  left: 10%;
+} */
+
+
+
+.awards-title.mini::before{
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: -20px;
+  display: block;
+  height: 0;
+  width: 0;
+  border: 5px solid transparent;
+  border-top-color: var(--nipigasColorAdditional);
+  transform: rotate(-90deg);
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+.awards-title::before{
+  content: "";
+    position: absolute;
+    top: 13px;
+    left: -20px;
+    display: block;
+    height: 0;
+    width: 0;
+    border: 5px solid transparent;
+    border-top-color: var(--nipigasColorAdditional);
+    transform: rotate(-90deg);
+    opacity: 0;
+    transition: all 0.15s ease;
+}
+.awards-content_block{
+  max-height: 0;
+  padding: 0px 0 0px 0;
+  color: var(--textColorBlack);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 150%;
+  opacity: 0;
+  /* opacity: 1; */
+  pointer-events: none;
+  transition: all 0.0s 0.0s, opacity 0.0s 0.0s;
+  cursor: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.awards-title:hover~.awards-content_block{
+  /* height: auto; */
+  max-height: 1000px;
+  padding: 0px 0 24px 0;
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.5s, opacity 0.25s 0.25s;
+}
+.awards-title:hover::before{
+  opacity: 1;
+}
 
 
 
@@ -436,11 +727,21 @@ b{
   .text-block span.text.nominations.nipigasAprivel{
     font-size: 1.2vw;
   }
-  .awards-title{
+  .bottom_block-title{
     font-size: 1.6vw;
+  }
+  .awards-title{
+    font-size: 1.4vw;
   }
   .awards-title span, .nipigasAprivel span img{
     width: 1vw;
+  }
+  .bottom_block-main{
+    width: 30vw;
+    padding: 1vw 2.5vw;
+  }
+  .awards-title.mini, .awards-content_block{
+    font-size: 1.1vw;
   }
 }
 @media (max-width: 1024px) {
@@ -478,6 +779,28 @@ b{
     width: 100%;
     margin: 0 0 40px 0;
   }
+
+  .bottom_block {
+    flex-direction: column;
+  }
+  .bottom_block-left{
+    width: 100%;
+    margin: 0 0 50px 0;
+  } 
+  .bottom_block-right{
+    width: 100%;
+  }
+  .bottom_block-title{
+    font-size: 20px;
+  }
+  .bottom_block-main{
+    width: 100%;
+    padding: 20px 40px;
+  }
+  .awards-title.mini, .awards-content_block{
+    font-size: 16px;
+  }
+
 }
 @media (max-width: 980px) {
 
@@ -527,6 +850,26 @@ b{
   .nipigasAprivel span img{
     width: 3.3vw;
   }
+
+
+
+  .bottom_block-title{
+    font-size: 18px;
+  }
+  .bottom_block-main{
+    width: 100%;
+    padding: 20px 30px;
+  }
+  .awards-title{
+    font-size: 14px;
+  }
+  .awards-title.mini, .awards-content_block{
+    font-size: 12px;
+  }
+
+  .awards-title span, .nipigasAprivel span img{
+    width: 12px;
+  }
 }
 @media (max-width: 420px) {
 
@@ -536,7 +879,7 @@ b{
     font-size: 3.0vw;
   }
   .nipigasAprivel span img{
-    width: 3.0vw;
+    width: 2.0vw;
   }
 }
 </style>

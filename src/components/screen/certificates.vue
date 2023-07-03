@@ -9,7 +9,7 @@ import editable_text from '../editable_text.vue';
 export default {
   name: "certificates_screen",
   data() {
-    let interaction = useGameStore();
+    let interaction = useGameStore(); 
     return{
         interaction: interaction,
     }

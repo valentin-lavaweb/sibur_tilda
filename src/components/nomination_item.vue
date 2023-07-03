@@ -41,7 +41,7 @@ export default {
             </span>  
           </h3>
           <span class="text">
-            <span class="descBlock">Проект </span>«{{ item.description }}»
+            <span class="descBlock">Проект </span>«{{ item.project }}»
           </span>
           <span class="autorText">
               <span class="autorBlock">
