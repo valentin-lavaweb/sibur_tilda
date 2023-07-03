@@ -124,7 +124,8 @@ export const useGameStore = defineStore("interface", {
 
     availableNominations(state){
       const uniqueTable = {};
-      let nominations = state.commandAwards.map(i => i.nomination).filter((n) =>(!uniqueTable[n] && (uniqueTable[n] = 1)));
+      let awards = state.commandAwards.filter(({nomination}) =>(!uniqueTable[nomination] && (uniqueTable[nomination] = 1)));
+      let nominations = awards.map(({nomination, title}) => {return {nomination, title}})
       return nominations;
     }
     
