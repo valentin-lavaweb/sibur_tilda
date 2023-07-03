@@ -660,11 +660,21 @@ b{
   .text-block span.text.nominations.nipigasAprivel{
     font-size: 1.2vw;
   }
-  .awards-title{
+  .bottom_block-title{
     font-size: 1.6vw;
+  }
+  .awards-title{
+    font-size: 1.4vw;
   }
   .awards-title span, .nipigasAprivel span img{
     width: 1vw;
+  }
+  .bottom_block-main{
+    width: 30vw;
+    padding: 1vw 2.5vw;
+  }
+  .awards-title.mini, .awards-content_block{
+    font-size: 1.1vw;
   }
 }
 @media (max-width: 1024px) {
@@ -702,6 +712,28 @@ b{
     width: 100%;
     margin: 0 0 40px 0;
   }
+
+  .bottom_block {
+    flex-direction: column;
+  }
+  .bottom_block-left{
+    width: 100%;
+    margin: 0 0 50px 0;
+  } 
+  .bottom_block-right{
+    width: 100%;
+  }
+  .bottom_block-title{
+    font-size: 20px;
+  }
+  .bottom_block-main{
+    width: 100%;
+    padding: 20px 40px;
+  }
+  .awards-title.mini, .awards-content_block{
+    font-size: 16px;
+  }
+
 }
 @media (max-width: 980px) {
 
@@ -751,6 +783,26 @@ b{
   .nipigasAprivel span img{
     width: 3.3vw;
   }
+
+
+
+  .bottom_block-title{
+    font-size: 18px;
+  }
+  .bottom_block-main{
+    width: 100%;
+    padding: 20px 30px;
+  }
+  .awards-title{
+    font-size: 14px;
+  }
+  .awards-title.mini, .awards-content_block{
+    font-size: 12px;
+  }
+
+  .awards-title span, .nipigasAprivel span img{
+    width: 12px;
+  }
 }
 @media (max-width: 420px) {
 
@@ -760,7 +812,7 @@ b{
     font-size: 3.0vw;
   }
   .nipigasAprivel span img{
-    width: 3.0vw;
+    width: 2.0vw;
   }
 }
 </style>
