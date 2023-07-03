@@ -544,11 +544,13 @@ b{
 .bottom_block-main{
   width: 100%;
   max-width: 450px;
+  min-height: 210px;
   height: fit-content;
   border-radius: 6px;
   background: #F6F6F6;
   box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.25);
   padding: 15px 50px;
+  justify-content: flex-start;
 }
 .bottom_block-main-item{
   width: 100%;
