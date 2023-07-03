@@ -419,7 +419,7 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 10px 0 225px 0;
+  margin: 10px 0 525px 0;
 }
 .text-block h3:first-child{
   margin: 0 0 20px 0;
