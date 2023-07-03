@@ -12,6 +12,23 @@ export default {
   data() {
     let interaction = useGameStore();
     return{
+        arrayDegree:[
+          {
+            id: 1,
+            title: '1 Степень',
+            description: 'Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника, которые сделали уникальный вклад в развитие компании и отрасли, продемонстрировали достижения, выходящие за рамки занимаемой должности.',
+          },
+          {
+            id: 2,
+            title: '2 Степень',
+            description: 'Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды 2 степени.',
+          },
+          {
+            id: 3,
+            title: '3 Степень',
+            description: 'Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды 2 степени.',
+          }
+        ],
         interaction: interaction,
     }
   },
@@ -40,7 +57,7 @@ export default {
   },
   computed:{
     availableNominations(){
-      return this.interaction.availableNominations.filter(n => n != "Приз зрительских симпатий");
+      return this.interaction.availableNominations.filter(({nomination}) => nomination != "Приз зрительских симпатий");
     }
   },
   async beforeRouteEnter(to, from, next){
@@ -194,22 +211,24 @@ export default {
             <div class="bottom_block-main">
 
 
-              <div class="bottom_block-main-item">
+              <div class="bottom_block-main-item"
+              v-for="degree in arrayDegree"
+              :key="degree.id">
                 <div class="awards-title">
                   <span>
                     <img src="/img/degree_left.svg" alt="degree">
                   </span>
-                    1 Степень
+                    {{ degree.title }}
                   <span>
                     <img src="/img/degree_right.svg" alt="degree">
                   </span>
                 </div>
                 <div class="awards-content_block">
-                    Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника, которые сделали уникальный вклад в развитие компании и отрасли, продемонстрировали достижения, выходящие за рамки занимаемой должности.
+                    {{ degree.description }}
                 </div>
               </div>
 
-              <div class="bottom_block-main-item">
+              <!-- <div class="bottom_block-main-item">
                 <div class="awards-title">
                   <span>
                     <img src="/img/degree_left.svg" alt="degree">
@@ -237,7 +256,7 @@ export default {
                 <div class="awards-content_block">
                   Награду получают как опытные специалисты, так и новички – те сотрудники, которые внесли значимый вклад в развитие своего предприятия и получили признание в коллективе.
                 </div>
-              </div>
+              </div> -->
 
 
             </div>
@@ -251,7 +270,7 @@ export default {
               v-for="nomination in availableNominations"
               :key="nomination">
               <div class="awards-title mini">
-                  {{ nomination }}
+                  {{ nomination.nomination }}
               </div>
               <div class="awards-content_block">
                   {{ nomination.description }}
