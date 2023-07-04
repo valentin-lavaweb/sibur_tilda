@@ -259,7 +259,7 @@ export default {
             <h3 class="bottom_block-title">Индивидуальные награды</h3>
             <div class="bottom_block-main">
 
-
+<!-- 
               <div class="bottom_block-main-item"
               v-for="degree in arrayDegree"
               :key="degree.id">
@@ -276,6 +276,41 @@ export default {
                     {{ degree.description }}
                 </div>
               </div>
+
+              <div class="bottom_block-main-item"
+              v-for="degree in arrayDegree"
+              :key="degree.id">
+                <div class="awards-title">
+                  <span>
+                    <img src="/img/degree_left.svg" alt="degree">
+                  </span>
+                    {{ degree.title }}
+                  <span>
+                    <img src="/img/degree_right.svg" alt="degree">
+                  </span>
+                </div>
+                <div class="awards-content_block">
+                    {{ degree.description }}
+                </div>
+              </div> -->
+
+              <div class="bottom_block-main-item"
+              v-for="degree in arrayDegree"
+              :key="degree.id">
+                <div class="awards-title">
+                  <span>
+                    <img src="/img/degree_left.svg" alt="degree">
+                  </span>
+                    {{ degree.title }}
+                  <span>
+                    <img src="/img/degree_right.svg" alt="degree">
+                  </span>
+                </div>
+                <div class="awards-content_block">
+                  <editable_text :dictionary_key="`individual_desc_grade_${degree.id}`"/>
+                </div>
+              </div>
+
 
               <!-- <div class="bottom_block-main-item">
                 <div class="awards-title">
