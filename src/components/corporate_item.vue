@@ -58,7 +58,8 @@ export default {
             {{ item.name }}
         </div>
         <div class="corporate-item_post tempelBlock">
-            <span>Должность: </span>{{ item.position }}
+            <!-- <span>Должность: </span> -->
+            {{ item.position }}
         </div>
         <div class="corporate-item_filter tempelBlock">
             {{ item.company }}

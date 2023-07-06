@@ -166,7 +166,7 @@ export default {
           >
             Номинация «{{nomination}}»
           </span>
-        </div> -->
+        </div>  -->
         
         <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
@@ -185,7 +185,7 @@ export default {
             <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
         </div> -->
-        <!-- <div class="text-block">
+        <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
           </h3>
@@ -195,13 +195,13 @@ export default {
                 <span>
                   <img src="/img/degree_left.svg" alt="degree">
                 </span>
-                1
+                1 Степень
                 <span>
                   <img src="/img/degree_right.svg" alt="degree">
                 </span>
               </div>
               <div class="awards-text">
-                <b>Степень 1.</b><editable_text dictionary_key="individual_desc_grade_1"/>
+                <editable_text dictionary_key="individual_desc_grade_1"/>
               </div>
             </div>
             <div class="block-awards text-animate-gsap">
@@ -209,13 +209,13 @@ export default {
                 <span>
                   <img src="/img/degree_left.svg" alt="degree">
                 </span>
-                  2
+                2 Степень
                 <span>
                   <img src="/img/degree_right.svg" alt="degree">
                 </span>
               </div>
               <div class="awards-text">
-                <b>Степень 2.</b><editable_text dictionary_key="individual_desc_grade_2"/>
+                <editable_text dictionary_key="individual_desc_grade_2"/>
               </div>
             </div>
             <div class="block-awards text-animate-gsap">
@@ -223,76 +223,43 @@ export default {
                 <span>
                   <img src="/img/degree_left.svg" alt="degree">
                 </span>
-                  3
+                3 Степень
                 <span>
                   <img src="/img/degree_right.svg" alt="degree">
                 </span>
               </div>
               <div class="awards-text">
-                <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
+                <editable_text dictionary_key="individual_desc_grade_3"/>
               </div>
             </div>
           </div>
           <h3 class="miniTitle mar-30 text-animate-gsap">
             <editable_text dictionary_key="command_title"/>
           </h3>
-          <div class="awards-container column">
-            <span class="text centerline text-animate-gsap">
+
+          <div class="awards-container v2">
+            <!-- <span class="text centerline text-animate-gsap">
               <editable_text dictionary_key="command_desc"/>
-            </span>
+            </span> -->
             <span class="text nipigasAprivel text-animate-gsap nominations"
               v-for="nomination in availableNominations"
               :key="nomination"
               >
-              <span class="degree">
-                <img src="/img/degree_left.svg" alt="degree">
-              </span>
-               «{{nomination}}»
-              <span class="degree">
-                <img src="/img/degree_right.svg" alt="degree">
-              </span>
+              <div class="nominations-nomination">
+                {{nomination.nomination}}
+              </div>
+               <span class="nominations-description">
+                {{nomination.description}}
+               </span>
             </span>
           </div>
-        </div> -->
-        <div class="bottom_block text-animate-gsap">
+        </div>
+
+        
+        <!-- <div class="bottom_block text-animate-gsap">
           <div class="bottom_block-left">
             <h3 class="bottom_block-title">Индивидуальные награды</h3>
             <div class="bottom_block-main">
-
-<!-- 
-              <div class="bottom_block-main-item"
-              v-for="degree in arrayDegree"
-              :key="degree.id">
-                <div class="awards-title">
-                  <span>
-                    <img src="/img/degree_left.svg" alt="degree">
-                  </span>
-                    {{ degree.title }}
-                  <span>
-                    <img src="/img/degree_right.svg" alt="degree">
-                  </span>
-                </div>
-                <div class="awards-content_block">
-                    {{ degree.description }}
-                </div>
-              </div>
-
-              <div class="bottom_block-main-item"
-              v-for="degree in arrayDegree"
-              :key="degree.id">
-                <div class="awards-title">
-                  <span>
-                    <img src="/img/degree_left.svg" alt="degree">
-                  </span>
-                    {{ degree.title }}
-                  <span>
-                    <img src="/img/degree_right.svg" alt="degree">
-                  </span>
-                </div>
-                <div class="awards-content_block">
-                    {{ degree.description }}
-                </div>
-              </div> -->
 
               <div class="bottom_block-main-item"
               v-for="degree in arrayDegree"
@@ -310,39 +277,6 @@ export default {
                   <editable_text :dictionary_key="`individual_desc_grade_${degree.id}`"/>
                 </div>
               </div>
-
-
-              <!-- <div class="bottom_block-main-item">
-                <div class="awards-title">
-                  <span>
-                    <img src="/img/degree_left.svg" alt="degree">
-                  </span>
-                    2 Степень
-                  <span>
-                    <img src="/img/degree_right.svg" alt="degree">
-                  </span>
-                </div>
-                <div class="awards-content_block">
-                  Значительный личный вклад в развитие СИБУРа и результаты «выше ожиданий» – отличительные особенности лауреатов корпоративной награды 2 степени.
-                </div>
-              </div>
-
-              <div class="bottom_block-main-item">
-                <div class="awards-title">
-                  <span>
-                    <img src="/img/degree_left.svg" alt="degree">
-                  </span>
-                    3 Степень
-                  <span>
-                    <img src="/img/degree_right.svg" alt="degree">
-                  </span>
-                </div>
-                <div class="awards-content_block">
-                  Награду получают как опытные специалисты, так и новички – те сотрудники, которые внесли значимый вклад в развитие своего предприятия и получили признание в коллективе.
-                </div>
-              </div> -->
-
-
             </div>
           </div>
           <div class="bottom_block-right">
@@ -366,7 +300,10 @@ export default {
 
             </div>
           </div>
-        </div>
+        </div> -->
+
+
+
       </div>
     </div>
     <footer_comp/>
@@ -374,6 +311,38 @@ export default {
 </template>
 
 <style scoped>
+
+.awards-container.v2{
+  width: 80%;
+  margin: 46px 0 0 0;
+}
+
+.nomination{
+  width: 50%;
+}
+.text-block span.text.nominations.nipigasAprivel:nth-child(odd){
+  padding: 0 50px 0 0;
+}
+.text-block span.text.nominations.nipigasAprivel:nth-child(even){
+  padding: 0 0 0 50px;
+}
+.nominations-nomination{
+  display: inline-block;
+  color: var(--nipigasColorAdditional);
+  font-size: 20px;
+  margin: 0 0 15px 0;
+}
+
+.nominations-description{
+  color: var(--textColorBlack);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
+
+
+
 .wrapper{
   width: 100%;
   height: 100%;
@@ -399,12 +368,14 @@ export default {
   text-align: center;
 }
 .text-block span.text.nominations.nipigasAprivel{
-  width: fit-content;
+  width: 50%;
+  height: fit-content;
   margin: 0 0 35px 0;
   color: var(--nipigasColorMain);
   font-size: 20px;
   font-weight: 700;
-  align-items: center;
+  align-items: left;
+  flex-direction: column;
 }
 .text-block span.degree{
   width: fit-content;
@@ -421,6 +392,9 @@ export default {
 }
 .m_top-60{
   margin: 60px 0 0px 0;
+}
+.miniTitle.mar-30{
+  margin: 50px 0 0 0;
 }
 .miniTitle{
   font-size: 24px;
@@ -457,10 +431,10 @@ export default {
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 10px 0 525px 0;
+  margin: 10px 0 315px 0;
 }
 .text-block h3:first-child{
-  margin: 0 0 20px 0;
+  margin: 44px 0 50px 0;
 }
 .text-block span{
   width: 100%;
@@ -525,12 +499,14 @@ b{
 
 .awards-container{
   width: 100%;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   margin: 20px 0 0 0;
 }
 .awards-container.column{
+  width: 100%;
   flex-direction: column;
   margin: 16px 0 0 0;
   justify-content: center;
@@ -579,17 +555,11 @@ b{
 
 
 
-.nominations:last-child:after{
-  content: "Новая номинация";
-  position: absolute;
-  width: 100%;
-  top: 0;
-  color: var(--nipigasColorAdditional);
-  font-size: 10px;
+.nominations:last-child .nominations-nomination::after{
+  content: " (NEW 2023)";
+  color: rgba(252, 194, 23, 1);
+  font-size: 20px;
   font-weight: 600;
-  transform: translateY(-30%);
-  padding: 0 0 0 0;
-  text-align: center;
 }
 
 
@@ -721,8 +691,8 @@ b{
   overflow: hidden;
 }
 
-.awards-title:hover~.awards-content_block{
-  /* height: auto; */
+/* .awards-title:hover~.awards-content_block{
+  height: auto;
   max-height: 1000px;
   padding: 0px 0 24px 0;
   opacity: 1;
@@ -731,7 +701,7 @@ b{
 }
 .awards-title:hover::before{
   opacity: 1;
-}
+} */
 
 
 
@@ -777,6 +747,12 @@ b{
   }
   .awards-title.mini, .awards-content_block{
     font-size: 1.1vw;
+  }
+  .nominations-nomination, .nominations:last-child .nominations-nomination::after{
+    font-size: 1.2vw;
+  }
+  .nominations-description{
+    font-size: 1vw;
   }
 }
 @media (max-width: 1024px) {
@@ -835,6 +811,41 @@ b{
   .awards-title.mini, .awards-content_block{
     font-size: 16px;
   }
+
+  .nominations-nomination, .nominations:last-child .nominations-nomination::after{
+    font-size: 18px;
+  }
+  .nominations-description{
+    font-size: 16px;
+  }
+
+  .awards-container.v2{
+    width: 100%;
+    flex-direction: column;
+    margin: 46px 0 0 0;
+  }
+
+  .text-block span.text.nominations.nipigasAprivel{
+    width: 100%;
+    align-items: center;
+  }
+  .nomination{
+    width: 100%;
+    align-items: center;
+  }
+  .text-block span.text.nominations.nipigasAprivel:nth-child(odd){
+    padding: 0 0px 0 0;
+  }
+  .text-block span.text.nominations.nipigasAprivel:nth-child(even){
+    padding: 0 0 0 0px;
+  }
+
+  .text-block span{
+    align-items: center;
+    text-align: center;
+  }
+
+
 
 }
 @media (max-width: 980px) {
@@ -904,6 +915,15 @@ b{
 
   .awards-title span, .nipigasAprivel span img{
     width: 12px;
+  }
+
+
+  .nominations-nomination, .nominations:last-child .nominations-nomination::after{
+    font-size: 16px;
+    text-align: center;
+  }
+  .nominations-description{
+    font-size: 14px;
   }
 }
 @media (max-width: 420px) {
