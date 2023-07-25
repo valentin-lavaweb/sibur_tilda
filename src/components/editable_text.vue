@@ -64,37 +64,37 @@ export default {
       this.editTop = buttonRect.top;
       this.isEdit = true;
 
-      setTimeout(()=>{
+      setTimeout(() => {
         let editor = this.$refs.editor;
-        let pos = { start: {x:0, y:0}, current: {x:0, y:0}, end: {x:0, y:0} };
+        let pos = { start: { x: 0, y: 0 }, current: { x: 0, y: 0 }, end: { x: 0, y: 0 } };
 
         editor.addEventListener('pointerdown', (e) => {
 
-          pos.start = pos.current = pos.end = {x:e.clientX, y:e.clientY};
+          pos.start = pos.current = pos.end = { x: e.clientX, y: e.clientY };
 
           // editor.style.cursor = 'grabbing';
           editor.style.userSelect = 'none';
 
-          editor.setPointerCapture(e.pointerId);
+          // editor.setPointerCapture(e.pointerId);
 
           const movelistener = (e) => {
 
-              pos.end = {x:e.clientX, y:e.clientY};
-              let deltaX = pos.end.x - pos.current.x;
-              let deltaY = pos.end.y - pos.current.y;
-              pos.current = {x:e.clientX, y:e.clientY};
-              this.editLeft += deltaX;
-              this.editTop += deltaY;
+            pos.end = { x: e.clientX, y: e.clientY };
+            let deltaX = pos.end.x - pos.current.x;
+            let deltaY = pos.end.y - pos.current.y;
+            pos.current = { x: e.clientX, y: e.clientY };
+            this.editLeft += deltaX;
+            this.editTop += deltaY;
           }
 
           const uplistener = (e) => {
-              pos.end = {x:e.clientX, y:e.clientY};
+            pos.end = { x: e.clientX, y: e.clientY };
 
-              editor.removeEventListener('pointermove', movelistener);
-              editor.removeEventListener('pointerup', uplistener);
+            editor.removeEventListener('pointermove', movelistener);
+            editor.removeEventListener('pointerup', uplistener);
 
-              // editor.style.cursor = 'auto';
-              editor.style.userSelect = 'all';
+            // editor.style.cursor = 'auto';
+            editor.style.userSelect = 'all';
 
           }
 
@@ -110,18 +110,18 @@ export default {
 
     }
   },
-    mounted() {
+  mounted() {
 
+  },
+  computed: {
+    isAdmin() {
+      return this.interaction.isAdmin;
     },
-    computed: {
-      isAdmin() {
-        return this.interaction.isAdmin;
-      },
-    },
-    watch: {
+  },
+  watch: {
 
-    },
-  };
+  },
+};
 </script>
 
 
@@ -135,13 +135,15 @@ export default {
   <Teleport to="body">
 
     <Transition name="openPage" mode="out-in">
-      <div class="edit-wrapper" :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }" @pointerdown="interaction.focusedEditPopup = id" v-if="isEdit" >
+      <div class="edit-wrapper"
+        :style="{ left: editLeft + 'px', top: editTop + 'px', 'z-index': interaction.focusedEditPopup == id ? 5000 : '' }"
+        @pointerdown="interaction.focusedEditPopup = id" v-if="isEdit">
         <div class="edit-header" ref="editor">
           <div class="edit-left_block">
             <button class="btn-save" title="Сохранить" @click="save()">
-            <img src="/src/assets/icons/save.png" alt="Сохранить" class="save" />
-          </button>
-          Нажмите чтобы сохранить
+              <img src="/src/assets/icons/save.png" alt="Сохранить" class="save" />
+            </button>
+            Нажмите чтобы сохранить
           </div>
           <button class="btn-close" title="закрыть" @click="close()">
             <img src="/src/assets/icons/close.png" alt="закрыть" class="close" />
@@ -214,13 +216,14 @@ textarea {
   cursor: move;
   backdrop-filter: blur(10px);
 }
+
 .edit-content {
   width: fit-content;
   height: fit-content;
   background-color: rgb(255, 255, 255);
 }
 
-.edit-left_block{
+.edit-left_block {
   flex-direction: row;
   color: var(--nipigasColorMain);
   font-weight: 600;
@@ -229,9 +232,11 @@ textarea {
 .btn-save {
   margin: 0 5px 0 0;
 }
-.btn-save img{
+
+.btn-save img {
   z-index: 3;
 }
+
 .btn-close {
   width: 32px;
   height: 32px;
@@ -244,14 +249,17 @@ textarea {
   background-color: transparent;
   transition: all 0.25s ease;
 }
-.btn-close:hover{
+
+.btn-close:hover {
   background-color: transparent;
 }
-.btn-close:hover::before{
+
+.btn-close:hover::before {
   width: 32px;
   height: 32px;
   background-color: rgb(223, 236, 248);
 }
+
 .btn-close::before {
   content: "";
   position: absolute;
@@ -261,14 +269,15 @@ textarea {
   transition: all 0.25s ease;
   border-radius: 50%;
 }
-.btn-close img{
+
+.btn-close img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: all 0.25s ease;
 }
 
-button{
+button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -282,19 +291,22 @@ button{
   cursor: pointer;
   transition: all 0.25s ease;
 }
-button img{
+
+button img {
   z-index: 2;
 }
-button:hover{
+
+button:hover {
   background-color: transparent;
   border-radius: 50%;
 }
 
-button:hover::before{
+button:hover::before {
   width: 26px;
   height: 26px;
   background-color: rgb(223, 236, 248);
 }
+
 button::before {
   content: "";
   position: absolute;
@@ -304,11 +316,4 @@ button::before {
   transition: all 0.25s ease;
   border-radius: 50%;
   z-index: 1;
-}
-
-
-
-
-
-
-</style>
+}</style>
