@@ -31,7 +31,7 @@ const headers = [
 
 export default {
   name: "personal_awards_table",
-  props:{
+  props: {
     search: String
   },
   data() {
@@ -248,7 +248,7 @@ export default {
     async editItem(item) {
       this.onEditDone = async (item) => {
         let updItem = await this.updateItem(item);
-        if(!updItem) return;
+        if (!updItem) return;
         this.editItem(updItem);
       }
       this.editedItem = item;
@@ -258,7 +258,7 @@ export default {
     async duplicateItem(item) {
       this.onEditDone = async (item) => {
         let newItem = await this.createItem(item);
-        if(!newItem) return;
+        if (!newItem) return;
         this.editItem(newItem);
       }
       this.editedItem = Object.assign({}, item, { id: undefined, image: null });
@@ -275,13 +275,13 @@ export default {
     imagePath() {
       return function (item) {
         if (item.image) {
-          try{
-                let url = new URL(item.image);
-                return url;
-            }catch{
-                let url = new URL('files/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
-                return url;
-            }
+          try {
+            let url = new URL(item.image);
+            return url;
+          } catch {
+            let url = new URL('files/' + item.image, import.meta.env.VITE_VUE_APP_API_URL);
+            return url;
+          }
         } else {
           if (item.gender) {
             return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
@@ -291,7 +291,7 @@ export default {
         }
       }
     },
-    debouncedSearch(){
+    debouncedSearch() {
       return debounce(this.loadData, 500);
     }
 
@@ -312,43 +312,35 @@ export default {
   <div class="awards_table">
 
 
-    <Teleport to="body" >
-        <transition name="openPage" mode="out-in" appear>
-          <Personal_awards_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem" ref="editForm" :availableSections="availableSections"/>
-        </transition>
-      </Teleport>
+    <Teleport to="body">
+      <transition name="openPage" mode="out-in" appear>
+        <Personal_awards_edit :item="editedItem" @done="onEditDone" @cancel="editedItem = null" v-if="editedItem"
+          ref="editForm" :availableSections="availableSections" />
+      </transition>
+    </Teleport>
 
-      <div class="control-panel">
-        <button class="btn" @click="duplicateItem(
-          { 
-            name: null,
-            position: null,
-            company: null,
-            award: null,
-            grade: null,
-            issued: null,
-            gender: null,
-            image: null,
-            personal_award_section_id: availableSections[0]?.id,
-            year: (new Date()).getFullYear() 
-          }
-          )">
-            добавить запись
-        </button>
-      </div>
+    <div class="control-panel">
+      <button class="btn" @click="duplicateItem(
+        {
+          name: null,
+          position: null,
+          company: null,
+          award: null,
+          grade: null,
+          issued: null,
+          gender: null,
+          image: null,
+          personal_award_section_id: availableSections[0]?.id,
+          year: (new Date()).getFullYear()
+        }
+      )">
+        добавить запись
+      </button>
+    </div>
 
-    <Vue3EasyDataTable 
-    v-model:server-options="serverOptions" 
-    :server-items-length="serverTotalItemsLength"
-    :loading="isLoading"
-    :headers="headers" 
-    :items="serverItems" 
-    border-cell 
-    theme-color="rgb(0, 140, 149)"
-    table-class-name="customize-table" 
-    header-text-direction="center" 
-    body-text-direction="center" 
-    buttons-pagination>
+    <Vue3EasyDataTable v-model:server-options="serverOptions" :server-items-length="serverTotalItemsLength"
+      :loading="isLoading" :headers="headers" :items="serverItems" border-cell theme-color="rgb(0, 140, 149)"
+      table-class-name="customize-table" header-text-direction="center" body-text-direction="center" buttons-pagination>
 
 
       <template #item-name="item">
@@ -391,10 +383,11 @@ export default {
       <template #item-gender="item">
         <!-- <CheckBoxEdit :item="item" editProp="gender" :value="item.gender" @updateValue="item.gender = $event"  @updateItem="updateItem($event)"/> -->
         <div class="inpu_gender">
-          <input class="gender_change" type="checkbox" v-model="item.gender" @change="updateItem({ ...item, gender: $event.target.checked })" />
+          <input class="gender_change" type="checkbox" v-model="item.gender"
+            @change="updateItem({ ...item, gender: $event.target.checked })" />
           <span>
-            <div> муж  -  &nbsp; <input type="checkbox" checked></div>
-            <div> жен  -  &nbsp; <input type="checkbox"></div>
+            <div> муж - &nbsp; <input type="checkbox" checked></div>
+            <div> жен - &nbsp; <input type="checkbox"></div>
           </span>
         </div>
         <!-- <input type="radio" id="one" :value="true" v-model="item.gender" @change="updateItem(item)"/>
@@ -406,15 +399,15 @@ export default {
       </template>
 
       <template #item-image="item">
-        <div class="photoDownlouad-box">            
+        <div class="photoDownlouad-box">
           <div class="input__wrapper">
-            <input name="file" accept="image/*" type="file" :id="`input_img_${item.id}`" class="input input__file" multiple="false"
-              @change="updateImage(item, $event)">
+            <input name="file" accept="image/*" type="file" :id="`input_img_${item.id}`" class="input input__file"
+              multiple="false" @change="updateImage(item, $event)">
             <label :for="`input_img_${item.id}`" class="input__file-button">
-                <span class="input__file-icon-wrapper">
-                  <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
-                </span>
-                <span class="input__file-button-text">Выберите файл</span>
+              <span class="input__file-icon-wrapper">
+                <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
+              </span>
+              <span class="input__file-button-text">Выберите файл</span>
             </label>
           </div>
           <div class="img-block">
@@ -458,9 +451,7 @@ export default {
 
 
 <style scoped>
-
-
-.awards_table{
+.awards_table {
   width: 100%;
 }
 
@@ -542,19 +533,19 @@ select {
   border: 1px solid var(--nipigasColorMain);
   padding: 5px 10px 5px 10px;
   cursor: pointer;
-}v
+}
 
-option {
+v option {
   padding: 5px;
   cursor: pointer;
 }
 
-.actions button{
+.actions button {
   margin: 0 0 20px 0;
 }
 
 
-.inpu_gender span{
+.inpu_gender span {
   position: absolute;
   top: 0;
   transform: translateY(-120%);
@@ -568,18 +559,21 @@ option {
   z-index: 3;
   display: flex;
   flex-direction: column;
-  box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   font-weight: 500;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
-.inpu_gender span div{
+
+.inpu_gender span div {
   color: var(--textColorBlack);
   flex-direction: row;
 }
-.inpu_gender span div input{
+
+.inpu_gender span div input {
   pointer-events: none;
 }
-.inpu_gender:hover span{
+
+.inpu_gender:hover span {
   opacity: 1;
 }
 
@@ -590,36 +584,39 @@ option {
 
 
 
-.img-block{
+.img-block {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 0 20px 0;
 }
-.img-block img{
+
+.img-block img {
   width: 150px;
   height: auto;
 }
-.photoDownlouad-box{
+
+.photoDownlouad-box {
   width: 100%;
   padding: 0 0 0 10px;
   flex-direction: column-reverse;
   justify-content: center;
   align-items: center;
 }
+
 .input__wrapper {
   width: fit-content;
   position: relative;
   margin: 0px 0px 0px 0px;
 }
- 
+
 .input__file {
   opacity: 0;
   visibility: hidden;
   position: absolute;
 }
- 
+
 .input__file-icon-wrapper {
   height: 40px;
   width: 40px;
@@ -628,23 +625,24 @@ option {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   border-right: 1px solid #fff;
 }
-.input__file-icon-wrapper img{
+
+.input__file-icon-wrapper img {
   width: 20px;
   height: 20px;
 }
- 
+
 .input__file-button-text {
   line-height: 1;
   margin-top: 1px;
 }
- 
+
 .input__file-button {
   width: 100%;
   max-width: 290px;
@@ -658,14 +656,13 @@ option {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
   border-radius: 5px;
   cursor: pointer;
   margin: 0 auto;
 }
-
 </style>
