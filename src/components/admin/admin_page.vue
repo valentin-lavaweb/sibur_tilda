@@ -44,12 +44,6 @@ export default {
             let table = tableContainer.querySelector('.vue3-easy-data-table__main');
 
             if (table) {
-                pos.start = pos.current = pos.end = e.clientX;
-
-                tableContainer.style.cursor = 'grabbing';
-                tableContainer.style.userSelect = 'none';
-
-                tableContainer.setPointerCapture(e.pointerId);
 
                 const movelistener = (e) => {
 
@@ -62,27 +56,28 @@ export default {
                 const uplistener = (e) => {
                     pos.end = e.clientX;
 
-                    tableContainer.removeEventListener('pointermove', movelistener);
-                    tableContainer.removeEventListener('pointerup', uplistener);
+                    // tableContainer.releasePointerCapture(e.pointerId);
+
+                    tableContainer.onpointermove = null;
+                    tableContainer.onpointerup = null;
 
                     tableContainer.style.cursor = 'auto';
                     tableContainer.style.userSelect = 'all';
 
                 }
 
+                tableContainer.onpointermove = movelistener;
 
+                tableContainer.onpointerup = uplistener;
 
-                tableContainer.addEventListener('pointermove', movelistener);
+                pos.start = pos.current = pos.end = e.clientX;
 
-                tableContainer.addEventListener('pointerup', uplistener);
+                tableContainer.style.cursor = 'grabbing';
+                tableContainer.style.userSelect = 'none';
+
+                // tableContainer.setPointerCapture(e.pointerId);
 
             }
-
-
-
-
-
-
 
         });
 
@@ -213,7 +208,7 @@ export default {
 
 
 
-.content_table div.control-panel{
+.content_table div.control-panel {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -222,7 +217,8 @@ export default {
     border-bottom: none;
     padding: 5px 10px;
 }
-.content_table div.control-panel .btn{
+
+.content_table div.control-panel .btn {
     position: relative;
     display: flex;
     background-color: var(--white);
@@ -235,15 +231,11 @@ export default {
     cursor: pointer;
     transition: all 0.25s ease;
 }
-.content_table div.control-panel .btn:hover{
+
+.content_table div.control-panel .btn:hover {
     background-color: var(--nipigasColorMain-hover);
     color: var(--white);
 }
-
-
-
-
-
 </style>
 <style scoped>
 .content_table div {
@@ -316,6 +308,7 @@ a.active {
 .hover-link a {
     text-decoration: underline;
 }
+
 .logo a {
     width: 100%;
     height: 100%;
@@ -323,6 +316,7 @@ a.active {
     justify-content: center;
     align-items: center;
 }
+
 .logo {
     flex-direction: row;
 }
@@ -416,7 +410,7 @@ section {
 }
 
 
-.content_table div.control-panel{
+.content_table div.control-panel {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -425,7 +419,8 @@ section {
     border-bottom: none;
     padding: 5px 10px;
 }
-.content_table div.control-panel .btn{
+
+.content_table div.control-panel .btn {
     position: relative;
     display: flex;
     background-color: var(--white);
@@ -438,7 +433,8 @@ section {
     cursor: pointer;
     transition: all 0.25s ease;
 }
-.content_table div.control-panel .btn:hover{
+
+.content_table div.control-panel .btn:hover {
     background-color: var(--nipigasColorMain-hover);
     color: var(--white);
 }
@@ -474,4 +470,5 @@ section {
 
 @media (max-width: 420px) {}
 
-@media (max-width: 380px) {}</style>
+@media (max-width: 380px) {}
+</style>
