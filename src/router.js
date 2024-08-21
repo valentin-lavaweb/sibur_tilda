@@ -30,7 +30,7 @@ const routes = [
   // { path: '/Лучшие_корпоративные_тренеры',          component: corporate,               name: 'corporate_trainer',        meta:{title:'Лучшие корпоративные тренеры'}},
   // { path: '/Лучшие_производственные_наставники',    component: corporate,               name: 'corporate_mentor',         meta:{title:'Лучшие производственные наставники'}},
   { path: '/gallery',                                component: photo_gallery,                    name: 'photo_gallery'},
-  { path: '/sertificates',                           component: certificates,                     name: 'certificates'},
+  { path: '/sertificates',                           component: certificates,                     name: 'certificates',        redirect: { name: 'main_page' },},
   { path: '/admin',                                  component: admin_page,                       name: 'admin_page',
     children:[
       { path: 'command_awards_table',                      component: command_awards,          name: 'command_awards_table', meta:{requiresAuth: true}},

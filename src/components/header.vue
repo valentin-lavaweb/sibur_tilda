@@ -86,14 +86,14 @@ export default {
                         </RouterLink>
                     </div>
                 </div>
-                <div class="header-link">
-                    <RouterLink :to="{ name: 'photo_gallery' }" active-class="active">
-                        Фотогалерея
+                <div class="header-link disable">
+                    <RouterLink :to="{ name: 'certificates' }" active-class="active">
+                        Сертификаты
                     </RouterLink>
                 </div>
                 <div class="header-link">
-                    <RouterLink :to="{ name: 'certificates' }" active-class="active">
-                        Сертификаты
+                    <RouterLink :to="{ name: 'photo_gallery' }" active-class="active">
+                        Фотогалерея
                     </RouterLink>
                 </div>
             </div>
@@ -139,9 +139,9 @@ export default {
                 <RouterLink :to="{ name: 'photo_gallery' }" active-class="active">
                     Фотогалерея
                 </RouterLink>
-                <RouterLink :to="{ name: 'certificates' }" active-class="active">
+                <!-- <RouterLink :to="{ name: 'certificates' }" active-class="active">
                     Сертификаты
-                </RouterLink>
+                </RouterLink> -->
             </div>
             <div class="bg-header-mobile" @click="statusMobileMenu = false" :class="{ active: statusMobileMenu == true }">
             </div>
@@ -150,6 +150,12 @@ export default {
 </template>
 
 <style scoped>
+.disable{
+    opacity: 0;
+    pointer-events: none;
+    cursor: auto;
+}
+
 .header {
     position: fixed;
     width: 1326px;
