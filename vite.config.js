@@ -25,9 +25,9 @@ export default defineConfig({
     //publicDir : './public',
     //minify: false
   },
-  server: {
-    host: 'sibur.local'
-  }
+  // server: {
+  //   host: 'sibur.local'
+  // }
 });
 
 
