@@ -48,6 +48,13 @@ export default {
       stagger: 0.15,
       delay: 0.25,
     });
+    gsap.from(".img-animate-gsap", {
+      opacity: 0,
+      scale: 0.5,
+      duration: 0.5,
+      delay: 0.25,
+      ease: "sine",
+    });
     // gsap.from(".video-animate-gsap", {
     //   y: -50,
     //   opacity: 0,
@@ -125,6 +132,9 @@ export default {
     <div class="bg-element">
       <img src="/img/hand_with_cup.svg" alt=""/>
     </div>
+    <div class="bg-element-two img-animate-gsap">
+      <img src="/img/background_page/team_track_winners.svg" alt=""/>
+    </div>
     <header_comp/>
     <div class="wrapper-block">
       <h1 class="title text-animate-gsap">
@@ -140,7 +150,7 @@ export default {
         controls
       >
       </video> -->
-      <h2 class="subTitle  m_top-60 text-animate-gsap">
+      <!-- <h2 class="subTitle  m_top-60 text-animate-gsap">
         <editable_text dictionary_key="department_title"/>
       </h2>
       <span class="text description_subTitle text-animate-gsap">
@@ -151,7 +161,7 @@ export default {
       </h2>
       <span class="text description_subTitle text-animate-gsap">
         <editable_text dictionary_key="corporate_desc"/>
-      </span>
+      </span> -->
       <div class="text-container">
         <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
@@ -186,9 +196,9 @@ export default {
           </span>
         </div> -->
         <div class="text-block">
-          <h3 class="miniTitle text-animate-gsap">
+          <!-- <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
-          </h3>
+          </h3> -->
           <div class="awards-container">
             <div class="block-awards text-animate-gsap">
               <div class="awards-title">
@@ -242,15 +252,18 @@ export default {
               <editable_text dictionary_key="command_desc"/>
             </span> -->
             <span class="text nipigasAprivel text-animate-gsap nominations"
-              v-for="nomination in availableNominations"
+              v-for="(nomination, key) in availableNominations"
               :key="nomination"
               >
               <div class="nominations-nomination">
+                <div class="nominations-icon">
+                  <img :src="`/img/types_of_award/${key+1}.svg`" alt="icon">
+                </div>
                 {{nomination.nomination}}
               </div>
-               <span class="nominations-description">
+              <span class="nominations-description">
                 {{nomination.description}}
-               </span>
+              </span>
             </span>
           </div>
         </div>
@@ -313,18 +326,30 @@ export default {
 <style scoped>
 
 .awards-container.v2{
-  width: 80%;
+  width: 100%;
+  flex-direction: row-reverse;
   margin: 46px 0 0 0;
+}
+
+.awards-container.v2 span.text.nominations.nipigasAprivel{
+  width: 50%;
+  margin: 0 0 100px 0;
+}
+
+.nominations-icon{
+  position: absolute;
+  left: 0;
+  transform: translateX(calc(-100% - 20px));
 }
 
 .nomination{
   width: 50%;
 }
-.text-block span.text.nominations.nipigasAprivel:nth-child(odd){
-  padding: 0 50px 0 0;
+.awards-container.v2 span.text.nominations.nipigasAprivel:nth-child(odd){
+  padding: 0 0 0 100px;
 }
-.text-block span.text.nominations.nipigasAprivel:nth-child(even){
-  padding: 0 0 0 50px;
+.awards-container.v2 span.text.nominations.nipigasAprivel:nth-child(even){
+  padding: 0 100px 0 0;
 }
 .nominations-nomination{
   display: inline-block;
@@ -394,7 +419,7 @@ export default {
   margin: 60px 0 0px 0;
 }
 .miniTitle.mar-30{
-  margin: 50px 0 0 0;
+  margin: 70px 0 0 0;
 }
 .miniTitle{
   font-size: 24px;
@@ -479,6 +504,7 @@ b{
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  z-index: 1;
 }
 .bg-element img{
   position: absolute;
@@ -493,6 +519,18 @@ b{
   }
 }
 
+.bg-element-two{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.bg-element-two img{
+    position: absolute;
+}
 
 
 
@@ -503,7 +541,7 @@ b{
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 20px 0 0 0;
+  margin: 70px 0 0 0;
 }
 .awards-container.column{
   width: 100%;
@@ -540,6 +578,7 @@ b{
   display: block;
   color: var(--textColorBlack);
   text-align: center;
+  font-weight: 600;
 }
 
 
@@ -822,6 +861,7 @@ b{
   .awards-container.v2{
     width: 100%;
     flex-direction: column;
+    align-items: center;
     margin: 46px 0 0 0;
   }
 
@@ -833,11 +873,29 @@ b{
     width: 100%;
     align-items: center;
   }
-  .text-block span.text.nominations.nipigasAprivel:nth-child(odd){
-    padding: 0 0px 0 0;
+
+  .nominations-icon {
+    width: calc(60px - 20px);
   }
-  .text-block span.text.nominations.nipigasAprivel:nth-child(even){
-    padding: 0 0 0 0px;
+  .awards-container.v2 span.text.nominations.nipigasAprivel:nth-child(odd){
+    width: 100%;
+    padding: 0 0 0 60px;
+  }
+  .awards-container.v2 span.text.nominations.nipigasAprivel:nth-child(even){
+    width: 100%;
+    padding: 0 0 0 60px;
+  }
+
+  .nominations-nomination{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .text-block .nominations-description {
+    text-align: left;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   .text-block span{
@@ -927,7 +985,20 @@ b{
   }
 }
 @media (max-width: 420px) {
-
+  .nominations-icon {
+    width: calc(40px - 20px);
+  }
+  .awards-container.v2 span.text.nominations.nipigasAprivel:nth-child(odd){
+    width: 100%;
+    padding: 0 0 0 40px;
+  }
+  .awards-container.v2 span.text.nominations.nipigasAprivel:nth-child(even){
+    width: 100%;
+    padding: 0 0 0 40px;
+  }
+  .nominations-nomination {
+    text-align: left;
+  }
 }
 @media (max-width: 340px) {
   .text-block span.text.nominations.nipigasAprivel{

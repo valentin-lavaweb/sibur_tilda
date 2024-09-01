@@ -96,6 +96,7 @@ export default {
   padding: 5px 5px 30px 5px;
   margin: 0 20px 0 0;
   justify-content: flex-start;
+  align-items: flex-start;
 }
 .corporate-item_img img{
     width: 160px;
@@ -109,7 +110,9 @@ export default {
     font-size: 16px;
     font-weight: 700;
     margin: 0 0 15px 0;
-    text-align: center;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
 }
 
 .tempelBlock{
@@ -203,7 +206,7 @@ export default {
         width: 100%;
     }
     .tempelBlock{
-        text-align: center;
+        text-align: left;
     }
 }
 </style>
