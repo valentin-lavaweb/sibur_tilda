@@ -109,12 +109,12 @@ export default {
                         <RouterLink :to="{ name: 'main_page' }" active-class="active">
                             <img src="/img/logo-new.png" alt="logo" />
                         </RouterLink>
-                        <div class="logo-text">
+                        <!-- <div class="logo-text">
                             <RouterLink :to="{ name: 'main_page' }" active-class="active">
                                 энергия<br>
                                 признания
                             </RouterLink>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="login" @click="interaction.logout(), $router.push({ name: 'admin_page' })">
                         Выйти
@@ -318,6 +318,7 @@ a.active {
 }
 
 .logo {
+    width: 150px;
     flex-direction: row;
 }
 
