@@ -98,6 +98,10 @@ export default {
   justify-content: flex-start;
   align-items: flex-start;
 }
+.corporate-item_img{
+    border-radius: 50%;
+    overflow: hidden;
+}
 .corporate-item_img img{
     width: 160px;
     height: 160px;
