@@ -107,6 +107,7 @@ export default {
     height: 160px;
     min-width: 160px;
     min-height: 160px;
+    object-fit: cover;
 }
 .corporate-item_name{
     width: 100%;
