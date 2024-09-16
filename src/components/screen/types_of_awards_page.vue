@@ -743,7 +743,13 @@ b{
 } */
 
 
-
+@media (max-width: 1700px) {
+  .bg-element{
+    width: 35vw;
+    height: 60vw;
+    transform: translateX(22vw);
+  }
+}
 @media (max-width: 1440px) {
   .wrapper-block, .text-container, .description_subTitle, .description_title {
     width: 70vw;

@@ -84,10 +84,11 @@ export default {
 .front-item-content{
   width: 100%;
   height: 100%;
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
   overflow: hidden;
+  text-align: center;
   z-index: 2;
   border-radius: 10px;
   background-color: rgba(246, 246, 246, 1);
@@ -119,16 +120,16 @@ export default {
 .front-item-content:hover~.back-item-content{
   opacity: 1;
 }
-
+ 
 
 .nomination-item{
   width: 545px;
-  height: 240px;
+  height: 100%;
   background-color: rgba(246, 246, 246, 1);
   border: 1px solid rgba(0, 140, 149, 0.0);
   border-radius: 10px;
-  padding: 25px 15px;
-  margin: 0 0 30px 0;
+  /* padding: 25px 15px;
+  margin: 0 0 30px 0; */
   justify-content: flex-start;
   transition: all 0.25s ease;
 }

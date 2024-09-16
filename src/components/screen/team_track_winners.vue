@@ -161,11 +161,16 @@ export default {
   margin: 40px 0 300px 0;
   width: 1120px;
   height: fit-content;
-  flex-direction: row;
+  /* flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: flex-start; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  justify-content: space-around;
+  gap: 25px;
 }
 
 
@@ -213,6 +218,7 @@ export default {
   }
   .nomination-container{
     width: 80vw;
+    grid-template-columns: 1fr;
   }
   .title {
     margin: 20px 0 0 0;
