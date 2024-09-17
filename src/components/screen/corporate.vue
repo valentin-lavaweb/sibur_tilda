@@ -3,6 +3,7 @@ import { useGameStore, debounce } from '@/stores/interface-interaction.js';
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 import corporate_item from "@/components/corporate_item.vue";
+import UIbtn from "@/components/UIbtn.vue"
 
 import gsap from "gsap";
 
@@ -24,6 +25,7 @@ export default {
     header_comp,
     footer_comp,
     corporate_item,
+    UIbtn,
   },
   methods: { 
     // toggleIssuerFilter(issuer){
@@ -385,6 +387,53 @@ export default {
                 </div>
                 Все предприятия
             </button> -->
+
+            <div class="filter-selection">
+                <UIbtn 
+                    :variantStyle="true" 
+                    :enablePanel="true"
+                    :resetItem="'Год'" 
+                    :options="availableYears"
+                    :selected="filterYear" 
+                    v-model:selected="filterYear"
+                    >
+                    Год {{ filterYear }}
+                </UIbtn>
+            </div>
+            <div class="filter-selection" v-if="gradeFilterEnabled">
+                <UIbtn 
+                    :enablePanel="true" 
+                    :placeholder="'Степень'" 
+                    :resetItem="'Степень'"
+                    :options="availableGrades"
+                    :selected="filterGrade" 
+                    v-model:selected="filterGrade"
+                    >
+                    Степень {{ filterGrade }}
+                </UIbtn>
+            </div>
+            <div class="filter-selection" v-if="issuerFilterEnabled">
+                <UIbtn 
+                    :enablePanel="true" 
+                    :resetItem="'Кем выдана'"
+                    :options="availableIssuers"
+                    :selected="filterIssuers" 
+                    v-model:selected="filterIssuers"
+                    >
+                    <span v-if="filterIssuers">
+                        {{ filterIssuers }}
+                    </span>
+                    <span v-else>
+                        Кем выдана 
+                    </span>
+                </UIbtn>
+            </div>
+            <div class="filter-selection">
+                <UIbtn :variantSize="true" :enablePanel="false" @click="filterHoverStatus = !filterHoverStatus">
+                    Все предприятия
+                </UIbtn>
+            </div>
+            <!-- 
             <div class="filter-selection">
                 <select class="yearSelect" v-model="filterYear">
                         <option :value="undefined">
@@ -444,7 +493,7 @@ export default {
                     </div>
                 </div>
                 Все предприятия
-            </button>
+            </button> -->
             <div class="filter-block" :class="{active: filterHoverStatus}">
                 <div class="filter-container_content">
                     <label class="custom-checkbox"
@@ -701,7 +750,7 @@ export default {
 
 .title{
     margin: 75px 0 20px 0;
-    font-size: 48px;
+    font-size: 64px;
     font-weight: 700;
     color: var(--nipigasColorAdditional);
 }
@@ -765,6 +814,7 @@ export default {
     background-color: var(--nipigasColorMain-hover);
 }
 .filterButton{
+    /* width: 258px; */
     height: 30px;
     display: flex;
     flex-direction: row;
@@ -921,9 +971,10 @@ export default {
     justify-content: center;
     align-items: center;
     position: relative;
-    min-width: 100px;
-    max-width: 200px;
-    height: 30px;
+    /* min-width: 100px;
+    max-width: 200px; */
+    /* height: 30px; */
+    height: unset;
     margin: 0 0 0 30px;
 }
 select.yearSelect{
@@ -1130,6 +1181,9 @@ option{
     }
     .filter-block{
         width: 90vw;
+    }
+    .filter-selection{
+        width: 100%;
     }
 }
 @media (max-width: 420px) {

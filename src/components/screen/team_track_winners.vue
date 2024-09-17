@@ -113,7 +113,7 @@ export default {
 }
 
 .title{
-  font-size: 48px;
+  font-size: 64px;
   font-weight: 700;
   color: var(--nipigasColorAdditional);
   margin: 75px 0 0 0;
@@ -136,14 +136,14 @@ export default {
 }
 .year{
   margin: 0 0 0 50px;
-  width: 100px;
-  height: 30px;
+  width: 115px;
+  height: 33px;
   border-radius: 5px;
   border: none;
   background-color: rgba(246, 246, 246, 1);
   color: var(--nipigasColorMain);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 700;
   transition: all 0.25s ease;
   cursor: pointer;
 }

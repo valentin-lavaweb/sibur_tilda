@@ -103,10 +103,10 @@ export default {
     overflow: hidden;
 }
 .corporate-item_img img{
-    width: 160px;
-    height: 160px;
-    min-width: 160px;
-    min-height: 160px;
+    width: 258px;
+    height: 258px;
+    min-width: 258px;
+    min-height: 258px;
     object-fit: cover;
 }
 .corporate-item_name{

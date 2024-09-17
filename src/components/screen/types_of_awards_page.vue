@@ -30,6 +30,61 @@ export default {
           }
         ],
         interaction: interaction,
+
+        command_nomination_1: [
+          {
+            nomination: 'Производственное решение года',
+            description: 'Команды представляют инициативы, повышающие эффективность и результативность производственного процесса'
+          },
+          {
+            nomination: 'Лучшее организационное решение',
+            description: 'В номинацию входит широкий перечень проектов, которые помогают СИБУРу трансформироваться и достигать поставленных бизнес-целей'
+          },
+          {
+            nomination: 'Решение в области работы с клиентами',
+            description: 'Команды предлагают проекты, которые повышают эффективность взаимодействия с партнерами и клиентами'
+          },
+          {
+            nomination: 'Организационный проект',
+            description: 'Номинация объединяет любые инициативы по повышению эффективности и автоматизации сквозных бизнес-процессов'
+          },
+        ],
+        command_nomination_2: [
+          {
+            nomination: 'Производственное решение',
+            description: 'Катализатор тетраизобутират циркония (ТИБЦ) для ЛАО НКНХ'
+          },
+          {
+            nomination: 'Организационное решение',
+            description: 'Управление рисками обеспеченности ХП в условиях санкционных ограничений и проработка аналогов химической продукции'
+          },
+          {
+            nomination: 'Решение в области работы с клиентами',
+            description: 'Продуктовые решения для отрасли Транспорт'
+          },
+          {
+            nomination: 'Организационный проект',
+            description: 'RTO, APC, Хроматограф на ЭП-60 АО «Сибур-Химпром»'
+          },
+        ],
+        command_nomination_3: [
+        {
+            nomination: 'Лидерство в коммуникациях',
+            description: 'Проекты, направленные на продвижение имиджа и бренда отрасли и компании, укрепление репутации во внешней среде. А также поддержку ценностного предложения для сотрудников компании, укрепление наших ключевых ценностей и смыслов'
+          },
+          {
+            nomination: 'Производственное решение',
+            description: 'Проекты, направленные на развитие производственных мощностей СИБУРа, повышение эффективности существующих технологий или на разработку новых решений для производства'
+          },
+          {
+            nomination: 'Инфраструктурное развитие и устойчивость',
+            description: 'Проекты, направленные на развитие регионов присутствия и инфраструктурные проекты'
+          },
+          {
+            nomination: 'Цифровая трансформация',
+            description: 'Проекты, направленные на автоматизацию текущих рабочих процессов, создание цифровых инструментов, помогающих повысить эффективность и прозрачность работы с данными'
+          },
+        ],
     }
   },
   components:{
@@ -143,6 +198,8 @@ export default {
       <span class="text description_title text-animate-gsap">
         <editable_text dictionary_key="awards_desc"/>
       </span>
+
+      <!-- ! Не работает -->
       <!-- <video 
         class="videoBlock video-animate-gsap" 
         src="/video/video.mp4"
@@ -162,7 +219,11 @@ export default {
       <span class="text description_subTitle text-animate-gsap">
         <editable_text dictionary_key="corporate_desc"/>
       </span> -->
+
+
       <div class="text-container">
+
+        <!-- ! Не работает -->
         <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="command_title"/>
@@ -178,6 +239,7 @@ export default {
           </span>
         </div>  -->
         
+        <!-- ! Не работает -->
         <!-- <div class="text-block">
           <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
@@ -195,6 +257,8 @@ export default {
             <b>Степень 3.</b><editable_text dictionary_key="individual_desc_grade_3"/>
           </span>
         </div> -->
+        
+        
         <div class="text-block">
           <!-- <h3 class="miniTitle text-animate-gsap">
             <editable_text dictionary_key="individual_title"/>
@@ -243,8 +307,11 @@ export default {
               </div>
             </div>
           </div>
+
+
           <h3 class="miniTitle mar-30 text-animate-gsap">
-            <editable_text dictionary_key="command_title"/>
+            <!-- <editable_text dictionary_key="command_title"/> -->
+            Командные номинации
           </h3>
 
           <div class="awards-container v2">
@@ -252,7 +319,37 @@ export default {
               <editable_text dictionary_key="command_desc"/>
             </span> -->
             <span class="text nipigasAprivel text-animate-gsap nominations"
-              v-for="(nomination, key) in availableNominations"
+              v-for="(nomination, key) in command_nomination_1"
+              :key="nomination"
+              >
+              <div class="nominations-nomination awards">
+                <div class="nominations-icon">
+                  <img :src="`/img/types_of_award/${key+1}.svg`" alt="icon">
+                </div>
+                {{nomination.nomination}}
+              </div>
+              <span class="nominations-description">
+                {{nomination.description}}
+              </span>
+            </span>
+          </div>
+
+
+
+
+
+
+          <h3 class="miniTitle mar-30 text-animate-gsap">
+            <!-- <editable_text dictionary_key="command_title_2"/> -->
+            Командные номинации 2022, 2023 года
+          </h3>
+
+          <div class="awards-container v2">
+            <!-- <span class="text centerline text-animate-gsap">
+              <editable_text dictionary_key="command_desc"/>
+            </span> -->
+            <span class="text nipigasAprivel text-animate-gsap nominations"
+              v-for="(nomination, key) in command_nomination_2"
               :key="nomination"
               >
               <div class="nominations-nomination">
@@ -266,9 +363,59 @@ export default {
               </span>
             </span>
           </div>
+
+          
+
+
+          <h3 class="miniTitle mar-30 text-animate-gsap">
+            <!-- <editable_text dictionary_key="command_title_3"/> -->
+            Командные номинации 2024 года
+          </h3>
+
+          <div class="awards-container v2">
+            <!-- <span class="text centerline text-animate-gsap">
+              <editable_text dictionary_key="command_desc"/>
+            </span> -->
+            <span class="text nipigasAprivel text-animate-gsap nominations"
+              v-for="(nomination, key) in command_nomination_3"
+              :key="nomination"
+              >
+              <div class="nominations-nomination">
+                <div class="nominations-icon">
+                  <img :src="`/img/types_of_award/2_${key+1}.svg`" alt="icon">
+                </div>
+                {{nomination.nomination}} 
+              </div>
+              <span class="nominations-description">
+                {{nomination.description}}
+              </span>
+            </span>
+          </div>
+
+
+          <!-- ! Не работает -->
+          <!-- <div class="awards-container v2"> -->
+            <!-- <span class="text centerline text-animate-gsap">
+              <editable_text dictionary_key="command_desc"/>
+            </span> -->
+            <!-- <span class="text nipigasAprivel text-animate-gsap nominations"
+              v-for="(nomination, key) in availableNominations"
+              :key="nomination"
+              >
+              <div class="nominations-nomination">
+                <div class="nominations-icon">
+                  <img :src="`/img/types_of_award/${key+1}.svg`" alt="icon">
+                </div>
+                {{nomination.nomination}} 123
+              </div>
+              <span class="nominations-description">
+                {{nomination.description}}
+              </span>
+            </span> -->
+          <!-- </div> -->
         </div>
 
-        
+        <!-- ! Не работает -->
         <!-- <div class="bottom_block text-animate-gsap">
           <div class="bottom_block-left">
             <h3 class="bottom_block-title">Индивидуальные награды</h3>
@@ -425,6 +572,7 @@ export default {
   font-size: 24px;
   font-weight: 700;
   color: var(--nipigasColorMain);
+  text-align: center;
 }
 .mar-30{
   margin: 30px 0 0 0;
@@ -594,7 +742,7 @@ b{
 
 
 
-.nominations:last-child .nominations-nomination::after{
+.nominations:last-child .nominations-nomination.awards::after{
   content: " (NEW 2023)";
   color: rgba(252, 194, 23, 1);
   font-size: 20px;
