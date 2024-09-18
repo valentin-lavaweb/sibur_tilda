@@ -403,13 +403,12 @@ export default {
             <div class="filter-selection" v-if="gradeFilterEnabled">
                 <UIbtn 
                     :enablePanel="true" 
-                    :placeholder="'Степень'" 
                     :resetItem="'Степень'"
                     :options="availableGrades"
                     :selected="filterGrade" 
                     v-model:selected="filterGrade"
                     >
-                    Степень {{ filterGrade }}
+                    {{ filterGrade ?? 'Степень' }}
                 </UIbtn>
             </div>
             <div class="filter-selection" v-if="issuerFilterEnabled">
@@ -1127,6 +1126,9 @@ option{
         margin: 0 0 40px 0;
         flex-direction: column;
         height: fit-content;
+    }
+    .filter-selection{
+        width: 100%;
     }
     .filter-selection, .search_panel{
         margin: 0 0 20px 0;

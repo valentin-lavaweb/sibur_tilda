@@ -68,8 +68,11 @@ const selectedItem = (item) => {
 <style lang="css" scoped>
 .UIbtn-container{
     position: relative;
-    @media (max-width: 480px){
+    @media (max-width: 768px){
         width: 100%;
+    }
+    @media (max-width: 480px){
+        max-width: 100%;
     }
 }
 .UIbtn{
@@ -94,8 +97,14 @@ const selectedItem = (item) => {
     }
     @media (max-width: 1024px){
         height: 40px;
-        padding: 0 20px;
+        padding: 0 28px;
         font-size: 18px;
+    }
+    @media (max-width: 480px){
+        max-width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
 
@@ -107,7 +116,7 @@ const selectedItem = (item) => {
     @media (max-width: 1024px){
         min-width: unset;
     }
-    @media (max-width: 480px){
+    @media (max-width: 768px){
         min-width: 100%;
     }
 }
@@ -119,7 +128,7 @@ const selectedItem = (item) => {
     @media (max-width: 1024px){
         min-width: unset;
     }
-    @media (max-width: 480px){
+    @media (max-width: 768px){
         min-width: 100%;
     }
 }
@@ -187,7 +196,7 @@ const selectedItem = (item) => {
 
 .option_item{
     width: calc(100% - 30px);
-    padding: 2px 15px;
+    padding: 2px 6px;
     font-size: 15px;
     font-weight: 700;
     border-radius: 5px;
@@ -197,12 +206,12 @@ const selectedItem = (item) => {
 
     @media (max-width: 1440px){
         width: calc(100% - 2.08vw);
-        padding: 0.14vw 1.04vw;
+        padding: 0.14vw 0.42vw;
         font-size: 1.04vw;
     }
     @media (max-width: 1024px){
         width: calc(100% - 16px);
-        padding: 2px 12px;
+        padding: 2px 6px;
         font-size: 14px;
     }
 }
