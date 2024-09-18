@@ -373,7 +373,7 @@ export default {
           <option :value="3">
             3
           </option>
-          <option :value="null">
+          <option :value="'Гордость сибур профсоюза'">
             Гордость сибур профсоюза
           </option>
         </select>
