@@ -89,14 +89,19 @@ export default {
 
 <style scoped>
 .corporate-item{
-  width: calc(25% - 20px);
+  /* width: calc(25% - 20px);
   height: fit-content;
   min-height: 240px;
   color: var(--textColorBlack);
   padding: 5px 5px 30px 5px;
   margin: 0 20px 0 0;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-start; */
+  width: 100%;
+  height: 100%;
+  color: var(--textColorBlack);
+  justify-content: flex-start;
+  align-items: flex-start; 
 }
 .corporate-item_img{
     border-radius: 50%;
@@ -203,7 +208,23 @@ export default {
 
 @media (max-width: 1440px) {
     .corporate-item{
-        min-width: 270px;
+        /* min-width: 270px; */
+    }
+    .corporate-item_img img{
+        width: 100%;
+        height: auto;
+        min-width: 100%;
+        min-height: auto;
+        object-fit: cover;
+    }
+}
+@media (max-width: 1024px) {
+    .corporate-item_img img{
+        width: 258px;
+        height: 258px;
+        min-width: 258px;
+        min-height: 258px;
+        object-fit: cover;
     }
 }
 @media (max-width: 725px) {

@@ -348,9 +348,9 @@ export default {
     <div class="bg-element img-animate-gsap">
       <img src="/img/background_page/team_track_winners.svg" alt=""/>
     </div>
-    <div class="wrapper-block">
+    <div class="wrapper-block personal">
         <h1 class="title text-animate-gsap">
-            {{ thisSection.title }}
+            {{ thisSection.title }} 
         </h1>
 
         <div class="years-container">
@@ -742,7 +742,7 @@ export default {
   height: 100%;
 }
 .wrapper-block{
-   width: 1160px;
+   width: 1455px;
    height: fit-content;
    margin: 130px 0 0 0;
 }
@@ -1028,11 +1028,17 @@ option{
     height: fit-content;
     min-height: 450px;
     margin: 0 0 20px 0;
-    flex-direction: row;
+    /* flex-direction: row;
     flex-wrap: wrap;
     align-content: flex-start;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: flex-start; */
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: space-around;
+    gap: 152px 130px;
 }
 
 .container-filter-selection{
@@ -1049,7 +1055,14 @@ option{
     z-index: 0;
 }
 
-
+@media (max-width: 1600px) {
+    .corporate-container_content{
+        gap: 100px 70px;
+    }
+    .wrapper-block{
+        width: 1200px;
+    }
+}
 
 @media (max-width: 1440px) {
     .wrapper-block{
@@ -1070,6 +1083,7 @@ option{
     }
     .corporate-container_content{
         justify-content: space-between;
+        gap: 25px;
     }
 }
 @media (max-width: 1200px) {
@@ -1095,6 +1109,9 @@ option{
         margin: 20px 0 20px 0;
         font-size: 36px;
         text-align: center;
+    }
+    .corporate-container_content{
+        grid-template-columns: 1fr 1fr;
     }
 }
 @media (max-width: 980px) {
@@ -1134,6 +1151,9 @@ option{
         width: 100%;
         height: fit-content;
         margin: 0 0 15px 0;
+    }
+    .corporate-container_content{
+        grid-template-columns: 1fr;
     }
 }
 @media (max-width: 640px) {
