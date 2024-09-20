@@ -45,7 +45,7 @@ export default {
           </span>
           <span class="autorText">
               <span class="autorBlock">
-                  Авторы:
+                Команда:
               </span>
               {{ item.authors }}
           </span>  

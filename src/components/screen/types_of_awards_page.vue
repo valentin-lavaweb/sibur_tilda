@@ -309,15 +309,15 @@ export default {
           </div>
 
 
-          <h3 class="miniTitle mar-30 text-animate-gsap">
-            <!-- <editable_text dictionary_key="command_title"/> -->
+          <!-- <h3 class="miniTitle mar-30 text-animate-gsap">
+            <editable_text dictionary_key="command_title"/>
             Командные номинации
           </h3>
 
           <div class="awards-container v2">
-            <!-- <span class="text centerline text-animate-gsap">
+            <span class="text centerline text-animate-gsap">
               <editable_text dictionary_key="command_desc"/>
-            </span> -->
+            </span>
             <span class="text nipigasAprivel text-animate-gsap nominations"
               v-for="(nomination, key) in command_nomination_1"
               :key="nomination"
@@ -332,7 +332,7 @@ export default {
                 {{nomination.description}}
               </span>
             </span>
-          </div>
+          </div> -->
 
 
 
@@ -349,10 +349,10 @@ export default {
               <editable_text dictionary_key="command_desc"/>
             </span> -->
             <span class="text nipigasAprivel text-animate-gsap nominations"
-              v-for="(nomination, key) in command_nomination_2"
+              v-for="(nomination, key) in command_nomination_1"
               :key="nomination"
               >
-              <div class="nominations-nomination">
+              <div class="nominations-nomination awards">
                 <div class="nominations-icon">
                   <img :src="`/img/types_of_award/${key+1}.svg`" alt="icon">
                 </div>

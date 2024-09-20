@@ -98,16 +98,16 @@ export default {
                 <option :value="null">
                   Не указано
                 </option>
-                <option :value="1">
+                <option :value="'1 степень'">
                   1
                 </option>
-                <option :value="2">
+                <option :value="'2 степень'">
                   2
                 </option>
-                <option :value="3">
+                <option :value="'3 степень'">
                   3
                 </option>
-                <option :value="'Гордость сибур профсоюза'">
+                <option :value="'Гордость Сибур профсоюза'">
                   Гордость сибур профсоюза
                 </option>
               </select>
