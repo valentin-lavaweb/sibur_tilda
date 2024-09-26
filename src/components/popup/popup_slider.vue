@@ -73,9 +73,7 @@ export default {
 <template>
   <div class="popup_slider" @click.self="closeSlider">
     <div class="slider-container">
-      <div class="slider-close" @click="closeSlider">
-        <img src="/img/close_swiper.svg" alt="close" />
-      </div>
+      
       <div class="slider-arrow left" @click="backSlide()">
         <img src="/img/arrow.svg" alt="arrow" />
       </div>
@@ -89,6 +87,9 @@ export default {
             <img :src="image.originalSrc" loading="lazy">
           </swiper-slide>
         </swiper>
+      </div>
+      <div class="slider-close" @click="closeSlider">
+        <img src="/img/close_swiper.svg" alt="close" />
       </div>
       <div class="slider-arrow" @click="nextSlide()">
         <img src="/img/arrow.svg" alt="arrow" />
@@ -114,7 +115,6 @@ export default {
   height: 100%;
   text-align: left;
   font-size: 18px;
-  background: #fff;
 
   /* Center slide text vertically */
 }
@@ -123,7 +123,6 @@ export default {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 </style>
 
@@ -141,7 +140,7 @@ export default {
 
 .slider-container {
   width: 1280px;
-  height: 580px;
+  height: 90vh;
   flex-direction: row;
   justify-content: space-between;
   transition: all 0.25s ease;
@@ -150,8 +149,8 @@ export default {
 
 .slider-close {
   position: absolute;
-  top: -36px;
-  right: calc(1280px - 1130px - 80px + 5px);
+  top: 5vh;
+  right: 5px;
   color: rgba(255, 255, 255, 1);
   font-size: 16px;
   font-weight: 500;
@@ -166,12 +165,12 @@ export default {
 
 .slider {
   width: 1130px;
-  height: 580px;
+  max-height: 90vh;
   overflow: hidden;
 }
 
 .slider img {
-  object-fit: cover;
+  object-fit: scale-down;
 }
 
 .slider-arrow.left {
@@ -202,10 +201,6 @@ export default {
     height: 80vh;
   }
 
-  .slider-close {
-    top: 0vw;
-    transform: translateY(-220%);
-  }
 }
 
 @media (max-width: 1024px) {
@@ -220,14 +215,6 @@ export default {
     height: 50vw;
   }
 
-  .slider-container {
-    height: 50vw;
-  }
-
-  .slider-close {
-    top: 0vw;
-    transform: translateY(-120%);
-  }
 }
 
 @media (max-width: 480px) {
