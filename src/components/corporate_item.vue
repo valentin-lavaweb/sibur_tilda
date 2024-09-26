@@ -2,9 +2,13 @@
 import { useGameStore } from '@/stores/interface-interaction.js';
 
 export default {
-  props:{
-    item: Object,
-  },
+    props: {
+        item: Object,
+        width: {
+            type: Number,
+            default: 258
+        },
+    },
   name: "corporate_item",
   data() {
     let interaction = useGameStore();
@@ -28,7 +32,7 @@ export default {
                 let url = new URL(this.item.image);
                 return url;
             }catch{
-                let url = new URL('files/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
+                let url = new URL('files/' + this.item.image + '/' + this.width, import.meta.env.VITE_VUE_APP_API_URL);
                 return url;
             }
         }else{
@@ -64,20 +68,6 @@ export default {
         <div class="corporate-item_filter tempelBlock">
             {{ item.company }}
         </div>
-        <!-- <div class="corporate-item_reward tempelBlock" v-if="item.issued">
-            <span class="imgBlock"> 
-                <img src="/img/degree_left.svg" alt="cup">
-            </span>
-            {{ item.award }}
-            <span class="imgBlock"> 
-                <img src="/img/degree_right.svg" alt="cup">
-            </span>
-        </div> -->
-        <!-- <div class="corporate-item_date tempelBlock" v-if="item.grade">
-            <span class="degreeBlock">
-                {{ item.grade }}
-            </span>
-        </div> -->
         <div class="corporate-item_date tempelBlock">
             <span>Награда: </span>{{ item.award }}
         </div>
