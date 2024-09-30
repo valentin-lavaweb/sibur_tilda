@@ -162,7 +162,7 @@ export default {
 
     availableYears(){
         let list = this.thisSection.filters.year ?? [];
-        return list.sort();
+        return list.sort((a, b) => b - a);
     },
     availableGrades(){
         //TODO если степень 0?

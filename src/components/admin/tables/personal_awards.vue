@@ -364,17 +364,17 @@ export default {
           <option :value="null">
             Не указано
           </option>
-          <option :value="'1 степень'">
-            1 степень
+          <option :value="'1 Степень'">
+            1 Степень
           </option>
-          <option :value="'2 степень'">
-            2 степень
+          <option :value="'2 Степень'">
+            2 Степень
           </option>
-          <option :value="'3 степень'">
-            3 степень
+          <option :value="'3 Степень'">
+            3 Степень
           </option>
-          <option :value="'Гордость Сибур профсоюза'">
-            Гордость Сибур профсоюза
+          <option :value="'Гордость СИБУР профсоюза'">
+            Гордость СИБУР Профсоюза
           </option>
         </select>
       </template>

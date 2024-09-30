@@ -37,7 +37,7 @@ export default {
     availableYears() {
       const uniqueTable = {};
       let years = this.interaction.images.map(i => i.year).filter((year) => (!uniqueTable[year] && (uniqueTable[year] = 1)));
-      return years.sort();
+      return years.sort((a, b) => b - a);
     },
     yearImages() {
       return this.interaction.images.filter(i => i.year == this.selectedYear);
@@ -67,6 +67,9 @@ export default {
   },
   watch: {
 
+  },
+  created(){
+    this.selectedYear = this.availableYears[0];
   },
   async beforeRouteEnter(to, from, next) {
     let interaction = useGameStore();

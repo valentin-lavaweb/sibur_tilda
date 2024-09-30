@@ -336,7 +336,30 @@ export default {
 
 
 
+          <h3 class="miniTitle mar-30 text-animate-gsap">
+            <!-- <editable_text dictionary_key="command_title_3"/> -->
+            Командные номинации 2024 года
+          </h3>
 
+          <div class="awards-container v2">
+            <!-- <span class="text centerline text-animate-gsap">
+              <editable_text dictionary_key="command_desc"/>
+            </span> -->
+            <span class="text nipigasAprivel text-animate-gsap nominations"
+              v-for="(nomination, key) in command_nomination_3"
+              :key="nomination"
+              >
+              <div class="nominations-nomination">
+                <div class="nominations-icon">
+                  <img :src="`/img/types_of_award/2_${key+1}.svg`" alt="icon">
+                </div>
+                {{nomination.nomination}} 
+              </div>
+              <span class="nominations-description">
+                {{nomination.description}}
+              </span>
+            </span>
+          </div>
 
 
           <h3 class="miniTitle mar-30 text-animate-gsap">
@@ -357,34 +380,6 @@ export default {
                   <img :src="`/img/types_of_award/${key+1}.svg`" alt="icon">
                 </div>
                 {{nomination.nomination}}
-              </div>
-              <span class="nominations-description">
-                {{nomination.description}}
-              </span>
-            </span>
-          </div>
-
-          
-
-
-          <h3 class="miniTitle mar-30 text-animate-gsap">
-            <!-- <editable_text dictionary_key="command_title_3"/> -->
-            Командные номинации 2024 года
-          </h3>
-
-          <div class="awards-container v2">
-            <!-- <span class="text centerline text-animate-gsap">
-              <editable_text dictionary_key="command_desc"/>
-            </span> -->
-            <span class="text nipigasAprivel text-animate-gsap nominations"
-              v-for="(nomination, key) in command_nomination_3"
-              :key="nomination"
-              >
-              <div class="nominations-nomination">
-                <div class="nominations-icon">
-                  <img :src="`/img/types_of_award/2_${key+1}.svg`" alt="icon">
-                </div>
-                {{nomination.nomination}} 
               </div>
               <span class="nominations-description">
                 {{nomination.description}}

@@ -44,7 +44,7 @@ export default {
     availableYears(){
       const uniqueTable = {};
       let years = this.interaction.commandAwards.map(a => a.year).filter((year) =>(!uniqueTable[year] && (uniqueTable[year] = 1)));
-      return years.sort();
+      return years.sort((a, b) => b - a);
     },
     yearWinners(){
       return this.interaction.commandAwards.filter(w => w.year == this.selectedYear);
