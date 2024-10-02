@@ -4,7 +4,7 @@ import { Cropper } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 
 export default {
-  name: "gallery_edit",
+  name: "gallery_edit_preview",
   emits:['done'],
   props: ['src'],
   components:{
@@ -42,8 +42,6 @@ export default {
         maxWidth: 400,
       }" :src="src" />
 
-      <div class="filler"></div>
-
       <button @click="done()">
         Готово
       </button>
@@ -53,6 +51,16 @@ export default {
 </template>
 
 
+<style>
+.cropper * {
+  display: block;
+}
+.cropper .vue-line-wrapper,
+.cropper .vue-handler-wrapper__draggable {
+  display: flex;
+}
+</style>
+
 <style scoped>
 
 .cropper{
@@ -60,9 +68,6 @@ export default {
   width: 90%;
 }
 
-.filler{
-  height: auto;
-}
 
 .container{
     position: fixed;
