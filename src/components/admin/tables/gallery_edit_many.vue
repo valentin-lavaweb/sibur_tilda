@@ -122,6 +122,10 @@ export default {
             <TextEdit :item="editItem" editProp="year" @updateItem="editItem = $event" />
           </div>
 
+          <div class="content warn">
+            <h2>Создание превью недоступно при добавлении нескольких записей</h2>
+          </div>
+
 
           <div class="content-btn">
             <button class="btn" @click="$emit('cancel')" :class="{active: !loading}">Отменить</button>
@@ -136,6 +140,10 @@ export default {
 
 
 <style scoped>
+.warn * {
+    color: #ff1f71;
+}
+
 .container{
     position: fixed;
     top: 0;

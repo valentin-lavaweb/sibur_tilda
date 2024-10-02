@@ -32,7 +32,7 @@
 }
 
 
-*,
+*:not(.cropper *),
 *::before,
 *::after {
   box-sizing: border-box;

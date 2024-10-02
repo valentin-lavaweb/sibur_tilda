@@ -1,5 +1,7 @@
 <script>
 import TextEdit from '../cells/textEdit.vue';
+import 'vue-advanced-cropper/dist/style.css';
+import GalleryEditPreview from './gallery_edit_preview.vue';
 
 export default {
   name: "gallery_edit",
@@ -9,17 +11,19 @@ export default {
   },
   data() {
     return{
-      editItem: Object.assign({}, this.item)
+      editItem: Object.assign({}, this.item),
+      editPreview: false,
     }
   },
   components:{
-    TextEdit
+    TextEdit,
+    GalleryEditPreview
   },
   methods:{
     endEdit(event){
       this.$emit('done', this.editItem);
     },
-    async updateImage(event) {
+    updateImage(event) {
 
         let files = event.target.files || event.dataTransfer.files;
         if (!files.length){
@@ -30,8 +34,16 @@ export default {
     },
     setItem(item){
       this.editItem = Object.assign({}, item);
-    }
+    },
 
+    changePreview(){
+      this.editPreview = true;
+    },
+
+    onPreviewEditDone(preview){
+      this.editItem.preview = preview;
+      this.editPreview = false;
+    }
   },
   computed:{
     imagePath(){
@@ -49,6 +61,21 @@ export default {
         else{
             return URL.createObjectURL(this.editItem.image);
         }
+    },
+    previewPath(){
+        if(typeof this.editItem.preview === 'string'){
+            try{
+                let url = new URL(this.editItem.preview);
+                return url;
+            }catch{
+                let url = new URL('files/' + this.editItem.preview + '/400', import.meta.env.VITE_VUE_APP_API_URL);
+                return url;
+            }
+        }else if(this.editItem.preview instanceof Blob){
+          return URL.createObjectURL(this.editItem.preview);
+        }
+
+        return null;
     }
 
   }
@@ -61,14 +88,17 @@ export default {
 <template >
       <div class="container">
 
+        <Teleport to="body" >
+            <GalleryEditPreview :src="imagePath" @done="onPreviewEditDone" v-if="editPreview"/>
+        </Teleport>
+
         <div class="Main_block-content">
           <div class="block-content">
           <h3>ID: {{ editItem.id ?? '---' }}</h3>
 
           <div class="content">
             <h2>Фото</h2>
-            <div class="photoDownlouad-box">            
-                <div class="input__wrapper">
+            <div class="input__wrapper">
                   <input name="file" accept="image/*" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" :multiple="false"
                     @change="updateImage($event)">
                   <label :for="`input_edit_${editItem.id}`" class="input__file-button">
@@ -78,9 +108,22 @@ export default {
                       <span class="input__file-button-text">Выберите файл</span>
                   </label>
                 </div>
+            <div class="photoDownlouad-box">            
                 <div class="img-block">
                   <img :src="imagePath" :alt="editItem.name">
                 </div>
+            </div>
+          </div>
+
+          <div class="content">
+            <h2>Превью </h2>
+            <div class="buttons-row">
+              <button @click="changePreview">Изменить</button>
+              <button @click="onPreviewEditDone(null)">Сбросить</button>
+            </div>
+            <div class="img-block">
+                  <img v-if="previewPath" :src="previewPath">
+                  <h3 v-else>Нет превью</h3>
             </div>
           </div>
 
@@ -103,6 +146,25 @@ export default {
 
 
 <style scoped>
+
+.img-block{
+  width: 100%;
+}
+
+.img-block img{
+  max-height: 20vh;
+  width: 100%;
+}
+
+.buttons-row{
+  flex-direction: row;
+  margin: 5px;
+}
+
+.cropper{
+  width: 100%;
+}
+
 .container{
     position: fixed;
     top: 0;

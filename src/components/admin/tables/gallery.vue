@@ -14,6 +14,7 @@ const headers = [
   { text: "Id", value: "id", fixed: true, width: 50 },
   { text: "Действия", value: "actions", fixed: true, width: 75 },
   { text: "Фото", value: "image", fixed: true, width: 300 },
+  { text: "Превью", value: "preview", fixed: true, width: 300 },
   { text: "Год", value: "year", width: 75 },
 ]
 
@@ -227,13 +228,13 @@ export default {
   },
   computed: {
     imagePath() {
-      return function (item) {
+      return function (image) {
 
         try{
-                let url = new URL(item.image);
+                let url = new URL(image);
                 return url;
             }catch{
-                let url = new URL('files/' + item.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
+                let url = new URL('files/' + image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
                 return url;
             }
         
@@ -311,8 +312,17 @@ export default {
             </label>
           </div>
           <div class="img-block">
-            <img :src="imagePath(item)" :alt="item.name">
+            <img :src="imagePath(item.image)" :alt="item.name">
           </div>
+        </div>
+      </template>
+
+      <template #item-preview="item">
+        <div class="photoDownlouad-box">            
+          <div class="img-block" v-if="item.preview">
+            <img :src="imagePath(item.preview)" :alt="item.name">
+          </div>
+          <h3 v-else>Не задано</h3>
         </div>
       </template>
 

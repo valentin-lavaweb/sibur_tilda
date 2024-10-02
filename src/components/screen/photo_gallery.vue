@@ -44,22 +44,26 @@ export default {
     },
     preparedImages() {
       return this.yearImages.map(i => {
+
         let url = null;
+        let path = i.preview ?? i.image
+
         try {
-          url = new URL(i.image);
+          url = new URL(path);
         } catch {
-          url = new URL('files/' + i.image + '/400', import.meta.env.VITE_VUE_APP_API_URL);
+          url = new URL('files/' + path + '/400', import.meta.env.VITE_VUE_APP_API_URL);
         }
         i.src = url;
+
+
+
+
 
         try {
           url = new URL(i.image);
         } catch {
           url = new URL('files/' + i.image, import.meta.env.VITE_VUE_APP_API_URL);
         }
-
-
-
         i.originalSrc = url;
         return i;
       })

@@ -56,6 +56,7 @@ export const apiClient = axios.create({
   /**
    * @typedef {Object} ImagePayload
    * @property {File} image 
+   * @property {File|null} preview 
    * @property {number} year
    */
 
