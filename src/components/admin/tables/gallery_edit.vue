@@ -21,6 +21,8 @@ export default {
   },
   methods:{
     endEdit(event){
+      this.editItem.removePreview = !this.editItem.preview
+
       this.$emit('done', this.editItem);
     },
     updateImage(event) {
