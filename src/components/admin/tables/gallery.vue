@@ -101,6 +101,8 @@ export default {
 
         let updateItem = {};
 
+        updateItem.removePreview = item.preview === null ? 1 : 0;
+
         for (let prop in oldItem) {
           if (prop == 'image') {
             if (item[prop] instanceof File) {
@@ -109,6 +111,14 @@ export default {
               continue;
             }
           }
+          if (prop == 'preview') {
+            if (item[prop] instanceof File) {
+              updateItem[prop] = item[prop];
+            } else {
+              continue;
+            }
+          }
+
           if (oldItem[prop] != item[prop]) {
 
             switch (item[prop]) {
