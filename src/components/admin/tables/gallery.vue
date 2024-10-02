@@ -105,14 +105,14 @@ export default {
 
         for (let prop in oldItem) {
           if (prop == 'image') {
-            if (item[prop] instanceof File) {
+            if (item[prop] instanceof Blob) {
               updateItem[prop] = item[prop];
             } else {
               continue;
             }
           }
           if (prop == 'preview') {
-            if (item[prop] instanceof File) {
+            if (item[prop] instanceof Blob) {
               updateItem[prop] = item[prop];
             } else {
               continue;
