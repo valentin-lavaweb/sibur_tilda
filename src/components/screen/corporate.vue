@@ -1081,6 +1081,7 @@ option{
         width: calc(50% - 10px);
     }
     .corporate-container_content{
+        grid-template-columns: 1fr 1fr 1fr;
         justify-content: space-between;
         gap: 25px;
     }
