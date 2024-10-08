@@ -56,7 +56,7 @@ export default {
 <template>
     <div class="corporate-item">
         <div class="corporate-item_img">
-            <img :src="imagePath" :alt="item.name"/>
+            <img :src="imagePath"/>
         </div>
         <div class="corporate-item_name">
             {{ item.name }}
