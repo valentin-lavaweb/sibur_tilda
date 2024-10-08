@@ -201,10 +201,16 @@ export default {
         /* min-width: 270px; */
     }
     .corporate-item_img img{
-        width: 100%;
+        /* width: 100%;
         height: auto;
         min-width: 100%;
         min-height: auto;
+        object-fit: cover; */
+
+        width: 258px;
+        height: 258px;
+        min-width: 258px;
+        min-height: 258px;
         object-fit: cover;
     }
 }
