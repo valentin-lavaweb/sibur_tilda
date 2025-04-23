@@ -71,8 +71,15 @@ export const useGameStore = defineStore("interface", {
     dictionary: null,
 
     focusedEditPopup: null,
-    news: [], // список подгруженных новостей
-    newsMeta: {}, // метаданные пагинации
+    news: null,
+    newsMeta: {
+      perPage: 5,
+      currentPage: 1,
+      lastPage: 1,
+      total: 1,
+      from: 1,
+      to: 1,
+    },
     currentNews: null, // детальная новость
   }),
   getters: {
@@ -167,10 +174,44 @@ export const useGameStore = defineStore("interface", {
       this.dictionary = result;
     },
 
+    // async loadNews(page = 1) {
+    //   const res = await this.api.getNews(page);
+    //   this.news = res.data.data;
+    //   this.newsMeta = res.data.meta;
+    // },
+
     async loadNews(page = 1) {
-      const res = await this.api.getNews(page);
-      this.news = res.data.data;
-      this.newsMeta = res.data.meta;
+      const totalItems = 15;
+      const perPage = this.newsMeta.perPage;
+
+      const fakeNews = Array.from({ length: totalItems }, (_, i) => ({
+        id: i,
+        title: `Новость ${i + 1}`,
+        content: `Содержимое новости ${i + 1}`,
+        published_at: new Date().toISOString(),
+        preview: `Превью для новости ${i + 1}`,
+        previewInfo: {
+          uuid: "uuid",
+          url: "/img/newsPlaceholder.png",
+          originalName: "preview.jpg",
+          extension: "jpg",
+          size: 12345,
+        },
+        gallery: [],
+      }));
+
+      const start = (page - 1) * perPage;
+      const end = start + perPage;
+
+      this.news = fakeNews.slice(start, end);
+      this.newsMeta = {
+        perPage,
+        currentPage: page,
+        lastPage: Math.ceil(totalItems / perPage),
+        total: totalItems,
+        from: start + 1,
+        to: Math.min(end, totalItems),
+      };
     },
 
     /** загрузить одну новость */

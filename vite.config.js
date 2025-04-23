@@ -23,10 +23,11 @@ export default defineConfig({
     //minify: false
   },
   server: {
-    // bind to 127.0.0.1 (localhost) instead of trying to resolve sibur.local
     host: "127.0.0.1",
-    port: 3000, // or whatever port you like
-    strictPort: true, // fail if that port is busy
+    // host: "siburaward.com",
+    port: 3000,
+    https: true,
+    strictPort: true,
   },
 });
 

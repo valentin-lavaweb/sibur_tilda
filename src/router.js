@@ -21,6 +21,7 @@ const personal_awards = () =>
 const personal_award_sections = () =>
   import("@/components/admin/tables/personal_award_sections.vue");
 const gallery = () => import("@/components/admin/tables/gallery.vue");
+const news_table = () => import("@/components/admin/tables/news_table.vue");
 
 const routes = [
   // { path: '/:pathMatch(.*)*',   redirect: { name: 'main_page' }},
@@ -90,6 +91,12 @@ const routes = [
         path: "gallery_table",
         component: gallery,
         name: "gallery_table",
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "news",
+        component: news_table,
+        name: "news_table",
         meta: { requiresAuth: true },
       },
     ],

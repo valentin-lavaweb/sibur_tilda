@@ -6,6 +6,11 @@ import login_comp from "@/components/admin/login.vue";
 
 import gallery_edit_many from "@/components/admin/tables/gallery_edit_many.vue";
 
+// import personal_awards from "@/components/admin/tables/personal_awards.vue";
+// import command_awards from "@/components/admin/tables/command_awards.vue";
+// import personal_award_sections from "@/components/admin/tables/personal_award_sections.vue";
+// import gallery_table from "@/components/admin/tables/gallery.vue";
+
 export default {
   name: "admin_page",
   data() {
@@ -18,6 +23,11 @@ export default {
   components: {
     login_comp,
     gallery_edit_many,
+    // Vue3EasyDataTable,
+    // personal_awards,
+    // command_awards,
+    // personal_award_sections,
+    // gallery_table
   },
   methods: {
     checkAuth() {
@@ -45,6 +55,8 @@ export default {
         const uplistener = (e) => {
           pos.end = e.clientX;
 
+          // tableContainer.releasePointerCapture(e.pointerId);
+
           tableContainer.onpointermove = null;
           tableContainer.onpointerup = null;
 
@@ -60,6 +72,8 @@ export default {
 
         tableContainer.style.cursor = "grabbing";
         tableContainer.style.userSelect = "none";
+
+        // tableContainer.setPointerCapture(e.pointerId);
       }
     });
 
@@ -77,6 +91,7 @@ export default {
         <login_comp v-if="!interaction.admin" />
       </transition>
     </Teleport>
+    <!-- <gallery_edit_many/> -->
     <div class="wrapper-block" v-show="interaction.admin">
       <div class="content-block">
         <nav>
@@ -84,6 +99,12 @@ export default {
             <RouterLink :to="{ name: 'main_page' }" active-class="active">
               <img src="/img/header_logo.png" alt="logo" />
             </RouterLink>
+            <!-- <div class="logo-text">
+                            <RouterLink :to="{ name: 'main_page' }" active-class="active">
+                                энергия<br>
+                                признания
+                            </RouterLink>
+                        </div> -->
           </div>
           <div
             class="login"
@@ -130,13 +151,6 @@ export default {
           </div>
           <div
             class="tab"
-            :class="{ active: this.$route.name == 'news_table' }"
-            @click="this.$router.push({ name: 'news_table' })"
-          >
-            новости
-          </div>
-          <div
-            class="tab"
             :class="{ active: this.$route.name == 'gallery_table' }"
             @click="this.$router.push({ name: 'gallery_table' })"
           >
@@ -145,6 +159,9 @@ export default {
         </section>
         <section class="content_table" ref="tableContainer">
           <RouterView :search="searchValue" />
+          <!-- <personal_award_sections :search="searchValue" v-if="this.$route.name == 'personal_award_sections_table'"/>
+            <personal_awards :search="searchValue" v-if="this.$route.name == 'personal_awards_table'"/>
+            <command_awards :search="searchValue" v-if="this.$route.name == 'command_awards_table'"/> -->
         </section>
       </div>
     </div>

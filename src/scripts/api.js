@@ -9,12 +9,16 @@ import axios from "axios";
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api",
   withCredentials: true, // required to handle the CSRF token
-  // headers:{
-  //   Accept: 'application/json'
-  // }
-  // xsrfHeaderName: 'X-XSRF-TOKEN',
-  // xsrfCookieName: 'XSRF-TOKEN',
+  //   headers:{
+  //     Accept: 'application/json'
+  //   }
+  //   xsrfHeaderName: 'X-XSRF-TOKEN',
+  //   xsrfCookieName: 'XSRF-TOKEN',
 });
+
+apiClient.defaults.withCredentials = true;
+apiClient.defaults.xsrfCookieName = "XSRF-TOKEN";
+apiClient.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
 
 /**
    * @typedef {Object} PersonalAwardPayload
@@ -274,11 +278,40 @@ export default {
     return apiClient.get(`/v2/news/${id}`);
   },
 
+  /**
+   * Создать новость
+   * @param {Object} data
+   */
+  createNews(data) {
+    const payload = new FormData();
+    for (let prop in data) payload.append(prop, data[prop]);
+    return apiClient.post("/v2/news", payload);
+  },
+
+  /**
+   * Обновить новость
+   * @param {number|string} id
+   * @param {Object} data
+   */
+  updateNews(id, data) {
+    const payload = new FormData();
+    payload.append("_method", "PUT");
+    for (let prop in data) payload.append(prop, data[prop]);
+    return apiClient.post(`/v2/news/${id}`, payload);
+  },
+
+  /**
+   * Удалить новость
+   * @param {number|string} id
+   */
+  deleteNews(id) {
+    return apiClient.delete(`/v2/news/${id}`);
+  },
+
   async login({ email, password }) {
-    let res = await apiClient.get(
+    await apiClient.get(
       import.meta.env.VITE_VUE_APP_API_URL + "/sanctum/csrf-cookie"
     );
-
     return apiClient.post("/v2/login", { email, password });
   },
   logout() {

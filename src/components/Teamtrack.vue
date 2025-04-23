@@ -1,4 +1,4 @@
-<!-- src/components/Timeline.vue -->
+<!-- src/components/Teamtrack.vue -->
 <template>
   <div class="teamtrackBlock">
     <!-- линия с полной шириной -->
@@ -33,29 +33,48 @@
 <script setup>
 import { ref, computed } from "vue";
 
-// 1) Данные с single-датой
+// 1) Данные
 const items = ref([
   {
     id: 1,
     title: "Сбор заявок в группе «Энергия признания» в Клике",
-    date: "2025-04-22T00:00:00Z",
+    date_from: "2025-04-16T00:00:00Z",
+    date_to: "2025-05-16T00:00:00Z",
+    is_active: false,
   },
   {
     id: 2,
     title: "Вебинар по подготовке к защитам с приглашаемым спикером",
-    date: "2025-04-23T00:00:00Z",
+    date_from: "2025-05-XXT00:00:00Z",
+    is_active: false,
   },
-  { id: 3, title: "Подготовка команд к защитам", date: "2025-04-24T00:00:00Z" },
-  { id: 4, title: "Защита проектов", date: "2025-04-25T00:00:00Z" },
+  {
+    id: 3,
+    title: "Подготовка команд к защитам",
+    date_from: "2025-05-19T00:00:00Z",
+    date_to: "2025-05-23T00:00:00Z",
+    is_active: false,
+  },
+  {
+    id: 4,
+    title: "Защита проектов",
+    date_from: "2025-05-26T00:00:00Z",
+    date_to: "2025-06-06T00:00:00Z",
+    is_active: false,
+  },
   {
     id: 5,
     title: "Оценка проектов и защит экспертным жюри, утверждение победителей",
-    date: "2025-04-26T00:00:00Z",
+    date_from: "2025-05-01T00:00:00Z",
+    date_to: "2025-05-XXT00:00:00Z",
+    is_active: false,
   },
   {
     id: 6,
     title: "Подготовка к церемонии награждения и объявлению победителей",
-    date: "2025-04-27T00:00:00Z",
+    date_from: "2025-06-16T00:00:00Z",
+    date_to: "2025-07-04T00:00:00Z",
+    is_active: false,
   },
 ]);
 
@@ -82,7 +101,9 @@ function nowMoscow() {
 
 // 4) Активность по dеate_from (item.date)
 function isDatePassed(item) {
-  const ev = new Date(item.date).toLocaleDateString("en-CA", {
+  if (item.is_active) return true;
+
+  const ev = new Date(item.date_from).toLocaleDateString("en-CA", {
     timeZone: "Europe/Moscow",
   });
   return ev <= nowMoscow();
@@ -90,10 +111,29 @@ function isDatePassed(item) {
 
 // 5) Формат даты «23 апреля»
 function formatDate(item) {
-  const d = new Date(item.date);
-  const day = d.getDate();
-  const mon = monthNames[d.getMonth()];
-  return `${day} ${mon}`;
+  const from = new Date(item.date_from);
+  const dayFrom = from.getDate();
+  const monFrom = monthNames[from.getMonth()];
+
+  if (!item.date_to) {
+    return `${dayFrom} ${monFrom}`;
+  }
+
+  const to = item.date_to.includes("XX") ? null : new Date(item.date_to);
+
+  if (!to) {
+    const monTo =
+      monthNames[new Date(item.date_from).getMonth() + 1] || "месяца";
+    return `${dayFrom} ${monFrom} — ХХ ${monTo}`;
+  }
+
+  const dayTo = to.getDate();
+  const monTo = monthNames[to.getMonth()];
+
+  if (monFrom === monTo) {
+    return `${dayFrom}–${dayTo} ${monTo}`;
+  }
+  return `${dayFrom} ${monFrom} — ${dayTo} ${monTo}`;
 }
 
 // 6) Кол-во элементов
@@ -153,6 +193,7 @@ const filledLineWidth = computed(() => {
   font-family: YFF_RARE_TRIAL;
   height: 22px;
   font-weight: 600;
+  z-index: 1;
 }
 .items {
   width: fit-content;
