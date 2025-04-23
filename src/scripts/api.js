@@ -6,19 +6,19 @@
 
 import axios from "axios";
 
+// для всех /api запросов
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api",
-  withCredentials: true, // required to handle the CSRF token
-  //   headers:{
-  //     Accept: 'application/json'
-  //   }
-  //   xsrfHeaderName: 'X-XSRF-TOKEN',
-  //   xsrfCookieName: 'XSRF-TOKEN',
+  withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
 });
 
-apiClient.defaults.withCredentials = true;
-apiClient.defaults.xsrfCookieName = "XSRF-TOKEN";
-apiClient.defaults.xsrfHeaderName = "X-XSRF-TOKEN";
+// для CSRF и логина
+export const authClient = axios.create({
+  baseURL: import.meta.env.VITE_VUE_APP_API_URL,
+  withCredentials: true,
+});
 
 /**
    * @typedef {Object} PersonalAwardPayload
@@ -308,20 +308,20 @@ export default {
     return apiClient.delete(`/v2/news/${id}`);
   },
 
+  // Авторизация
   async login({ email, password }) {
-    await apiClient.get(
-      import.meta.env.VITE_VUE_APP_API_URL + "/sanctum/csrf-cookie"
-    );
-    return apiClient.post("/v2/login", { email, password });
+    // 1) Получаем CSRF-куку
+    await authClient.get("/sanctum/csrf-cookie");
+    // 2) Логинимся на корневом URL, чтобы Laravel проверил токен
+    return authClient.post("/login", { email, password });
   },
+
   logout() {
-    // await authClient.get("/sanctum/csrf-cookie");
     return apiClient.post("/logout");
   },
+
   async getAuthAdmin() {
-    await apiClient.get(
-      import.meta.env.VITE_VUE_APP_API_URL + "/sanctum/csrf-cookie"
-    );
+    await authClient.get("/sanctum/csrf-cookie");
     return apiClient.get("/admin/auth");
   },
 };

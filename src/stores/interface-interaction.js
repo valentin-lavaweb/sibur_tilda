@@ -167,10 +167,17 @@ export const useGameStore = defineStore("interface", {
     async loadDictionary() {
       let res = await this.api.getDictionary();
       let dictionary = res.data.data;
+      console.log("Dictionary API response:", res.data);
+
       let result = {};
-      for (let item of dictionary) {
-        result[item.key] = item.text;
+      if (Array.isArray(dictionary)) {
+        for (let item of dictionary) {
+          result[item.key] = item.text;
+        }
+      } else {
+        console.warn("Dictionary is not iterable:", dictionary);
       }
+
       this.dictionary = result;
     },
 
