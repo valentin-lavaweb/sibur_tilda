@@ -1,274 +1,195 @@
 <script>
-import { useGameStore } from '@/stores/interface-interaction.js';
+import { useGameStore } from "@/stores/interface-interaction.js";
 
 export default {
-  props:{
+  props: {
     item: Object,
   },
   name: "nomination_item",
-  computed:{
-    imagePath(){
-        if(this.item.image){
-            try{
-                let url = new URL(this.item.image);
-                return url;
-            }catch{
-                let url = new URL('files/' + this.item.image, import.meta.env.VITE_VUE_APP_API_URL);
-                return url;
-            }
-        }else{
-                return new URL('storage/default_command.jpg', import.meta.env.VITE_VUE_APP_API_URL);
-          
-            
-        }
-        
-    }
-  }
+  computed: {},
 };
 </script>
 
 <template>
-    <div class="nomination-item">
-      <div class="front-item-content">
-        <div class="item-content">
+  <div class="nomination-item">
+    <div class="front-item-content">
+      <div class="item-content">
+        <div class="titleBlock">
+          <div class="icon"></div>
           <h3 class="subTitle">
-            <span>
-              <img src="/img/degree_left.svg" alt="degree">
-            </span>  
             {{ item.nomination }}
-            <span>
-              <img src="/img/degree_right.svg" alt="degree">
-            </span>  
           </h3>
-          <span class="text">
-            <span class="descBlock">Проект </span>«{{ item.project }}»
-          </span>
-          <span class="autorText">
-              <span class="autorBlock">
-                Команда:
-              </span>
-              {{ item.authors }}
-          </span>  
-          <!-- <button class="show_winers">
+        </div>
+        <span class="text">
+          <span class="descBlock">Проект </span>«{{ item.project }}»
+        </span>
+        <span class="autorText">
+          <span class="autorBlock"> Команда: </span>
+          {{ item.authors }}
+        </span>
+        <!-- <button class="show_winers">
             Показать победителей
           </button> -->
-        </div>
-      </div>
-      <div class="back-item-content">
-        <img :src="imagePath" alt="backImage">
       </div>
     </div>
+  </div>
 </template>
 
-<style scoped>
-/* .show_winers{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  margin: 30px 0 0 0;
-  padding: 5px 35px;
-  font-weight: 600;
-  border-radius: 5px;
-  background-color: var(--nipigasColorMain);
-  color: var(--white);
-  outline: none;
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-.show_winers:hover{
-  background-color: var(--nipigasColorMain-hover);
-} */
-
-.front-item-content{
+<style scoped lang="scss">
+.front-item-content {
   width: 100%;
   height: 100%;
-  /* position: absolute;
-  top: 0;
-  left: 0; */
   overflow: hidden;
   text-align: center;
   z-index: 2;
-  border-radius: 10px;
-  background-color: rgba(246, 246, 246, 1);
-  padding: 25px 15px;
   transition: all 0.5s ease;
 }
-.back-item-content{
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  z-index: 1;
-  border-radius: 10px;
-  background-color: rgba(246, 246, 246, 1);
-  transition: all 0.5s ease;
-  opacity: 0;
-}
-.back-item-content img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
-.front-item-content:hover{
-  opacity: 0;
-}
-.front-item-content:hover~.back-item-content{
-  opacity: 1;
-}
- 
-
-.nomination-item{
-  width: 545px;
+.nomination-item {
+  width: 450px;
   height: 100%;
-  background-color: rgba(246, 246, 246, 1);
-  border: 1px solid rgba(0, 140, 149, 0.0);
+  border: 1px solid rgba(0, 140, 149, 0);
   border-radius: 10px;
-  /* padding: 25px 15px;
-  margin: 0 0 30px 0; */
   justify-content: flex-start;
+  align-self: flex-start;
   transition: all 0.25s ease;
 }
 
-.subTitle > span{
+.titleBlock {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  .icon {
+    min-width: 35px;
+    width: 35px;
+    height: 39px;
+    background-image: url("/img/awardCup.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+.subTitle > span {
   display: flex;
 }
-span img{
+span img {
   width: 20px;
   transform-origin: bottom;
   transition: all 0.25s ease;
 }
-.nomination-item:hover{
-  border: 1px solid rgba(252, 194, 23, 0);
-}
-.nomination-item:hover span:first-child img{
-  animation: wreathMove 3s ease infinite;
-}
-.nomination-item:hover span:last-child img{
-  animation: wreathMove2 3s ease infinite;
-}
 
-/* @keyframes wreathMove {
-  0% {
-    animation-timing-function: ease-out;
-  }
-  50% {
-      transform: rotate(-10deg);
-      animation-timing-function: ease-in;
-  }
-  100% {
-  }
-}
-@keyframes wreathMove2 {
-  0% {
-    animation-timing-function: ease-out;
-  }
-  50% {
-      transform: rotate(10deg);
-      animation-timing-function: ease-in;
-  }
-  100% {
-
-  }
-} */
-
-
-.item-content{
+.item-content {
   width: 100%;
   height: 100%;
   justify-content: flex-start;
   overflow-y: auto;
+  gap: 15px;
   z-index: 2;
 }
-.subTitle{
+.subTitle {
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--nipigasColorAdditional);
-  margin: 0 0 25px 0;
-}
-.text{
-  width: 100%;
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--textColorBlack);
-  margin: 0 0 20px 0;
-  line-height: 110%;
-}
-.autorText{
-  width: 100%;
-  height: fit-content;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-family: YFF_RARE_TRIAL;
   font-size: 16px;
   font-weight: 600;
-  color: var(--textColorBlack);
-  text-align: center;
+  text-align: left;
+  line-height: 1.25;
+  color: var(--nipigasColorAdditional);
 }
-.autorBlock{
-  font-size: 16px;
-  font-weight: 800;
+.text {
+  width: 100%;
+  text-align: left;
+  font-family: ArticulatCF;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--textColorBlack);
+  line-height: 1.3;
+}
+.descBlock {
+  color: var(--nipigasColorMain);
+  font-weight: 700;
+}
+.autorText {
+  width: 100%;
+  height: fit-content;
+  font-family: ArticulatCF;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--textColorBlack);
+  text-align: left;
+}
+.autorBlock {
+  font-size: 14px;
+  font-weight: 700;
   color: var(--nipigasColorMain);
 }
 
-.descBlock{
-  font-weight: 800;
-}
-
-
-
 @media (max-width: 1440px) {
-  .subTitle{
+  .subTitle {
     font-size: 1.2vw;
   }
-  .text{
+  .text {
     font-size: 1.1vw;
   }
-  .autorText{
+  .autorText {
     font-size: 1vw;
   }
-  .autorBlock{
+  .autorBlock {
     font-size: 1vw;
   }
 }
+
+@media (max-width: 1280px) {
+  .subTitle {
+    font-size: 16px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .autorText {
+    font-size: 14px;
+  }
+
+  .autorBlock {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 1024px) {
-  .subTitle{
+  .subTitle {
     font-size: 20px;
   }
-  .text{
+  .text {
     font-size: 18px;
   }
-  .autorText{
+  .autorText {
     font-size: 16px;
   }
-  .autorBlock{
+  .autorBlock {
     font-size: 16px;
   }
-
 }
 @media (max-width: 980px) {
-
 }
 @media (max-width: 768px) {
-
 }
 @media (max-width: 640px) {
-
 }
 @media (max-width: 480px) {
-
-
+  .titleBlock {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 @media (max-width: 420px) {
-
 }
 @media (max-width: 380px) {
-
 }
 </style>

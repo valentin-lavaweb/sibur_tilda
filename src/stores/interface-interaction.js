@@ -1,3 +1,5 @@
+// src\stores\interface-interaction.js
+
 import { defineStore } from "pinia";
 // import auth, {authClient} from "../scripts/auth.js";
 import api, { apiClient } from "../scripts/api.js";
@@ -69,6 +71,9 @@ export const useGameStore = defineStore("interface", {
     dictionary: null,
 
     focusedEditPopup: null,
+    news: [], // список подгруженных новостей
+    newsMeta: {}, // метаданные пагинации
+    currentNews: null, // детальная новость
   }),
   getters: {
     // auth(state){
@@ -160,6 +165,19 @@ export const useGameStore = defineStore("interface", {
         result[item.key] = item.text;
       }
       this.dictionary = result;
+    },
+
+    async loadNews(page = 1) {
+      const res = await this.api.getNews(page);
+      this.news = res.data.data;
+      this.newsMeta = res.data.meta;
+    },
+
+    /** загрузить одну новость */
+    async loadNewsById(id) {
+      const res = await this.api.getNewsById(id);
+      this.currentNews = res.data.data ?? res.data;
+      // зависит от того, возвращает ли API { data: {...} } или сразу объект
     },
 
     async login(email, password) {

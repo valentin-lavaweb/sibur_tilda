@@ -1,286 +1,429 @@
 <script>
-import { useGameStore } from '@/stores/interface-interaction.js';
+import { useGameStore } from "@/stores/interface-interaction.js";
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
-import editable_text from '../editable_text.vue';
+import editable_text from "../editable_text.vue";
 
 import gsap from "gsap";
+import Timeline from "../Timeline.vue";
+import Teamtrack from "../Teamtrack.vue";
+import { RouterLink } from "vue-router";
 
 export default {
   name: "main_page",
   data() {
     let interaction = useGameStore();
-    return{
-        interaction: interaction,
-    }
+    return {
+      interaction: interaction,
+    };
   },
-  components:{
+  components: {
     header_comp,
+    Timeline,
+    Teamtrack,
     footer_comp,
-    editable_text
+    editable_text,
   },
-  methods: {
-
-  },
+  methods: {},
   mounted() {
-    gsap.from(".img-animate-gsap", { 
-    x: 240,
-    opacity: 0, 
-    duration: 0.5,
-    ease: "sine",
-   });
-   gsap.from(".text-animate-gsap", {
-    x: -100,
-    opacity: 0,
-    duration: 0.25,
-    stagger: 0.15,
-    delay: 0.25,
+    gsap.from(".img-animate-gsap", {
+      x: 240,
+      opacity: 0,
+      duration: 0.5,
+      ease: "sine",
+    });
+    gsap.from(".text-animate-gsap", {
+      x: -100,
+      opacity: 0,
+      duration: 0.25,
+      stagger: 0.15,
+      delay: 0.25,
     });
   },
-  computed:{
-    
-  },
-  watch:{
-
-  },
+  computed: {},
+  watch: {},
 };
 </script>
 
-
 <template>
   <div class="wrapper">
-    <header_comp/>
-    <div class="wrapper-block">
-      <div class="content-block">
-        <h2 class="subTitle text-animate-gsap">
-          <editable_text dictionary_key="main_subtitle"/>
-        </h2>
-        <h1 class="title text-animate-gsap">
-          ЭНЕРГИЯ <br> 
-          ПРИЗНАНИЯ
-        </h1>
-        <span class="text text-animate-gsap ">  
-          <editable_text dictionary_key="main_desc"/>
-        </span>
-        <span class="nigascol text-animate-gsap">
-          <editable_text dictionary_key="main_subdesc"/>
-        </span>
-      </div>
-      <div class="img-bg img-animate-gsap">
-        <!-- <img src="/img/background_page/bg-main.svg" alt="bg-main"/> -->
-        <img src="/img/background_page/bg-main_men.svg" alt="bg-main_men"/>
-      </div>
-      <div class="img-block img-animate-gsap">
-        <!-- <img src="/img/bg-men.svg" class="men" alt="bg-men"/> -->
-        <!-- <img src="/img/the_energy_of_recognition.svg" class="men" alt="the_energy_of_recognition"/>
-        <img src="/img/wreath.svg" class="wreath left" alt="wreath"/>
-        <img src="/img/wreath_right.svg" class="wreath right" alt="wreath"/> -->
+    <header_comp />
+    <Timeline />
+    <Teamtrack />
+    <div class="energyContainer contentBlock">
+      <div class="banner">
+        <div class="background">
+          <img src="/img/bannerBackground.png" />
+        </div>
+        <div class="logo">
+          <img src="/img/sibur_logo_white.svg" alt="sibur logo" />
+        </div>
+        <div class="separator">
+          <div class="sep"></div>
+          <div class="sep"></div>
+        </div>
+        <div class="subTitle">Наградная кампания</div>
+        <div class="title">Энергия<br />Признания</div>
+        <div class="imageLight">
+          <img src="/img/light.png" />
+        </div>
       </div>
     </div>
-    <footer_comp/>
+    <div class="newsBannerContainer contentBlock fullScreen z-1">
+      <div class="newsBanner">
+        <video src=""></video>
+        <div class="playIcon"></div>
+      </div>
+    </div>
+    <div class="newsContainer contentBlock news fullScreen newsContainer">
+      <div class="backgroundImages">
+        <div class="left"></div>
+        <div class="right"></div>
+      </div>
+      <div class="contentBlock news">
+        <div class="topBlock">
+          <div class="titleBlock">
+            <div class="title">Новости</div>
+            <div class="additionalText">
+              <RouterLink :to="{ name: 'news' }"> Больше новостей </RouterLink>
+            </div>
+          </div>
+          <div class="arrowsBlock">
+            <div class="arrow prev"></div>
+            <div class="arrow next"></div>
+          </div>
+        </div>
+        <div class="sliderBlock">
+          <div class="sliderItem">
+            <div class="image">
+              <img src="" alt="" />
+            </div>
+            <div class="title">Заголовок</div>
+            <div class="description">
+              Описание, описание, описание, описание, описание, описание,
+              описание, описание, описание, описание, описание
+            </div>
+            <div class="date">31.12.2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer_comp />
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+$logoWidth: 175px;
 
-.wrapper{
+.wrapper {
+  flex-direction: column;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
+  padding: 200px 0 0 0;
 }
-.wrapper-block{
-   width: 1160px;
-   height: fit-content;
-   margin: 130px 0 300px 0;
-}
-
-
-.content-block{
-  margin: 200px 0 0 0;
+.contentBlock {
   width: 100%;
-  justify-content: flex-start;
+  max-width: 1326px;
+  overflow: visible;
+
+  &.fullScreen {
+    max-width: 100%;
+  }
+
+  &.z-1 {
+    z-index: 1;
+  }
+
+  padding: 2.5vw 0px;
+}
+
+.banner {
+  font-family: YFF_RARE_MEGA_TRIAL;
   align-items: flex-start;
-  z-index: 2;
-}
-.subTitle{
-  font-size: 1.9vw;
-  color: var(--white);
-}
-.title{
-  font-size: 4.8vw;
-  font-weight: 700;
-  color: var(--nipigasColorMainv2);
-  line-height: 100%;
-}
-.text{
-  font-size: 0.8vw;
-  color: var(--nipigasColorMainv2);
-  margin: 14px 0;
-  white-space: pre-line;
-  font-weight: 700;
-}
-.pinata{
-  font-size: 0.9vw;
-  font-weight: 700;
-  color: var(--nipigasColorAdditional);
-}
-.nigascol{
-  margin: 7vw 0 0 0;
-  font-size: 1.7vw;
-  font-weight: 700;
-  white-space: pre-line;
-  color: var(--nipigasColorAdditional);
-}
+  width: 100%;
+  padding: 6vw 0px 5vw 7vw;
+  height: 34vw;
+  border-radius: 20px;
+  background-color: var(--textColorBlack);
+  justify-content: center;
+  gap: 2vw;
+  overflow: visible;
+  box-shadow: 40px 49px 88px rgba(0, 140, 149, 0.28);
 
+  .background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
 
-.img-block{
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 50px 0 0 0;
-  transform: translateX(120px);
-  z-index: 1;
-}
-.men{
-  width: 635px;
-}
-.wreath{
-  position: absolute;
-  bottom: 200px;
-  left: 35%;
-  width: 180px;
-  animation: wreathMove 3s ease infinite;
-}
-.wreath.right{
-  left: unset;
-  right: 12%;
-  animation: wreathMove2 3s ease infinite;
-}
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 
-@keyframes wreathMove {
-  0% {
-    transform: translateX(0px)translateY(0px)rotate(0deg);
-    animation-timing-function: ease-out;
+  .logo {
+    width: $logoWidth;
+    height: 32px;
   }
-  50% {
-      transform: translateX(-30px)translateY(-10px)rotate(-10deg);
-      animation-timing-function: ease-in;
+
+  .separator {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    width: calc($logoWidth * 0.85);
+    .sep {
+      width: 85%;
+      height: 4px;
+      background-color: white;
+      border-radius: 50px;
+      &:nth-child(2) {
+        width: 15%;
+      }
+    }
   }
-  100% {
-      transform: translateX(1px)translateY(0px)rotate(0deg);
+
+  .subTitle {
+    font-family: ArticulatCF;
+    font-size: 36px;
+    font-weight: 300;
+    text-transform: uppercase;
   }
-}
-@keyframes wreathMove2 {
-  0% {
-    transform: translateX(0px)translateY(0px)rotate(0deg);
-    animation-timing-function: ease-out;
+
+  .title {
+    font-size: 96px;
+    font-weight: 800;
+    color: #77e2c3;
+    text-transform: uppercase;
+    line-height: 1;
   }
-  50% {
-      transform: translateX(30px)translateY(-10px)rotate(10deg);
-      animation-timing-function: ease-in;
-  }
-  100% {
-      transform: translateX(1px)translateY(0px)rotate(0deg);
+
+  .imageLight {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translate(-69%, -50%);
+    height: 53vw;
+    width: 53vw;
+    pointer-events: none;
   }
 }
 
-.img-bg{
-  position: absolute;
-  top: 80px;
-  width: 100vw;
-  height: 39vw;
-  /* overflow: hidden; */
+.newsBanner {
+  width: 100%;
+  height: 42vw;
+  background-image: url("/img/newsBannerTemplate.png");
+  background-position: center;
+  background-size: cover;
+
+  .playIcon {
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
+    max-width: 90px;
+    max-height: 90px;
+    background-image: url("/img/playIcon.png");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
 }
 
+.news {
+  align-items: flex-start;
+  color: var(--textColorBlack);
+  font-family: YFF_RARE_MEGA_TRIAL;
+  line-height: 1;
+  gap: 100px;
+  &.fullScreen {
+    align-items: center;
+  }
+
+  .backgroundImages {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+
+    .left {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 80vw;
+      height: 80vw;
+      background-image: url(/img/news_flares_left.png);
+      background-position: left bottom;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .right {
+      position: absolute;
+      right: 0;
+      top: -69vw;
+      width: 130vw;
+      height: 130vw;
+      background-image: url(/img/news_flares_right.png);
+      background-position: right top;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .topBlock {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    .titleBlock {
+      align-items: flex-start;
+      gap: 15px;
+      .title {
+        font-size: 54px;
+        font-weight: 600;
+      }
+      .additionalText {
+        a {
+          font-size: 18px;
+          font-weight: 600;
+          color: var(--nipigasColorMain);
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .arrowsBlock {
+      flex-direction: row;
+      gap: 10px;
+
+      .arrow {
+        width: 40px;
+        height: 25px;
+        background-color: var(--nipigasColorMain);
+        border-radius: 8px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 100% 60%;
+        cursor: pointer;
+
+        &.next {
+          background-image: url("/img/arrow-right.svg");
+        }
+        &.prev {
+          background-image: url("/img/arrow-left.svg");
+        }
+      }
+    }
+  }
+
+  .sliderBlock {
+    width: 100%;
+    height: fit-content;
+    padding: 0px 0px 2vw 0px;
+
+    .sliderItem {
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 25px;
+      width: 100%;
+      height: 685px;
+      border-radius: 25px;
+      background-color: white;
+      box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.06);
+
+      .image {
+        background-color: #77e2c3;
+        height: 485px;
+        width: 100%;
+        border-radius: 25px;
+      }
+
+      .title {
+        font-size: 36px;
+        color: black;
+        margin: 25px 0px 0px 0px;
+      }
+
+      .description {
+        font-family: ArticulatCF;
+        font-size: 16px;
+        color: black;
+        margin: 15px 0px 0px 0px;
+      }
+
+      .date {
+        font-size: 16px;
+        color: #aaaaaa;
+        margin: 25px 0px 0px 0px;
+      }
+    }
+  }
+}
 
 @media (max-width: 1440px) {
-    .wrapper-block{
-        width: 80vw;
+  .contentBlock {
+    max-width: unset;
+    width: 90vw;
+
+    &.fullScreen {
+      width: 100%;
     }
-    .img-block {
-      margin: 5vw 0 0 0;
+  }
+
+  .banner {
+    .title {
+      font-size: 5vw;
     }
-    .img-block img:first-child{
-      width: 50vw;
+
+    .subTitle {
+      font-size: 2vw;
     }
-    .wreath{
-      width: 11vw;
-      bottom: 9vw;
-    }
-    .content-block{
-      margin: 16vw 0 0 0;
-    }
-    .subTitle{
-      font-size: 1.8vw;
-    }
-    .title{
-      font-size: 5.0vw;
-    }
-    .text{
-      font-size: 1.1vw;
-    }
-    .nigascol {
-      margin: 5vw 0 0 0;
-    }
-    .img-bg{
-      height: 50vw;
-    }
+  }
+}
+@media (max-width: 1280px) {
 }
 @media (max-width: 1060px) {
-    .subTitle{
-      color: var(--nipigasColorAdditional);
-      font-size: 36px;
-    }
-    .title{
-      font-size: 96px;
-    }
-    .text{
-      font-size: 16px;
-    }
-    .nigascol{
-      font-size: 20px;
-    }
-    .img-block {
-      display: none;
-    }
-    .img-bg{
-      display: none;
-    }
+  .wrapper {
+    padding: 130px 0px 0px 0px;
+  }
 }
 @media (max-width: 980px) {
-
+  .banner {
+    .logo {
+      width: 15vw;
+      height: 3vw;
+    }
+  }
 }
 @media (max-width: 768px) {
-  .subTitle{
-      font-size: 24px;
-    }
-    .title{
-      font-size: 66px;
-    }
-    .text{
-      font-size: 16px;
-    }
 }
 @media (max-width: 640px) {
+  .banner {
+    height: 45vw;
+    gap: 3vw;
 
+    .logo {
+      width: 20vw;
+      height: 4vw;
+    }
+    .subTitle {
+      font-size: 3.5vw;
+    }
+
+    .title {
+      font-size: 7vw;
+    }
+  }
 }
 @media (max-width: 480px) {
-  .wrapper-block{
-    margin: 120px 0 50px 0;
-  }
-  .subTitle{
-    font-size: 20px;
-  }
-  .title{
-    font-size: 44px;
-  }
-  .text{
-    font-size: 16px;
-  }
 }
 @media (max-width: 420px) {
-
 }
 @media (max-width: 380px) {
-
 }
 </style>

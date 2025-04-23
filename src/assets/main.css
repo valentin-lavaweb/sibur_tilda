@@ -1,4 +1,4 @@
-@import './base.css';
+@import "./base.css";
 
 @font-face {
   font-family: Dinpro;
@@ -31,7 +31,6 @@
   font-style: normal;
 }
 
-
 @font-face {
   font-family: Roboto;
   src: url(../assets/fonts/Roboto-400.ttf) format("opentype");
@@ -63,11 +62,207 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: ArticulatCF;
+  src: url(../assets/fonts/ArticulatCF-Light.woff2) format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: ArticulatCF;
+  src: url(../assets/fonts/ArticulatCF-Regular.woff2) format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: ArticulatCF;
+  src: url(../assets/fonts/ArticulatCF-Normal.woff2) format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: ArticulatCF;
+  src: url(../assets/fonts/ArticulatCF-Medium.woff2) format("woff2");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: ArticulatCF;
+  src: url(../assets/fonts/ArticulatCF-Bold.woff2) format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: ArticulatCF;
+  src: url(../assets/fonts/ArticulatCF-ExtraBold.woff2) format("woff2");
+  font-weight: 800;
+  font-style: normal;
+}
 
+@font-face {
+  font-family: YFF_RARE_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-HyperRegular.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-HyperMedium.woff) format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-HyperSemiBold.woff) format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-HyperBold.woff) format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-HyperExtraBold.woff) format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-HyperBlack.woff) format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
 
-* {-webkit-tap-highlight-color: rgba(0, 0, 0, 0)}
-* { outline: none}
-img{pointer-events: none;}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaRegular.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaMedium.woff) format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaSemiBold.woff) format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaBold.woff) format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaExtraBold.woff) format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaBlack.woff) format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: YFF_RARE_GIGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-GigaRegular.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_GIGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-GigaMedium.woff) format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_GIGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-GigaSemiBold.woff) format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_GIGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-GigaBold.woff) format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_GIGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-GigaExtraBold.woff) format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_GIGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-GigaBlack.woff) format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: YFF_RARE_EXTRA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-ExtraRegular.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_EXTRA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-ExtraMedium.woff) format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_EXTRA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-ExtraSemiBold.woff) format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_EXTRA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-ExtraBold.woff) format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_EXTRA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-ExtraExtraBold.woff) format("woff");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_EXTRA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-ExtraBlack.woff) format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: YFF_RARE_VF_TRIAL;
+  src: url(../assets/fonts/YFF_RARE_VF_TRIAL.woff2) format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+* {
+  outline: none;
+}
+img {
+  pointer-events: none;
+}
 
 #app {
   width: 100%;
@@ -80,7 +275,7 @@ img{pointer-events: none;}
   justify-content: flex-start;
   align-items: center;
   font-weight: normal;
-  background: var(--white);
+  background: linear-gradient(258.02deg, #f8fcff 82.5%, #f8fffd 153.59%);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -89,13 +284,13 @@ img{pointer-events: none;}
 }
 ::selection {
   background: #549ad3b8; /* Safari */
-  }
-  ::-moz-selection {
+}
+::-moz-selection {
   background: #549ad3b8; /* Firefox */
-  }
-  img::selection {
-    background: transparent;
-    color: transparent;
+}
+img::selection {
+  background: transparent;
+  color: transparent;
 }
 
 body {
@@ -105,31 +300,30 @@ body {
   place-items: center;
   font-family: "Roboto", "Dinpro", sans-serif;
 }
-body div{
+body div {
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   flex-direction: column;
 }
 
 body::-webkit-scrollbar {
-  display: none
+  display: none;
 }
-a{
+a {
   text-decoration: none;
 }
-img{
+img {
   width: 100%;
   object-fit: contain;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
-input[type='number'] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
-
