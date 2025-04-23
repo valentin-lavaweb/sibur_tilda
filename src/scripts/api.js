@@ -14,9 +14,8 @@ export const apiClient = axios.create({
   xsrfHeaderName: "X-XSRF-TOKEN",
 });
 
-// для CSRF и логина
 export const authClient = axios.create({
-  baseURL: import.meta.env.VITE_VUE_APP_API_URL,
+  baseURL: import.meta.env.VITE_VUE_APP_BASE_URL,
   withCredentials: true,
 });
 
@@ -310,18 +309,16 @@ export default {
 
   // Авторизация
   async login({ email, password }) {
-    // 1) Получаем CSRF-куку
+    // 1) получаем CSRF-cookie с основного домена
     await authClient.get("/sanctum/csrf-cookie");
-    // 2) Логинимся на корневом URL, чтобы Laravel проверил токен
+    // 2) логинимся там же, на /login
     return authClient.post("/login", { email, password });
   },
-
   logout() {
-    return apiClient.post("/logout");
+    return authClient.post("/logout");
   },
-
   async getAuthAdmin() {
     await authClient.get("/sanctum/csrf-cookie");
-    return apiClient.get("/admin/auth");
+    return authClient.get("/admin/auth");
   },
 };
