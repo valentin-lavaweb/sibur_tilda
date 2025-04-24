@@ -112,7 +112,7 @@ export default {
   height: 100%;
   font-family: YFF_RARE_TRIAL;
   background: linear-gradient(225deg, #f8fcff 0%, #f8fffd 100%);
-  padding: 200px 0 0px 0;
+  padding: 150px 0 0px 0;
 }
 .wrapper-block {
   width: 1326px;
@@ -125,7 +125,7 @@ export default {
   background-color: white;
   border-radius: 25px;
   box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.1);
-  margin: 75px 0 0 0;
+  margin: 0px 0 0 0;
   padding: 50px 135px;
   background-image: url("/img/whiteBlockBackground.png");
   background-repeat: no-repeat;

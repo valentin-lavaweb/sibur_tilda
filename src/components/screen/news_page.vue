@@ -139,12 +139,12 @@ export default {
 .wrapper {
   width: 100%;
   min-height: 100vh;
-  padding: 200px 0px 0px 0px;
+  padding: 150px 0px 0px 0px;
 }
 .wrapper-block {
   width: 100%;
   max-width: 1326px;
-  padding: 50px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 }
 
 .pageTitle {

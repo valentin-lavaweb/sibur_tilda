@@ -37,42 +37,48 @@ export default {
 
       command_nomination_1: [
         {
-          nomination: "Организационное решение",
+          nomination: "Лучшее организационное решение",
           description:
-            "Управление рисками обеспеченности ХП в условиях санкционных ограничений и проработка аналогов химической продукции",
+            "В номинацию входит широкий перечень проектов, которые помогают СИБУРу трансформироваться и достигать поставленных бизнес-целей",
+          new: false,
         },
         {
-          nomination: "Производственное решение",
+          nomination: "Производственное решение года",
           description:
-            "Катализатор тетраизобутират циркония (ТИБЦ) для ЛАО НКНХ",
+            "Команды представляют инициативы, повышающие эффективность и результативность  производственного процесса",
+          new: false,
         },
         {
           nomination: "Организационный проект",
-          description: "RTO, APC, Хроматограф на ЭП-60 АО «Сибур-Химпром»",
+          description:
+            "Номинация объединяет любые инициативы по повышению эффективности и автоматизации сквозных бизнес-процессов",
+          new: false,
         },
         {
-          nomination: "Решение в области работы с клиентами",
-          description: "Продуктовые решения для отрасли Транспорт",
+          nomination: "Решение в области работы с клиентами",
+          description:
+            "Команды предлагают проекты, которые повышают эффективность взаимодействия с партнерами и клиентами",
+          new: false,
         },
       ],
       command_nomination_2: [
         {
-          nomination: "Производственное решение",
-          description:
-            "Катализатор тетраизобутират циркония (ТИБЦ) для ЛАО НКНХ",
-        },
-        {
           nomination: "Организационное решение",
           description:
             "Управление рисками обеспеченности ХП в условиях санкционных ограничений и проработка аналогов химической продукции",
         },
         {
-          nomination: "Решение в области работы с клиентами",
-          description: "Продуктовые решения для отрасли Транспорт",
+          nomination: "Производственное решение",
+          description:
+            "Катализатор тетраизобутират циркония (ТИБЦ) для ЛАО НКНХ",
         },
         {
           nomination: "Организационный проект",
           description: "RTO, APC, Хроматограф на ЭП-60 АО «Сибур-Химпром»",
+        },
+        {
+          nomination: "Решение в области работы с клиентами",
+          description: "Продуктовые решения для отрасли «Транспорт»",
         },
       ],
       command_nomination_3: [
@@ -99,28 +105,22 @@ export default {
       ],
       command_nomination_4: [
         {
-          nomination: "Лучшее организационное решение",
+          nomination: "Производственное решение",
           description:
-            "В номинацию входит широкий перечень проектов, которые помогают СИБУРу трансформироваться и достигать поставленных бизнес-целей",
-          new: false,
+            "Катализатор тетраизобутират циркония (ТИБЦ) для ЛАО НКНХ",
         },
         {
-          nomination: "Производственное решение года",
+          nomination: "Организационное решение",
           description:
-            "Команды представляют инициативы, повышающие эффективность и результативность  производственного процесса",
-          new: false,
+            "Управление рисками обеспеченности ХП в условиях санкционных ограничений и проработка аналогов химической продукции",
+        },
+        {
+          nomination: "Решение в области работы с клиентами",
+          description: "Продуктовые решения для отрасли Транспорт",
         },
         {
           nomination: "Организационный проект",
-          description:
-            "Номинация объединяет любые инициативы по повышению эффективности и автоматизации сквозных бизнес-процессов",
-          new: false,
-        },
-        {
-          nomination: "Решение в области работы с клиентами",
-          description:
-            "Команды предлагают проекты, которые повышают эффективность взаимодействия с партнерами и клиентами",
-          new: false,
+          description: "RTO, APC, Хроматограф на ЭП-60 АО «Сибур-Химпром»",
         },
       ],
     };
@@ -178,7 +178,10 @@ export default {
           <editable_text dictionary_key="awards_title" />
         </h1>
         <span class="description text-animate-gsap">
-          <editable_text dictionary_key="awards_desc" />
+          <!-- <editable_text dictionary_key="awards_desc" /> -->
+          Каждая награда — это способ выразить благодарность за важные
+          достижения и мотивировать вас на дальнейшее развитие, профессиональный
+          рост. СИБУР поощряет сотрудников сразу на нескольких уровнях.
         </span>
       </div>
       <div class="awardsContainer whiteBlock">
@@ -194,7 +197,11 @@ export default {
             </div>
           </div>
           <div class="awardsText">
-            <editable_text dictionary_key="individual_desc_grade_1" />
+            <!-- <editable_text dictionary_key="individual_desc_grade_1" /> -->
+            Супергерои СИБУРа! Ежегодно награду получают 3 лучших сотрудника,
+            которые сделали уникальный вклад в развитие компании и отрасли,
+            продемонстрировали достижения, выходящие за рамки занимаемой
+            должности.
           </div>
         </div>
         <div class="blockAwards text-animate-gsap">
@@ -209,7 +216,10 @@ export default {
             </div>
           </div>
           <div class="awardsText">
-            <editable_text dictionary_key="individual_desc_grade_2" />
+            <!-- <editable_text dictionary_key="individual_desc_grade_2" /> -->
+            Значительный личный вклад в развитие СИБУРа и результаты «выше
+            ожиданий» – отличительные особенности лауреатов корпоративной
+            награды 2 степени.
           </div>
         </div>
         <div class="blockAwards text-animate-gsap">
@@ -224,7 +234,10 @@ export default {
             </div>
           </div>
           <div class="awardsText">
-            <editable_text dictionary_key="individual_desc_grade_3" />
+            <!-- <editable_text dictionary_key="individual_desc_grade_3" /> -->
+            Награду получают как опытные специалисты, так и новички – те
+            сотрудники, которые внесли значимый вклад в развитие своего
+            предприятия и получили признание в коллективе.
           </div>
         </div>
       </div>
@@ -235,7 +248,7 @@ export default {
           <div class="nominations">
             <span
               class="nominationItem text-animate-gsap"
-              v-for="(nomination, key) in command_nomination_4"
+              v-for="(nomination, key) in command_nomination_1"
               :key="nomination"
             >
               <div class="icon">
@@ -265,7 +278,7 @@ export default {
           <div class="nominations">
             <span
               class="nominationItem text-animate-gsap"
-              v-for="(nomination, key) in command_nomination_1"
+              v-for="(nomination, key) in command_nomination_2"
               :key="nomination"
             >
               <div class="icon">
@@ -320,7 +333,7 @@ export default {
   background: linear-gradient(225deg, #f8fcff 0%, #f8fffd 100%);
   font-family: YFF_RARE_TRIAL;
   color: var(--textColorBlack);
-  margin: 200px 0 0 0;
+  margin: 150px 0 0 0;
 }
 .wrapper-block {
   width: 1326px;
@@ -439,7 +452,7 @@ export default {
       flex-wrap: wrap;
       align-items: flex-start;
       justify-content: flex-start;
-      gap: 50px 85px;
+      gap: 50px 150px;
 
       .nominationItem {
         display: flex;
@@ -512,6 +525,7 @@ export default {
   .nominationsContainer {
     .nominationsBlock {
       .nominations {
+        gap: 50px 85px;
         .nominationItem {
           width: calc(50% - 43px);
         }
@@ -541,10 +555,12 @@ export default {
   .nominationsContainer {
     .nominationsBlock {
       .nominations {
+        flex-direction: column;
         gap: 50px;
         .nominationItem {
-          flex-direction: column;
-          width: calc(50% - 25px);
+          flex-direction: row;
+          width: calc(100% - 0px);
+          max-width: unset;
         }
       }
     }
@@ -575,6 +591,18 @@ export default {
     padding: 50px 25px;
 
     .title {
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .nominationsContainer {
+    .nominationsBlock {
+      .nominations {
+        .nominationItem {
+          flex-direction: column;
+        }
+      }
     }
   }
 }

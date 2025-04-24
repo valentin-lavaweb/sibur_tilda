@@ -493,7 +493,7 @@ export default {
 <style scoped lang="scss">
 .wrapper {
   font-family: ArticulatCF;
-  padding: 200px 0px 0px 0px;
+  padding: 150px 0px 0px 0px;
 }
 .block-changePage {
   flex-direction: row;
@@ -505,7 +505,7 @@ export default {
   border-radius: 25px;
   box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.1);
   margin: 0px 0 0 0;
-  padding: 0px 135px 50px 135px;
+  padding: 50px 135px 50px 135px;
   background-color: white;
   background-image: url("/img/whiteBlockBackground.png");
   background-repeat: no-repeat;
@@ -567,7 +567,7 @@ export default {
 .wrapper-block {
   width: 1326px;
   height: fit-content;
-  margin: 30px 0 0 0;
+  margin: 0px 0 0 0;
 }
 
 .title {
