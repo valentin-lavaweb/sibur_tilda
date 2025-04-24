@@ -2,10 +2,12 @@
 import { useGameStore } from "@/stores/interface-interaction.js";
 import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
+import Timeline from "../Timeline.vue";
+import Teamtrack from "../Teamtrack.vue";
 
 export default {
   name: "news_page",
-  components: { header_comp, footer_comp },
+  components: { header_comp, footer_comp, Timeline, Teamtrack },
   computed: {
     paginationPages() {
       const total = this.interaction.newsMeta.lastPage;
@@ -81,6 +83,8 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp />
+    <Timeline />
+    <Teamtrack />
     <div class="wrapper-block">
       <h1 class="pageTitle">Новости</h1>
 
@@ -90,7 +94,7 @@ export default {
       <!-- список новостей -->
       <div v-else class="newsList">
         <router-link
-          :to="{ name: 'news_item', params: { id: item.id } }"
+          :to="{ name: 'news_item', params: { id: item.id + 1 } }"
           v-for="item in interaction.news"
           :key="item.id"
           class="newsItem"
@@ -135,11 +139,12 @@ export default {
 .wrapper {
   width: 100%;
   min-height: 100vh;
+  padding: 200px 0px 0px 0px;
 }
 .wrapper-block {
   width: 100%;
   max-width: 1326px;
-  padding: 200px 0px 0px 0px;
+  padding: 50px 0px 0px 0px;
 }
 
 .pageTitle {
@@ -152,7 +157,7 @@ export default {
   line-height: 1.25;
   font-weight: 700;
   color: var(--textColorBlack);
-  margin: 0px 0px 50px 0px;
+  margin: 50px 0px 50px 0px;
 }
 
 .newsList {
@@ -294,6 +299,12 @@ export default {
         font-size: 15px;
       }
     }
+  }
+}
+
+@media (max-width: 1060px) {
+  .wrapper {
+    padding: 150px 0px 0px 0px;
   }
 }
 

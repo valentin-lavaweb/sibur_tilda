@@ -225,7 +225,7 @@ export const useGameStore = defineStore("interface", {
         preview: `Превью для новости ${i + 1}`,
         previewInfo: {
           uuid: "uuid",
-          url: "/img/newsPlaceholder.png",
+          url: `/img/newsPlaceholder${(i + 1) % 2}.png`,
           originalName: "preview.jpg",
           extension: "jpg",
           size: 12345,
@@ -249,9 +249,23 @@ export const useGameStore = defineStore("interface", {
 
     /** загрузить одну новость */
     async loadNewsById(id) {
-      const res = await this.api.getNewsById(id);
-      this.currentNews = res.data.data ?? res.data;
-      // зависит от того, возвращает ли API { data: {...} } или сразу объект
+      const newsId = parseInt(id);
+      const fakeNews = Array.from({ length: 15 }, (_, i) => ({
+        id: i + 1,
+        title: `Новость ${i + 1}`,
+        content: `
+				<p>Это подробное описание новости с ID №${
+          i + 1
+        }. Здесь можно писать текст. Можно писать много текста. Всё это сделано для того, чтобы протестировать как будет выглядеть данный блок, если описание новости будет длинной.
+			`,
+        published_at: new Date(Date.now() - i * 86400000).toISOString(), // разная дата
+        previewInfo: {
+          url: "/img/newsPlaceholder.png",
+        },
+        gallery: [],
+      }));
+
+      this.currentNews = fakeNews.find((item) => item.id === newsId) || null;
     },
 
     async login(email, password) {

@@ -138,6 +138,18 @@
 
 @font-face {
   font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaExtraLight.woff) format("woff");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
+  src: url(../assets/fonts/YFFRARETRIAL-MegaLight.woff) format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: YFF_RARE_MEGA_TRIAL;
   src: url(../assets/fonts/YFFRARETRIAL-MegaRegular.woff) format("woff");
   font-weight: 400;
   font-style: normal;

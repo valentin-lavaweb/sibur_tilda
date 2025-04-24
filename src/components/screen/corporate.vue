@@ -6,6 +6,8 @@ import corporate_item from "@/components/corporate_item.vue";
 import UIbtn from "@/components/UIbtn.vue";
 
 import gsap from "gsap";
+import Timeline from "../Timeline.vue";
+import Teamtrack from "../Teamtrack.vue";
 
 export default {
   name: "corporate_awards",
@@ -25,6 +27,8 @@ export default {
     footer_comp,
     corporate_item,
     UIbtn,
+    Timeline,
+    Teamtrack,
   },
   methods: {
     // toggleIssuerFilter(issuer){
@@ -350,6 +354,8 @@ export default {
     <!-- <div class="bg-element img-animate-gsap">
       <img src="/img/background_page/team_track_winners.svg" alt="" />
     </div> -->
+    <Timeline />
+    <Teamtrack />
     <div class="wrapper-block personal">
       <div class="whiteBlock">
         <h1 class="title text-animate-gsap">
@@ -487,6 +493,7 @@ export default {
 <style scoped lang="scss">
 .wrapper {
   font-family: ArticulatCF;
+  padding: 200px 0px 0px 0px;
 }
 .block-changePage {
   flex-direction: row;
@@ -495,11 +502,15 @@ export default {
 
 .whiteBlock {
   width: 100%;
-  background-color: white;
   border-radius: 25px;
   box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.1);
-  margin: 75px 0 0 0;
-  padding: 50px 135px;
+  margin: 0px 0 0 0;
+  padding: 0px 135px 50px 135px;
+  background-color: white;
+  background-image: url("/img/whiteBlockBackground.png");
+  background-repeat: no-repeat;
+  background-position: -200px -270px;
+  background-size: calc(100% + 400px) auto;
 }
 
 .changePage-block {
@@ -556,7 +567,7 @@ export default {
 .wrapper-block {
   width: 1326px;
   height: fit-content;
-  margin: 130px 0 0 0;
+  margin: 30px 0 0 0;
 }
 
 .title {
@@ -877,6 +888,12 @@ option {
     gap: 25px;
   }
 }
+@media (max-width: 1280px) {
+  .whiteBlock {
+    background-position: -20vw -24vw;
+    background-size: calc(100% + 60vw) auto;
+  }
+}
 @media (max-width: 1200px) {
   .years-container {
     gap: 1.7vw;
@@ -895,6 +912,11 @@ option {
 
   .filter-block {
     top: calc(40px + 12px);
+  }
+}
+@media (max-width: 1060px) {
+  .wrapper {
+    padding: 150px 0px 0px 0px;
   }
 }
 @media (max-width: 1024px) {
@@ -980,6 +1002,11 @@ option {
   }
 }
 @media (max-width: 480px) {
+  .whiteBlock {
+    background-repeat: repeat;
+    background-position: -20vw -24vw;
+    background-size: calc(100% + 200vw) auto;
+  }
   .years-container {
     flex-wrap: wrap;
     justify-content: space-between;

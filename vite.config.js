@@ -25,9 +25,9 @@ export default defineConfig({
     //minify: false
   },
   server: {
-    host: "127.0.0.1",
+    // host: "127.0.0.1",
     // host: "siburaward.com",
-    port: 3000,
+    // port: 5173,
     https: true,
     strictPort: true,
   },

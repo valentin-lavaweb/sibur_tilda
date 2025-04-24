@@ -19,7 +19,11 @@ export default {
       // для драга
       isDragging: false,
       startX: 0,
-      dragOffset: 0, // px
+      dragOffset: 0,
+
+      // прогресс текущий у командного трека
+      progress: 0,
+      isMobile: window.innerWidth <= 480,
     };
   },
   components: {
@@ -43,41 +47,68 @@ export default {
     },
 
     // ДРАГ
-    // вспомогалка: получить X из event
     getX(e) {
       return e.type.startsWith("touch") ? e.touches[0].clientX : e.clientX;
+    },
+    getY(e) {
+      return e.type.startsWith("touch") ? e.touches[0].clientY : e.clientY;
     },
     onDragStart(e) {
       this.isDragging = true;
       this.startX = this.getX(e);
-      // вешаем слушатели на окно
-      window.addEventListener("mousemove", this.onDragMove);
-      window.addEventListener("mouseup", this.onDragEnd);
-      window.addEventListener("touchmove", this.onDragMove);
-      window.addEventListener("touchend", this.onDragEnd);
+      this.startY = this.getY(e);
+      this.dragOffset = 0;
+
+      const moveTarget = e.type.startsWith("touch") ? e.target : window;
+
+      moveTarget.addEventListener("mousemove", this.onDragMove, {
+        passive: false,
+      });
+      moveTarget.addEventListener("mouseup", this.onDragEnd);
+      moveTarget.addEventListener("touchmove", this.onDragMove, {
+        passive: false,
+      });
+      moveTarget.addEventListener("touchend", this.onDragEnd);
     },
     onDragMove(e) {
       if (!this.isDragging) return;
+
       const currentX = this.getX(e);
-      this.dragOffset = currentX - this.startX;
+      const currentY = this.getY(e);
+
+      const deltaX = currentX - this.startX;
+      const deltaY = currentY - this.startY;
+
+      // если пальцем пошли больше по Y, чем по X — игнорим
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        this.onDragEnd(); // сразу отменим
+        return;
+      }
+
+      e.preventDefault(); // отключим прокрутку страницы
+      this.dragOffset = deltaX;
     },
-    onDragEnd() {
+    onDragEnd(e) {
       if (!this.isDragging) return;
       this.isDragging = false;
-      // считаем, на сколько слайдов потащили:
+
       const sliderEl = this.$refs.sliderBlock;
       const style = getComputedStyle(sliderEl);
       const itemW = parseFloat(style.getPropertyValue("--newsSliderItemWidth"));
       const gap = parseFloat(style.getPropertyValue("--newsSliderGap"));
       const step = itemW + gap;
-      // смещение в единицах слайдов (отрицательный offset -> вправо)
-      const moved = Math.round(-this.dragOffset / step);
+
+      // перелистываем только на 1 слайд максимум
+      const movedSlides =
+        Math.abs(this.dragOffset) > step / 3 ? Math.sign(-this.dragOffset) : 0;
+
       this.sliderIndex = Math.min(
-        Math.max(0, this.sliderIndex + moved),
+        Math.max(0, this.sliderIndex + movedSlides),
         this.interaction.news.length - 1
       );
+
       this.dragOffset = 0;
-      // убираем слушатели
+
       window.removeEventListener("mousemove", this.onDragMove);
       window.removeEventListener("mouseup", this.onDragEnd);
       window.removeEventListener("touchmove", this.onDragMove);
@@ -100,10 +131,24 @@ export default {
     // });
 
     await this.interaction.loadNews(1);
+    window.addEventListener("resize", this.checkScreenWidth);
+    this.checkScreenWidth();
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.checkScreenWidth);
   },
   computed: {
     sliderTransform() {
       return `translateX(calc((var(--newsSliderItemWidth) + var(--newsSliderGap)) * -${this.sliderIndex} + ${this.dragOffset}px))`;
+    },
+    filledHeightPercent() {
+      return `${Math.round(this.progress * 100)}%`;
+    },
+    filledWidthPercent() {
+      return `${Math.round(this.progress * 100)}%`;
+    },
+    isMobileWidth() {
+      return window.innerWidth <= 480;
     },
   },
   watch: {},
@@ -114,8 +159,8 @@ export default {
   <div class="wrapper">
     <header_comp />
     <Timeline />
-    <Teamtrack />
-    <div class="energyContainer contentBlock">
+    <Teamtrack @progressUpdate="progress = $event" />
+    <div class="energyContainer contentBlock fullScreen">
       <div class="banner">
         <div class="background">
           <img src="/img/bannerBackground.png" />
@@ -137,7 +182,16 @@ export default {
       <div class="bannerTrack">
         <div class="cup"></div>
         <div class="line">
-          <div class="filledLine"></div>
+          <div
+            class="filledLine"
+            :style="
+              isMobile
+                ? { width: filledWidthPercent }
+                : { height: filledHeightPercent }
+            "
+          >
+            {{ Math.round(progress * 100) }}%
+          </div>
         </div>
       </div>
     </div>
@@ -183,6 +237,7 @@ export default {
                 :src="post.previewInfo.url"
                 :alt="post.previewInfo.originalName"
               />
+              <div class="goToBlock">Перейти</div>
             </div>
             <div class="title">{{ post.title }}</div>
             <div class="description">{{ post.content }}</div>
@@ -205,7 +260,7 @@ $logoWidth: 175px;
   justify-content: flex-start;
   width: 100%;
   height: 100%;
-  padding: 200px 0 0 0;
+  padding: 150px 0 0 0;
 }
 .contentBlock {
   width: 100%;
@@ -227,14 +282,17 @@ $logoWidth: 175px;
   font-family: YFF_RARE_MEGA_TRIAL;
   align-items: flex-start;
   width: 100%;
-  padding: 6vw 0px 5vw 7vw;
+  max-width: 1326px;
+  padding: 85px 0px 85px 100px;
   height: 34vw;
+  max-height: 650px;
   border-radius: 20px;
   background-color: var(--textColorBlack);
   justify-content: center;
-  gap: 2vw;
+  gap: 40px;
   overflow: visible;
   box-shadow: 40px 49px 88px rgba(0, 140, 149, 0.28);
+  z-index: 1;
 
   .background {
     position: absolute;
@@ -294,8 +352,53 @@ $logoWidth: 175px;
     top: 50%;
     transform: translate(-69%, -50%);
     height: 53vw;
+    max-height: 1000px;
     width: 53vw;
+    max-width: 1000px;
     pointer-events: none;
+  }
+}
+
+.bannerTrack {
+  //   display: none;
+  position: absolute;
+  right: 5vw;
+  width: 45px;
+  background-color: white;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
+  border-radius: 50px;
+  height: 375px;
+  padding: 16px;
+  gap: 16px;
+  z-index: 0;
+
+  .cup {
+    width: 27px;
+    height: 27px;
+    background-image: url("/img/bannerTrackCup.svg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .line {
+    width: 100%;
+    height: calc(100% - 27px);
+    background-color: rgba(0, 45, 58, 1);
+    border-radius: 50px;
+  }
+
+  .filledLine {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 50%;
+    min-height: 50px;
+    background-color: rgba(240, 90, 40, 1);
+    border-radius: 50px;
+    color: white;
+    writing-mode: sideways-lr;
+    padding: 10px;
   }
 }
 
@@ -316,6 +419,7 @@ $logoWidth: 175px;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
+    display: none;
   }
 }
 
@@ -415,6 +519,8 @@ $logoWidth: 175px;
     padding: 0px 0px 2vw 0px;
     gap: var(--newsSliderGap);
     transition: 0.5s;
+    touch-action: pan-y;
+    cursor: grab;
 
     &.dragging {
       transition: none;
@@ -431,12 +537,40 @@ $logoWidth: 175px;
       background-color: white;
       box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.06);
 
+      &:hover {
+        .image {
+          .goToBlock {
+            transform: translate(0px, 0%);
+          }
+        }
+      }
+
       .image {
         background-color: #77e2c3;
         height: 485px;
         width: 100%;
         border-radius: 25px;
         overflow: hidden;
+
+        .goToBlock {
+          flex-direction: row;
+          padding: 10px 20px;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          transform: translate(0px, 101%);
+          transition: 0.25s;
+          color: white;
+          cursor: pointer;
+          background-color: rgba(0, 0, 0, 0.5);
+          justify-content: flex-start;
+          transition: 0.25s;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
       }
 
       .title {
@@ -460,8 +594,30 @@ $logoWidth: 175px;
     }
   }
 }
+@media (max-width: 1920px) {
+  .banner {
+    padding: 6vw 0px 5vw 7vw;
+    gap: 2vw;
+  }
+}
+@media (max-width: 1880px) {
+  .bannerTrack {
+    right: 0;
+    left: 2vw;
+    z-index: 1;
+  }
+}
 
+@media (max-width: 1680px) {
+  .bannerTrack {
+    left: var(--contentPadding);
+    transform: translate(-50%, 0);
+  }
+}
 @media (max-width: 1440px) {
+  .bannerTrack {
+    max-height: 70%;
+  }
   .contentBlock {
     max-width: unset;
     width: 90vw;
@@ -472,6 +628,7 @@ $logoWidth: 175px;
   }
 
   .banner {
+    max-width: 90vw;
     .title {
       font-size: 5vw;
     }
@@ -531,6 +688,23 @@ $logoWidth: 175px;
     }
   }
 
+  .bannerTrack {
+    width: 5vw;
+    padding: 0.9vw 1.7vw;
+    gap: 1.2vw;
+
+    .cup {
+      width: 3vw;
+      height: 3vw;
+    }
+
+    .line {
+      .filledLine {
+        font-size: 15px;
+      }
+    }
+  }
+
   .news {
     gap: 25px;
 
@@ -580,12 +754,22 @@ $logoWidth: 175px;
   }
 
   .news {
+    .topBlock {
+      .titleBlock {
+        .title {
+          font-size: 7vw;
+        }
+      }
+    }
     .sliderBlock {
       .sliderItem {
-        height: 65vw;
+        min-height: 50vw;
+        height: fit-content;
+        border-radius: 4vw;
         .image {
-          height: 100%;
-          min-height: 40vw;
+          height: 30vw;
+          min-height: 30vw;
+          border-radius: 4vw;
         }
 
         .title {
@@ -606,6 +790,53 @@ $logoWidth: 175px;
   }
 }
 @media (max-width: 480px) {
+  .energyContainer {
+    margin: 0px 0px 20px 0px;
+  }
+  .bannerTrack {
+    position: absolute;
+    flex-direction: row-reverse;
+    width: 70vw;
+    height: 27px;
+    left: 50%;
+    bottom: 0;
+    padding: 10px;
+    transform: translate(-50%, calc(-2.5vw + 50%));
+    margin: 10px 0px 0px 0px;
+
+    .cup {
+      width: 22px;
+      height: 22px;
+    }
+
+    .line {
+      padding: 0;
+      width: calc(100% - 30px);
+      height: 100%;
+      .filledLine {
+        min-width: 50px;
+        width: 50px;
+        // width: 50% !important;
+        height: 200% !important;
+        min-height: unset;
+        bottom: unset;
+        left: 0;
+        padding: 0;
+        writing-mode: lr;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .news {
+    .topBlock {
+      .titleBlock {
+        .title {
+          font-size: 32px;
+        }
+      }
+    }
+  }
 }
 @media (max-width: 420px) {
 }

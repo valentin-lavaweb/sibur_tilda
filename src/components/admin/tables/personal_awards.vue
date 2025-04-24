@@ -252,12 +252,12 @@ export default {
         } else {
           if (item.gender) {
             return new URL(
-              "storage/default_men.svg",
+              "storage/app/public/default_men.svg",
               import.meta.env.VITE_VUE_APP_API_URL
             );
           } else {
             return new URL(
-              "storage/default_women.svg",
+              "storage/app/public/default_women.svg",
               import.meta.env.VITE_VUE_APP_API_URL
             );
           }

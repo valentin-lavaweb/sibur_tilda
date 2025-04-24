@@ -5,6 +5,8 @@ import footer_comp from "@/components/footer.vue";
 
 import gsap from "gsap";
 import editable_text from "../editable_text.vue";
+import Timeline from "../Timeline.vue";
+import Teamtrack from "../Teamtrack.vue";
 
 export default {
   name: "types_of_awards_page",
@@ -100,22 +102,25 @@ export default {
           nomination: "Лучшее организационное решение",
           description:
             "В номинацию входит широкий перечень проектов, которые помогают СИБУРу трансформироваться и достигать поставленных бизнес-целей",
+          new: false,
         },
         {
           nomination: "Производственное решение года",
           description:
             "Команды представляют инициативы, повышающие эффективность и результативность  производственного процесса",
+          new: false,
         },
         {
           nomination: "Организационный проект",
           description:
             "Номинация объединяет любые инициативы по повышению эффективности и автоматизации сквозных бизнес-процессов",
-          new: true,
+          new: false,
         },
         {
           nomination: "Решение в области работы с клиентами",
           description:
             "Команды предлагают проекты, которые повышают эффективность взаимодействия с партнерами и клиентами",
+          new: false,
         },
       ],
     };
@@ -124,6 +129,8 @@ export default {
     header_comp,
     footer_comp,
     editable_text,
+    Timeline,
+    Teamtrack,
   },
   methods: {},
   mounted() {
@@ -162,6 +169,8 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp />
+    <Timeline />
+    <Teamtrack />
     <div class="awardTypesBackground"></div>
     <div class="wrapper-block">
       <div class="titleBlock">
@@ -311,11 +320,11 @@ export default {
   background: linear-gradient(225deg, #f8fcff 0%, #f8fffd 100%);
   font-family: YFF_RARE_TRIAL;
   color: var(--textColorBlack);
+  margin: 200px 0 0 0;
 }
 .wrapper-block {
   width: 1326px;
   height: fit-content;
-  margin: 200px 0 0 0;
   gap: 50px;
 }
 
@@ -327,6 +336,7 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  pointer-events: none;
 }
 
 .titleBlock {
@@ -348,10 +358,14 @@ export default {
 .whiteBlock {
   align-items: flex-start;
   width: 100%;
-  background-color: white;
   border-radius: 25px;
   box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.1);
   padding: 50px;
+  background-color: white;
+  background-image: url("/img/whiteBlockBackground.png");
+  background-repeat: no-repeat;
+  background-position: -200px -270px;
+  background-size: calc(100% + 400px) auto;
 
   .title {
     color: var(--textColorBlack);
@@ -468,8 +482,12 @@ export default {
 }
 
 @media (max-width: 1440px) {
+  .wrapper {
+    margin: 150px 0px 0px 0px;
+  }
   .wrapper-block {
     width: 90vw;
+    padding: 50px 0px 0px 0px;
   }
 
   .titleBlock {
@@ -499,6 +517,11 @@ export default {
         }
       }
     }
+  }
+
+  .whiteBlock {
+    background-position: -20vw -24vw;
+    background-size: calc(100% + 60vw) auto;
   }
 }
 
@@ -569,6 +592,9 @@ export default {
   }
 
   .whiteBlock {
+    background-repeat: repeat;
+    background-position: -20vw -24vw;
+    background-size: calc(100% + 200vw) auto;
     .title {
       font-size: 24px;
     }

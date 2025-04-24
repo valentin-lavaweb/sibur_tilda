@@ -2,34 +2,78 @@
 <template>
   <div class="timelineBlock">
     <div class="items" :style="{ width: itemsWidth }">
-      <div
+      <component
+        :is="getTag(item)"
+        :href="getHref(item)"
         v-for="(item, idx) in items"
         :key="item.id"
         class="item"
-        :class="{ active: isDatePassed(item) }"
+        :class="{
+          active: isDatePassed(item) || item.active,
+          opened: item.opened,
+        }"
+        @click="onItemClick(item)"
       >
-        <a class="dot" :href="item.url" target="_blank" rel="noopener"></a>
+        <component
+          :is="getTag(item)"
+          :href="getHref(item)"
+          class="dot"
+          @click="
+            () => {
+              if (!isDatePassed(item) && !item.active) openLockedPopup(item);
+            }
+          "
+        />
         <div class="block">
           <div class="title">{{ item.title }}</div>
           <div class="separator"></div>
-          <div class="descriptionBlock">
+          <div
+            class="descriptionBlock"
+            @click="handleDescriptionClick(item, $event)"
+          >
             <div class="date">{{ formatDate(item) }}</div>
-            <div class="arrow"></div>
+            <div class="arrow">
+              <div class="text">перейти</div>
+              <div class="icon"></div>
+            </div>
           </div>
         </div>
-      </div>
+      </component>
     </div>
 
     <div class="line" :style="{ width: lineWidth }">
       <div class="filledLine" :style="{ width: filledLineWidth }"></div>
     </div>
   </div>
+  <Teleport to="body">
+    <div
+      v-if="lockedItem"
+      class="lockedPopupWrapper"
+      @click.self="closeLockedPopup"
+    >
+      <div class="lockedPopup">
+        <div class="textBlock">
+          <div class="text">Этот этап признания заряжается</div>
+          <div class="date">до {{ formatDate(lockedItem) }}</div>
+        </div>
+        <div class="popupButtons">
+          <button class="back" @click="closeLockedPopup">
+            <div class="text">Назад</div>
+            <div class="icon"></div>
+          </button>
+          <button class="main" v-if="!isHomePage" @click="goHome">
+            <div class="text">Вернуться на главную</div>
+            <div class="icon"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-
-// 1) Пример данных: часть с range, часть с single
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
 const items = ref([
   {
     id: 1,
@@ -37,6 +81,8 @@ const items = ref([
     date_from: "2025-04-08T00:00:00Z",
     date_to: "2025-04-09T00:00:00Z",
     url: "/",
+    active: false,
+    opened: true,
   },
   {
     id: 2,
@@ -44,32 +90,92 @@ const items = ref([
     date_from: "2025-04-23T00:00:00Z",
     date_to: "2025-04-24T00:00:00Z",
     url: "/",
+    active: false,
+    opened: false,
   },
   {
     id: 3,
     title: "Локальные Дни компании на предприятиях",
     date_from: "2025-05-23T00:00:00Z",
     url: "/",
+    active: true,
+    opened: false,
   },
   {
     id: 4,
     title: "Локальные Дни компании на предприятиях",
     date_from: "2025-07-14T00:00:00Z",
     url: "/",
+    active: false,
+    opened: false,
   },
   {
     id: 5,
     title: "Церемония награждения на ВДНХ",
     date_from: "2025-07-19T00:00:00Z",
     url: "/",
+    active: false,
+    opened: false,
   },
   {
-    id: 5,
+    id: 6,
     title: "День нефтяника",
     date_from: "2025-08-28T00:00:00Z",
     url: "/",
+    opened: false,
   },
 ]);
+const isMobile = ref(window.innerWidth <= 980);
+function getTag(item) {
+  if (isMobile.value) return "div";
+  return isDatePassed(item) || item.active ? "a" : "div";
+}
+
+function getHref(item) {
+  if (isMobile.value) return undefined;
+  return isDatePassed(item) || item.active ? item.url : undefined;
+}
+
+function onItemClick(item) {
+  if (!isMobile.value) {
+    if (!isDatePassed(item) && !item.active) {
+      openLockedPopup(item);
+    }
+  }
+}
+
+function updateIsMobile() {
+  isMobile.value = window.innerWidth <= 980;
+}
+
+onMounted(() => {
+  window.addEventListener("resize", updateIsMobile);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateIsMobile);
+});
+
+function handleDescriptionClick(item, event) {
+  const target = event.target;
+  const arrowClicked =
+    target.classList.contains("arrow") || target.closest(".arrow");
+  if (arrowClicked && item.opened) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log(item);
+    if (isDatePassed(item) || item.active) {
+      router.push(item.url);
+    } else {
+      openLockedPopup(item);
+    }
+    return;
+  }
+
+  if (isMobile.value) {
+    item.opened = !item.opened;
+  }
+}
 
 // Текущая дата в формате YYYY-MM-DD по Москве
 function nowMoscow() {
@@ -102,24 +208,48 @@ const monthNames = [
 
 // Форматируем для вывода «день месяц», «день–день месяц» или «день месяц – день месяц»
 function formatDate(item) {
+  const rawFrom = item.date_from;
+  const rawTo = item.date_to;
+
+  // Обработка "XX" в начале
+  if (rawFrom.includes("XX")) {
+    const mon1 = monthNames[+rawFrom.split("-")[1] - 1]; // месяц из строки
+    if (rawTo && rawTo.includes("XX")) {
+      const mon2 = monthNames[+rawTo.split("-")[1] - 1];
+      return `XX ${mon1} – 31 ${mon2}`;
+    } else if (rawTo) {
+      const d2 = new Date(rawTo);
+      const day2 = d2.getDate();
+      const mon2 = monthNames[d2.getMonth()];
+      return `XX ${mon1} – ${day2} ${mon2}`;
+    } else {
+      return `XX ${mon1}`;
+    }
+  }
+
+  // Обычная логика если date_from валидна
   const d1 = new Date(item.date_from);
   const day1 = d1.getDate();
   const mon1 = monthNames[d1.getMonth()];
 
   if (item.date_to) {
-    const d2 = new Date(item.date_to);
+    let d2;
+    if (item.date_to.includes("XX")) {
+      // Если дата_to тоже содержит XX — ставим 31
+      const parts = item.date_to.split("-");
+      d2 = new Date(`${parts[0]}-${parts[1]}-31`);
+    } else {
+      d2 = new Date(item.date_to);
+    }
     const day2 = d2.getDate();
     const mon2 = monthNames[d2.getMonth()];
 
     if (mon1 === mon2) {
-      // один и тот же месяц
       return `${day1}–${day2} ${mon1}`;
     } else {
-      // разные месяцы
       return `${day1} ${mon1} – ${day2} ${mon2}`;
     }
   } else {
-    // одиночная дата
     return `${day1} ${mon1}`;
   }
 }
@@ -129,10 +259,10 @@ const itemsCount = computed(() => items.value.length);
 const lineWidth = computed(() => {
   const n = itemsCount.value;
   return `calc(
-    2 * var(--contentPadding)
-    + ${n} * var(--timelineItemWidth)
-    + ${n} * var(--timelineGap)
-  )`;
+	  2 * var(--contentPadding)
+	  + ${n} * var(--timelineItemWidth)
+	  + ${n} * var(--timelineGap)
+	)`;
 });
 
 // Добавляем это — чтобы в шаблоне не было «undefined»
@@ -150,15 +280,43 @@ const activeIndex = computed(() => {
 // 4) Ширина заполнения линии до активного
 
 const progressFraction = computed(() => {
-  const i = activeIndex.value;
-  // если ни одно событие ещё не наступило или мы на последнем — фракция = 0
-  if (i < 0 || i >= items.value.length - 1) return 0;
   const now = new Date();
-  const from = new Date(items.value[i].date_from);
-  const to = new Date(items.value[i + 1].date_from);
-  const ratio = (now - from) / (to - from);
-  // ограничиваем от 0 до 1
-  return Math.min(Math.max(ratio, 0), 1);
+  let previous = null;
+  let next = null;
+  const validDates = [];
+
+  for (const item of items.value) {
+    const raw = item.date_from;
+
+    if (raw.includes("XX")) {
+      continue;
+    }
+
+    const date = new Date(raw);
+    if (isNaN(date)) {
+      continue;
+    }
+
+    if (date <= now) {
+      if (!previous || date > previous) previous = date;
+    } else {
+      if (!next || date < next) next = date;
+    }
+  }
+
+  validDates.forEach((d) =>
+    console.log(`  • ${d.date.toISOString()} — ${d.title}`)
+  );
+
+  if (previous && next) {
+    const progress = (now - previous) / (next - previous);
+    return Math.min(Math.max(progress, 0), 1);
+  }
+
+  if (!next && previous) {
+    return 1;
+  }
+  return 0;
 });
 
 const filledLineWidth = computed(() => {
@@ -170,21 +328,42 @@ const filledLineWidth = computed(() => {
   // pad + w/2 + i*(w + g)
   // добавляем (w+g) * progressFraction
   return `calc(
-    ${pad}
-    + ${w} / 2
-    + (${w} + ${g}) * ${i}
-    + (${w} + ${g}) * ${progressFraction.value}
-  )`;
+	  ${pad}
+	  + ${w} / 2
+	  + (${w} + ${g}) * ${i}
+	  + (${w} + ${g}) * ${progressFraction.value}
+	)`;
 });
+
+const lockedItem = ref(null);
+const route = useRoute();
+const router = useRouter();
+
+function openLockedPopup(item) {
+  lockedItem.value = item;
+}
+
+function closeLockedPopup() {
+  lockedItem.value = null;
+}
+
+const isHomePage = computed(() => route.path === "/");
+
+function goHome() {
+  router.push("/");
+  closeLockedPopup();
+}
 </script>
 
 <style scoped lang="scss">
 .timelineBlock {
   align-items: flex-start;
+  justify-content: flex-end;
   width: 100%;
+  height: 150px;
   gap: 20px;
   padding: 0px 0px 15px 0px;
-  overflow-x: auto;
+  overflow-x: hidden;
   margin: 0px 0px 20px 0px;
 }
 .items {
@@ -200,15 +379,12 @@ const filledLineWidth = computed(() => {
   .item {
     width: var(--timelineItemWidth);
     min-width: var(--timelineItemWidth);
-    pointer-events: none;
-
-    .block {
-      opacity: 0.35;
-    }
+    cursor: pointer;
 
     &.active {
       opacity: 1;
       pointer-events: auto;
+
       .dot {
         background-color: #77e2c3;
       }
@@ -218,14 +394,38 @@ const filledLineWidth = computed(() => {
       }
     }
 
+    &:hover {
+      .block {
+        .separator {
+          margin: 10px 0px;
+          height: 2px;
+          background-color: #77e2c3;
+        }
+
+        .title {
+          max-height: 300px;
+        }
+
+        .descriptionBlock {
+          .arrow {
+            .icon {
+              transform: rotate(270deg);
+            }
+          }
+        }
+      }
+    }
+
     .dot {
       position: absolute;
       top: 100%;
-      transform: translate(0px, 12px);
+      left: 50%;
+      transform: translate(-50%, 12px);
       width: 20px;
       height: 20px;
       border-radius: 50%;
       background-color: #afb0b1;
+      cursor: pointer;
     }
 
     .block {
@@ -236,25 +436,39 @@ const filledLineWidth = computed(() => {
       padding: 10px;
       border-radius: 15px;
       font-size: 14px;
-      width: fit-content;
+      width: 100%;
+      opacity: 0.35;
 
       .title {
+        // position: absolute;
         text-align: center;
         font-family: YFF_RARE_GIGA_TRIAL;
         font-weight: 800;
         line-height: 1.25;
+        overflow: hidden;
+        height: fit-content;
+        max-height: 0px;
+        transition: 0.25s;
+        background-color: white;
+        color: var(--textColorBlack);
+        // padding: 15px;
+        border-radius: 10px;
+        // width: 100%;
+        // left: 0;
+        // bottom: 100%;
       }
 
       .separator {
-        margin: 10px 0px;
+        margin: 0px 0px;
         width: 100%;
-        height: 2px;
+        height: 0px;
         background-color: #77e2c3;
+        transition: 0.25s;
       }
 
       .descriptionBlock {
         flex-direction: row;
-        align-items: flex-start;
+        align-items: center;
         justify-content: space-between;
         width: 100%;
         height: fit-content;
@@ -268,12 +482,31 @@ const filledLineWidth = computed(() => {
         }
 
         .arrow {
-          width: 15px;
-          height: 15px;
-          background-image: url("/img/arrow_bottom_green.svg");
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: contain;
+          flex-direction: row;
+          gap: 5px;
+          .text {
+            display: none;
+            font-family: YFF_RARE_TRIAL;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: #62c9b0;
+            opacity: 0;
+            transform: translate(calc(120%), 0);
+            transition: 0.25s 0.1s;
+          }
+          .icon {
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            background-image: url("/img/arrow_bottom_green.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            transform: rotate(180deg);
+            transition: 0.25s;
+          }
         }
       }
     }
@@ -283,6 +516,7 @@ const filledLineWidth = computed(() => {
 .line {
   width: 100%;
   height: 4px;
+  min-height: 4px;
   background-color: #e1fff6;
 }
 
@@ -309,6 +543,215 @@ const filledLineWidth = computed(() => {
   }
 }
 
+.lockedPopupWrapper {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+}
+
+.lockedPopup {
+  font-family: ArticulatCF;
+  background: #002d3a;
+  padding: 60px 120px;
+  color: white;
+  border-radius: 16px;
+  max-width: 90vw;
+  width: fit-content;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  gap: 50px;
+  background-image: url("/img/popupBackground.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .text {
+    font-size: 36px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.25;
+  }
+
+  .date {
+    line-height: 1.25;
+    font-size: 48px;
+    font-weight: 800;
+    color: #f05a28;
+  }
+
+  .popupButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: center;
+
+    button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #77e2c3;
+      color: #002d3a;
+      font-weight: bold;
+      gap: 10px;
+
+      &.back {
+        background-color: white;
+        .text {
+          color: var(--textColorBlack);
+        }
+        .icon {
+          background-image: url("/img/arrow_orange_back.svg");
+        }
+      }
+
+      &.main {
+        background-color: #f05a28;
+        .text {
+          color: white;
+        }
+        .icon {
+          background-image: url("/img/home_icon_white.svg");
+        }
+      }
+
+      &:hover {
+        background-color: #62c9b0;
+      }
+
+      .text {
+        font-size: 20px;
+      }
+
+      .icon {
+        width: 15px;
+        height: 15px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 1680px) {
+  .timelineBlock {
+    overflow-x: auto;
+  }
+}
+
 @media (max-width: 1440px) {
+}
+
+@media (max-width: 980px) {
+  .lockedPopup {
+    padding: 5vw 10vw;
+
+    .popupButtons {
+      flex-wrap: wrap;
+    }
+  }
+
+  .items {
+    .item {
+      &:hover {
+        .block {
+          .separator {
+            margin: 0px 0px;
+            height: 0px;
+          }
+
+          .title {
+            max-height: 0px;
+          }
+
+          .descriptionBlock {
+            .arrow {
+              .icon {
+                transform: rotate(180deg);
+              }
+            }
+          }
+        }
+      }
+      &.opened {
+        .block {
+          .separator {
+            margin: 10px 0px;
+            height: 2px;
+            background-color: #77e2c3;
+          }
+
+          .title {
+            max-height: 300px;
+          }
+
+          .descriptionBlock {
+            .arrow {
+              .text {
+                transform: translate(calc(0%), 0);
+                opacity: 1;
+              }
+              .icon {
+                transform: rotate(270deg);
+              }
+            }
+          }
+        }
+      }
+      .block {
+        .descriptionBlock {
+          .arrow {
+            .text {
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .lockedPopup {
+    background-position: left;
+    gap: 30px;
+    .text {
+      font-size: 30px;
+    }
+
+    .date {
+      font-size: 34px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .lockedPopup {
+    .text {
+      font-size: 20px;
+    }
+
+    .date {
+      font-size: 25px;
+    }
+
+    .popupButtons {
+      button {
+        .text {
+          font-size: 16px;
+        }
+      }
+    }
+  }
 }
 </style>

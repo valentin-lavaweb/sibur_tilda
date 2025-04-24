@@ -5,6 +5,8 @@ import footer_comp from "@/components/footer.vue";
 import nomination_item from "@/components/nomination_item.vue";
 
 import gsap from "gsap";
+import Timeline from "../Timeline.vue";
+import Teamtrack from "../Teamtrack.vue";
 
 export default {
   name: "team_track_winners",
@@ -19,6 +21,8 @@ export default {
     header_comp,
     footer_comp,
     nomination_item,
+    Timeline,
+    Teamtrack,
   },
   methods: {},
   mounted() {
@@ -68,6 +72,8 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp />
+    <Timeline />
+    <Teamtrack />
     <!-- <div class="bg-element img-animate-gsap">
       <img src="/img/background_page/team_track_winners.svg" alt=""/>
     </div> -->
@@ -106,11 +112,12 @@ export default {
   height: 100%;
   font-family: YFF_RARE_TRIAL;
   background: linear-gradient(225deg, #f8fcff 0%, #f8fffd 100%);
+  padding: 200px 0 0px 0;
 }
 .wrapper-block {
   width: 1326px;
   height: fit-content;
-  padding: 130px 0 50px 0;
+  padding: 0px 0 50px 0;
 }
 
 .whiteBlock {
@@ -120,6 +127,10 @@ export default {
   box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.1);
   margin: 75px 0 0 0;
   padding: 50px 135px;
+  background-image: url("/img/whiteBlockBackground.png");
+  background-repeat: no-repeat;
+  background-position: -200px -270px;
+  background-size: calc(100% + 400px) auto;
 }
 
 .title {
@@ -208,12 +219,20 @@ export default {
 @media (max-width: 1280px) {
   .whiteBlock {
     padding: 50px;
+    background-position: -20vw -24vw;
+    background-size: calc(100% + 60vw) auto;
   }
 }
 
 @media (max-width: 1200px) {
   .nomination-item {
     min-height: 200px;
+  }
+}
+
+@media (max-width: 1060px) {
+  .wrapper {
+    padding: 150px 0px 0px 0px;
   }
 }
 @media (max-width: 1024px) {
@@ -274,6 +293,12 @@ export default {
 
   .nomination-container {
     margin: 40px 0 50px 0;
+  }
+
+  .whiteBlock {
+    background-repeat: repeat;
+    background-position: -20vw -24vw;
+    background-size: calc(100% + 200vw) auto;
   }
 }
 @media (max-width: 420px) {

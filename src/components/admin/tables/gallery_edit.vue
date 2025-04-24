@@ -1,181 +1,200 @@
 <script>
-import TextEdit from '../cells/textEdit.vue';
-import 'vue-advanced-cropper/dist/style.css';
-import GalleryEditPreview from './gallery_edit_preview.vue';
+import TextEdit from "../cells/textEdit.vue";
+import "vue-advanced-cropper/dist/style.css";
+import GalleryEditPreview from "./gallery_edit_preview.vue";
 
 export default {
   name: "gallery_edit",
-  emits:['done', 'cancel'],
-  props:{
+  emits: ["done", "cancel"],
+  props: {
     item: Object,
   },
   data() {
-    return{
+    return {
       editItem: Object.assign({}, this.item),
       editPreview: false,
-    }
+    };
   },
-  components:{
+  components: {
     TextEdit,
-    GalleryEditPreview
+    GalleryEditPreview,
   },
-  methods:{
-    endEdit(event){
-      this.$emit('done', this.editItem);
+  methods: {
+    endEdit(event) {
+      this.$emit("done", this.editItem);
     },
     updateImage(event) {
-
-        let files = event.target.files || event.dataTransfer.files;
-        if (!files.length){
-            this.editItem.image = null;
-        }else{
-            this.editItem.image = files[0];
-        }
+      let files = event.target.files || event.dataTransfer.files;
+      if (!files.length) {
+        this.editItem.image = null;
+      } else {
+        this.editItem.image = files[0];
+      }
     },
-    setItem(item){
+    setItem(item) {
       this.editItem = Object.assign({}, item);
     },
 
-    changePreview(){
+    changePreview() {
       this.editPreview = true;
     },
 
-    onPreviewEditDone(preview){
+    onPreviewEditDone(preview) {
       this.editItem.preview = preview;
       this.editPreview = false;
-    }
-  },
-  computed:{
-    imagePath(){
-        if(typeof this.editItem.image === 'string'){
-            try{
-                let url = new URL(this.editItem.image);
-                return url;
-            }catch{
-                let url = new URL('files/' + this.editItem.image, import.meta.env.VITE_VUE_APP_API_URL);
-                return url;
-            }
-        }else if(this.editItem.image === null){
-          return new URL('storage/default_men.svg', import.meta.env.VITE_VUE_APP_API_URL);
-        }
-        else{
-            return URL.createObjectURL(this.editItem.image);
-        }
     },
-    previewPath(){
-        if(typeof this.editItem.preview === 'string'){
-            try{
-                let url = new URL(this.editItem.preview);
-                return url;
-            }catch{
-                let url = new URL('files/' + this.editItem.preview, import.meta.env.VITE_VUE_APP_API_URL);
-                return url;
-            }
-        }else if(this.editItem.preview instanceof Blob){
-          return URL.createObjectURL(this.editItem.preview);
+  },
+  computed: {
+    imagePath() {
+      if (typeof this.editItem.image === "string") {
+        try {
+          let url = new URL(this.editItem.image);
+          return url;
+        } catch {
+          let url = new URL(
+            "files/" + this.editItem.image,
+            import.meta.env.VITE_VUE_APP_API_URL
+          );
+          return url;
         }
+      } else if (this.editItem.image === null) {
+        return new URL(
+          "storage/app/public/default_men.svg",
+          import.meta.env.VITE_VUE_APP_API_URL
+        );
+      } else {
+        return URL.createObjectURL(this.editItem.image);
+      }
+    },
+    previewPath() {
+      if (typeof this.editItem.preview === "string") {
+        try {
+          let url = new URL(this.editItem.preview);
+          return url;
+        } catch {
+          let url = new URL(
+            "files/" + this.editItem.preview,
+            import.meta.env.VITE_VUE_APP_API_URL
+          );
+          return url;
+        }
+      } else if (this.editItem.preview instanceof Blob) {
+        return URL.createObjectURL(this.editItem.preview);
+      }
 
-        return null;
-    }
-
-  }
+      return null;
+    },
+  },
 };
 </script>
 
+<template>
+  <div class="container">
+    <Teleport to="body">
+      <GalleryEditPreview
+        :src="imagePath"
+        @done="onPreviewEditDone"
+        v-if="editPreview"
+      />
+    </Teleport>
 
+    <div class="Main_block-content">
+      <div class="block-content">
+        <h3>ID: {{ editItem.id ?? "---" }}</h3>
 
-
-<template >
-      <div class="container">
-
-        <Teleport to="body" >
-            <GalleryEditPreview :src="imagePath" @done="onPreviewEditDone" v-if="editPreview"/>
-        </Teleport>
-
-        <div class="Main_block-content">
-          <div class="block-content">
-          <h3>ID: {{ editItem.id ?? '---' }}</h3>
-
-          <div class="content">
-            <h2>Фото</h2>
-            <div class="input__wrapper">
-                  <input name="file" accept="image/*" type="file" :id="`input_edit_${editItem.id}`" class="input input__file" :multiple="false"
-                    @change="updateImage($event)">
-                  <label :for="`input_edit_${editItem.id}`" class="input__file-button">
-                      <span class="input__file-icon-wrapper">
-                        <img class="input__file-icon" src="/download.png" alt="Выбрать файл">
-                      </span>
-                      <span class="input__file-button-text">Выберите файл</span>
-                  </label>
-                </div>
-            <div class="photoDownlouad-box">            
-                <div class="img-block">
-                  <img :src="imagePath" :alt="editItem.name">
-                </div>
-            </div>
+        <div class="content">
+          <h2>Фото</h2>
+          <div class="input__wrapper">
+            <input
+              name="file"
+              accept="image/*"
+              type="file"
+              :id="`input_edit_${editItem.id}`"
+              class="input input__file"
+              :multiple="false"
+              @change="updateImage($event)"
+            />
+            <label
+              :for="`input_edit_${editItem.id}`"
+              class="input__file-button"
+            >
+              <span class="input__file-icon-wrapper">
+                <img
+                  class="input__file-icon"
+                  src="/download.png"
+                  alt="Выбрать файл"
+                />
+              </span>
+              <span class="input__file-button-text">Выберите файл</span>
+            </label>
           </div>
-
-          <div class="content">
-            <h2>Превью </h2>
-            <div class="buttons-row">
-              <button @click="changePreview">Изменить</button>
-              <button @click="onPreviewEditDone(null)">Сбросить</button>
-            </div>
+          <div class="photoDownlouad-box">
             <div class="img-block">
-                  <img v-if="previewPath" :src="previewPath">
-                  <h3 v-else>Нет превью</h3>
+              <img :src="imagePath" :alt="editItem.name" />
             </div>
           </div>
+        </div>
 
-          <div class="content">
-            <h2>Год</h2>
-            <TextEdit :item="editItem" editProp="year" @updateItem="editItem = $event" />
+        <div class="content">
+          <h2>Превью</h2>
+          <div class="buttons-row">
+            <button @click="changePreview">Изменить</button>
+            <button @click="onPreviewEditDone(null)">Сбросить</button>
           </div>
-
-
-          <div class="content-btn">
-            <button class="btn" @click="$emit('cancel')">Отменить</button>
-            <button class="btn" @click="endEdit">Завершить</button>
-          </div>
+          <div class="img-block">
+            <img v-if="previewPath" :src="previewPath" />
+            <h3 v-else>Нет превью</h3>
           </div>
         </div>
 
+        <div class="content">
+          <h2>Год</h2>
+          <TextEdit
+            :item="editItem"
+            editProp="year"
+            @updateItem="editItem = $event"
+          />
         </div>
 
-  </template>
-
+        <div class="content-btn">
+          <button class="btn" @click="$emit('cancel')">Отменить</button>
+          <button class="btn" @click="endEdit">Завершить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
-
-.img-block{
+.img-block {
   width: 100%;
 }
 
-.img-block img{
+.img-block img {
   max-height: 20vh;
   width: 100%;
 }
 
-.buttons-row{
+.buttons-row {
   flex-direction: row;
   margin: 5px;
 }
 
-.cropper{
+.cropper {
   width: 100%;
 }
 
-.container{
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 50;
-    backdrop-filter: blur(10px);
-    transition: all 0.25s ease;
+.container {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
 }
-.Main_block-content{
+.Main_block-content {
   width: 90vw;
   height: 90vh;
   max-width: 650px;
@@ -192,9 +211,8 @@ export default {
   backdrop-filter: blur(15px);
 
   transition: all 0.25s ease;
-
 }
-.block-content{
+.block-content {
   width: 90vw;
   height: 90vh;
   max-width: 640px;
@@ -203,52 +221,50 @@ export default {
   justify-content: space-between;
   border-radius: 20px;
   overflow-y: auto;
-  
 }
-.content{
+.content {
   width: 100%;
   margin: 0 0 10px 0;
   justify-content: flex-start;
   align-items: flex-start;
 }
-.content.row-content{
+.content.row-content {
   flex-direction: row;
   align-items: center;
 }
 
-.content-btn{
+.content-btn {
   width: 100%;
   flex-direction: row;
   justify-content: space-around;
   margin: 20px 0 0 0;
 }
 
-.content-btn{
+.content-btn {
   width: 100%;
   flex-direction: row;
   justify-content: space-around;
   margin: 20px 0 0 0;
 }
 
-h3{
+h3 {
   width: 100%;
   color: var(--textColorBlack);
   margin: 0 0 20px 0;
   font-size: 20px;
   padding: 5px 10px;
 
-
   background: transparent;
   border: none;
-  border-left: 1px solid rgba(255,255,255,0.3);
-  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   backdrop-filter: blur(15px);
-  box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   font-weight: 500;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
-h2{
+h2 {
   width: 100%;
   color: var(--nipigasColorMain);
   margin: 0 20px 5px 0;
@@ -258,10 +274,10 @@ h2{
   font-weight: 500;
   opacity: 0.7;
   font-size: 1.4rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-textarea{
+textarea {
   min-width: 100%;
   max-width: 100%;
   min-height: 80px;
@@ -273,19 +289,19 @@ textarea{
 
   background: transparent;
   border: none;
-  border-left: 1px solid rgba(255,255,255,0.3);
-  border-top: 1px solid rgba(255,255,255,0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
   backdrop-filter: blur(15px);
-  box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   font-weight: 500;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-button{
+button {
   border: none;
   width: 250px;
-	height: 50px;
+  height: 50px;
   border-radius: 50px;
   cursor: pointer;
   color: var(--white);
@@ -300,22 +316,22 @@ button{
 .btn:nth-child(2) {
   background: #1eff4570;
 }
- .btn:nth-child(1):hover {
-	background: #ff1f71;
-	box-shadow: 0 0 2px #ff1f71, 0 0 2px #ff1f71, 0 0 5px #ff1f71,
-		0 0 10px #ff1f71;
+.btn:nth-child(1):hover {
+  background: #ff1f71;
+  box-shadow: 0 0 2px #ff1f71, 0 0 2px #ff1f71, 0 0 5px #ff1f71,
+    0 0 10px #ff1f71;
 }
 .btn:nth-child(2):hover {
-	background: #1eff45;
-	box-shadow: 0 0 2px #1eff45, 0 0 2px #1eff45, 0 0 5px #1eff45,
-		0 0 10px #1eff45;
+  background: #1eff45;
+  box-shadow: 0 0 2px #1eff45, 0 0 2px #1eff45, 0 0 5px #1eff45,
+    0 0 10px #1eff45;
 }
 
 @media (max-width: 600px) {
-  .content-btn{
+  .content-btn {
     flex-direction: column;
   }
-  button{
+  button {
     margin: 10px 0 0 0;
     width: 70%;
   }
@@ -341,11 +357,11 @@ option {
   cursor: pointer;
 }
 
-.inpu_gender{
+.inpu_gender {
   width: 100%;
   align-items: flex-start;
 }
-.inpu_gender span{
+.inpu_gender span {
   position: absolute;
   top: 0;
   width: 100%;
@@ -359,38 +375,31 @@ option {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
   font-weight: 500;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
-.inpu_gender span div{
+.inpu_gender span div {
   color: var(--textColorBlack);
   flex-direction: row;
 }
-.inpu_gender span div input{
+.inpu_gender span div input {
   pointer-events: none;
 }
-.inpu_gender:hover span{
+.inpu_gender:hover span {
   opacity: 1;
 }
 
-input{
+input {
   color: var(--textColorBlack);
 }
 
 img {
-    width: 150px;
-    height: auto;
+  width: 150px;
+  height: auto;
 }
 
-
-
-
-
-
-
-
-.photoDownlouad-box{
+.photoDownlouad-box {
   width: 100%;
   padding: 0 0 0 10px;
   flex-direction: row;
@@ -401,13 +410,13 @@ img {
   position: relative;
   margin: 0px 20px 0px 0px;
 }
- 
+
 .input__file {
   opacity: 0;
   visibility: hidden;
   position: absolute;
 }
- 
+
 .input__file-icon-wrapper {
   height: 40px;
   width: 40px;
@@ -416,23 +425,23 @@ img {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   border-right: 1px solid #fff;
 }
-.input__file-icon-wrapper img{
+.input__file-icon-wrapper img {
   width: 20px;
   height: 20px;
 }
- 
+
 .input__file-button-text {
   line-height: 1;
   margin-top: 1px;
 }
- 
+
 .input__file-button {
   width: 100%;
   max-width: 290px;
@@ -446,14 +455,13 @@ img {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
   border-radius: 5px;
   cursor: pointer;
   margin: 0 auto;
 }
-
 </style>
