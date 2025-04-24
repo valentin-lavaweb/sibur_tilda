@@ -6,19 +6,34 @@
 
 import axios from "axios";
 
-// для всех /api запросов
+export const authClient = axios.create({
+  //   baseURL: import.meta.env.VITE_VUE_APP_BASE_URL,
+  baseURL: "https://api.siburaward.com",
+  withCredentials: true,
+});
+
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api",
+  baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api/",
   withCredentials: true,
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "X-XSRF-TOKEN",
 });
 
-export const authClient = axios.create({
-  baseURL: import.meta.env.VITE_VUE_APP_BASE_URL,
-  withCredentials: true,
-});
+apiClient.interceptors.request.use(
+  async (config) => {
+    // 1) Получаем свежую CSRF-куку
+    // await apiClient.get("/sanctum/csrf-cookie");
 
+    // 2) Берём XSRF-токен из куки и кладём в заголовок
+    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+    if (match) {
+      config.headers["X-XSRF-TOKEN"] = decodeURIComponent(match[1]);
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 /**
    * @typedef {Object} PersonalAwardPayload
    * @property {string} name 
@@ -30,7 +45,7 @@ export const authClient = axios.create({
    * @property {string} issued  
    * @property {File} image   
    * @property {number} year    
-   * @property {number} personal_award_section_id 
+   * @property {number} personal-award-section_id 
    */
 
 /**
@@ -66,7 +81,7 @@ export const authClient = axios.create({
  * @property {?string} issuers
  * @property {?numeric} grade
  * @property {?numeric} year
- * @property {?numeric} personal_award_section_id
+ * @property {?numeric} personal-award-section_id
  */
 
 export default {
@@ -87,14 +102,15 @@ export default {
 
     searchParams.append("page", page);
 
+    // return apiClient.get("/v2/personal-awards?" + searchParams);
     return apiClient.get("/personal_awards?" + searchParams);
   },
 
   getPersonalAwardSections() {
-    return apiClient.get("/personal_award_sections");
+    return apiClient.get("/v2/personal-award-sections");
   },
   getCommandAwards() {
-    return apiClient.get("/command_awards");
+    return apiClient.get("/v2/command-awards");
   },
   getGallery() {
     return apiClient.get("/gallery");
@@ -114,7 +130,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/personal_award", payload);
+    return apiClient.post("/v2/personal-award", payload);
   },
   /**
    * Description
@@ -128,7 +144,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/personal_award/" + id, payload);
+    return apiClient.post("/v2/personal-award/" + id, payload);
   },
 
   /**
@@ -137,7 +153,7 @@ export default {
    * @returns {Promise}
    */
   deletePersonalAward(id) {
-    return apiClient.delete("/personal_award/" + id);
+    return apiClient.delete("/v2/personal-award/" + id);
   },
 
   /**
@@ -150,7 +166,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/command_award", payload);
+    return apiClient.post("/v2/command-awards", payload);
   },
   /**
    * Description
@@ -164,7 +180,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/command_award/" + id, payload);
+    return apiClient.post("/v2/command-awards/" + id, payload);
   },
 
   /**
@@ -173,7 +189,7 @@ export default {
    * @returns {Promise}
    */
   deleteCommandAward(id) {
-    return apiClient.delete("/command_award/" + id);
+    return apiClient.delete("/v2/command-awards/" + id);
   },
 
   /**
@@ -186,7 +202,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/personal_award_section", payload);
+    return apiClient.post("/v2/personal-award-section", payload);
   },
   /**
    * Description
@@ -200,7 +216,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/personal_award_section/" + id, payload);
+    return apiClient.post("/v2/personal-award-section/" + id, payload);
   },
 
   /**
@@ -209,7 +225,7 @@ export default {
    * @returns {Promise}
    */
   deletePersonalAwardSection(id) {
-    return apiClient.delete("/personal_award_section/" + id);
+    return apiClient.delete("/v2/personal-award-section/" + id);
   },
 
   /**
@@ -218,8 +234,8 @@ export default {
    * @returns {Promise}
    */
   createImage(data) {
-    let payload = new FormData();
-    for (let prop in data) {
+    const payload = new FormData();
+    for (const prop in data) {
       payload.append(prop, data[prop]);
     }
     return apiClient.post("/image", payload);
@@ -231,12 +247,12 @@ export default {
    * @returns {Promise}
    */
   updateImage(id, data) {
-    let payload = new FormData();
+    const payload = new FormData();
     payload.append("_method", "PUT");
-    for (let prop in data) {
+    for (const prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/image/" + id, payload);
+    return apiClient.post(`/image/${id}`, payload);
   },
 
   /**
@@ -245,7 +261,8 @@ export default {
    * @returns {Promise}
    */
   deleteImage(id) {
-    return apiClient.delete("/image/" + id);
+    // удаление по /api/image/:id
+    return apiClient.delete(`/image/${id}`);
   },
 
   /**
@@ -312,13 +329,13 @@ export default {
     // 1) получаем CSRF-cookie с основного домена
     await authClient.get("/sanctum/csrf-cookie");
     // 2) логинимся там же, на /login
-    return authClient.post("/login", { email, password });
+    return apiClient.post("/v2/login", { email, password });
   },
   logout() {
-    return authClient.post("/logout");
+    return apiClient.post("/logout");
   },
   async getAuthAdmin() {
     await authClient.get("/sanctum/csrf-cookie");
-    return authClient.get("/admin/auth");
+    return apiClient.get("/admin/auth");
   },
 };

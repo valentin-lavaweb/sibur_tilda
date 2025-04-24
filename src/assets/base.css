@@ -21,9 +21,12 @@
   --filterColor: rgb(0, 141, 252);
   --filterColor-hover: rgb(2, 115, 201);
 
-  --timelineItemWidth: 250px;
-  --timelineGap: 10px;
   --contentPadding: calc((100vw - 1326px) * 0.5);
+  --timelineItemWidth: calc((100vw - var(--contentPadding) * 2) / 6);
+  --timelineGap: 10px;
+
+  --newsSliderItemWidth: 1326px;
+  --newsSliderGap: 5vw;
 }
 
 /* semantic color variables for this project */
@@ -71,7 +74,8 @@ body {
 
 @media (max-width: 1440px) {
   :root {
-    --timelineItemWidth: 250px;
+    --timelineItemWidth: 200px;
     --contentPadding: calc((100vw - 90vw) * 0.5);
+    --newsSliderItemWidth: 90vw;
   }
 }

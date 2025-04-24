@@ -134,13 +134,13 @@ export default {
       stagger: 0.15,
       delay: 0.25,
     });
-    gsap.from(".img-animate-gsap", {
-      opacity: 0,
-      scale: 0.5,
-      duration: 0.5,
-      delay: 0.25,
-      ease: "sine",
-    });
+    // gsap.from(".img-animate-gsap", {
+    //   opacity: 0,
+    //   scale: 0.5,
+    //   duration: 0.5,
+    //   delay: 0.25,
+    //   ease: "sine",
+    // });
   },
   computed: {
     availableNominations() {
@@ -301,8 +301,8 @@ export default {
         </div>
       </div>
     </div>
+    <footer_comp />
   </div>
-  <footer_comp />
 </template>
 
 <style scoped lang="scss">

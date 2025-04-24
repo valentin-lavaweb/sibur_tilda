@@ -26,8 +26,15 @@ export default {
           let url = new URL(this.item.image);
           return url;
         } catch {
+          //   let url = new URL(
+          //     "files" + this.item.image + "/" + this.width,
+          //     import.meta.env.VITE_VUE_APP_API_URL
+          //   );
+          const imagePath = this.item.image.replace(/^\/storage\//, "");
+          // — удаляет ведущий «/storage/»
+
           let url = new URL(
-            "files/" + this.item.image + "/" + this.width,
+            `files/${imagePath}/${this.width}`,
             import.meta.env.VITE_VUE_APP_API_URL
           );
           return url;

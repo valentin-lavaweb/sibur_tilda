@@ -8,7 +8,7 @@
         class="item"
         :class="{ active: isDatePassed(item) }"
       >
-        <div class="dot"></div>
+        <a class="dot" :href="item.url" target="_blank" rel="noopener"></a>
         <div class="block">
           <div class="title">{{ item.title }}</div>
           <div class="separator"></div>
@@ -36,32 +36,38 @@ const items = ref([
     title: "Форум корпоративных тренеров",
     date_from: "2025-04-08T00:00:00Z",
     date_to: "2025-04-09T00:00:00Z",
+    url: "/",
   },
   {
     id: 2,
     title: "Форум производственных наставников",
     date_from: "2025-04-23T00:00:00Z",
     date_to: "2025-04-24T00:00:00Z",
+    url: "/",
   },
   {
     id: 3,
     title: "Локальные Дни компании на предприятиях",
     date_from: "2025-05-23T00:00:00Z",
+    url: "/",
   },
   {
     id: 4,
     title: "Локальные Дни компании на предприятиях",
     date_from: "2025-07-14T00:00:00Z",
+    url: "/",
   },
   {
     id: 5,
     title: "Церемония награждения на ВДНХ",
     date_from: "2025-07-19T00:00:00Z",
+    url: "/",
   },
   {
     id: 5,
     title: "День нефтяника",
     date_from: "2025-08-28T00:00:00Z",
+    url: "/",
   },
 ]);
 
@@ -129,6 +135,9 @@ const lineWidth = computed(() => {
   )`;
 });
 
+// Добавляем это — чтобы в шаблоне не было «undefined»
+const itemsWidth = lineWidth;
+
 // 3) Индекс последнего прошедшего
 const activeIndex = computed(() => {
   let last = -1;
@@ -139,15 +148,32 @@ const activeIndex = computed(() => {
 });
 
 // 4) Ширина заполнения линии до активного
+
+const progressFraction = computed(() => {
+  const i = activeIndex.value;
+  // если ни одно событие ещё не наступило или мы на последнем — фракция = 0
+  if (i < 0 || i >= items.value.length - 1) return 0;
+  const now = new Date();
+  const from = new Date(items.value[i].date_from);
+  const to = new Date(items.value[i + 1].date_from);
+  const ratio = (now - from) / (to - from);
+  // ограничиваем от 0 до 1
+  return Math.min(Math.max(ratio, 0), 1);
+});
+
 const filledLineWidth = computed(() => {
   const i = activeIndex.value;
-  if (i < 0) {
-    return `calc(var(--contentPadding) + var(--timelineItemWidth)/2)`;
-  }
+  const pad = "var(--contentPadding)";
+  const w = "var(--timelineItemWidth)";
+  const g = "var(--timelineGap)";
+  // базовый сдвиг до центра i-й точки
+  // pad + w/2 + i*(w + g)
+  // добавляем (w+g) * progressFraction
   return `calc(
-    var(--contentPadding)
-    + var(--timelineItemWidth)/2
-    + (var(--timelineItemWidth) + var(--timelineGap)) * ${i}
+    ${pad}
+    + ${w} / 2
+    + (${w} + ${g}) * ${i}
+    + (${w} + ${g}) * ${progressFraction.value}
   )`;
 });
 </script>
@@ -210,9 +236,10 @@ const filledLineWidth = computed(() => {
       padding: 10px;
       border-radius: 15px;
       font-size: 14px;
-      width: 100%;
+      width: fit-content;
 
       .title {
+        text-align: center;
         font-family: YFF_RARE_GIGA_TRIAL;
         font-weight: 800;
         line-height: 1.25;
@@ -227,8 +254,12 @@ const filledLineWidth = computed(() => {
 
       .descriptionBlock {
         flex-direction: row;
+        align-items: flex-start;
         justify-content: space-between;
         width: 100%;
+        height: fit-content;
+        // max-height: 0;
+        overflow: hidden;
 
         .date {
           font-family: YFF_RARE_GIGA_TRIAL;

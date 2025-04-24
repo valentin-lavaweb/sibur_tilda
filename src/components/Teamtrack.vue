@@ -65,8 +65,8 @@ const items = ref([
   {
     id: 5,
     title: "Оценка проектов и защит экспертным жюри, утверждение победителей",
-    date_from: "2025-05-01T00:00:00Z",
-    date_to: "2025-05-XXT00:00:00Z",
+    date_from: "2025-06-09T00:00:00Z",
+    date_to: "2025-06-11T00:00:00Z",
     is_active: false,
   },
   {
@@ -103,33 +103,66 @@ function nowMoscow() {
 function isDatePassed(item) {
   if (item.is_active) return true;
 
-  const ev = new Date(item.date_from).toLocaleDateString("en-CA", {
+  // если в date_from есть XX — подставляем 01
+  const raw = item.date_from.includes("XX")
+    ? item.date_from.replace("XX", "01")
+    : item.date_from;
+  const ev = new Date(raw).toLocaleDateString("en-CA", {
     timeZone: "Europe/Moscow",
   });
   return ev <= nowMoscow();
 }
-
 // 5) Формат даты «23 апреля»
 function formatDate(item) {
-  const from = new Date(item.date_from);
+  const df = item.date_from;
+  const dt = item.date_to;
+
+  // 1) Если в date_from есть XX — неизвестен день начала
+  if (df.includes("XX")) {
+    // вычленяем month из "YYYY-MM-XX"
+    const [, monthPart] = df.split("-");
+    const monthIdx = parseInt(monthPart, 10) - 1;
+    const monFrom = monthNames[monthIdx];
+
+    // если нет date_to — просто "XX {месяц}"
+    if (!dt) return `XX ${monFrom}`;
+
+    // если и в date_to есть XX — "XX {monFrom} — XX {monTo}"
+    if (dt.includes("XX")) {
+      const [, monthToPart] = dt.split("-");
+      const monTo = monthNames[parseInt(monthToPart, 10) - 1];
+      return `XX ${monFrom} — XX ${monTo}`;
+    }
+
+    // иначе to — валидная дата
+    const to = new Date(dt);
+    const dayTo = to.getDate();
+    const monTo = monthNames[to.getMonth()];
+    return `XX ${monFrom} — ${dayTo} ${monTo}`;
+  }
+
+  // 2) Если date_from валиден
+  const from = new Date(df);
   const dayFrom = from.getDate();
   const monFrom = monthNames[from.getMonth()];
 
-  if (!item.date_to) {
+  // без date_to
+  if (!dt) {
     return `${dayFrom} ${monFrom}`;
   }
 
-  const to = item.date_to.includes("XX") ? null : new Date(item.date_to);
-
-  if (!to) {
+  // если в date_to стоит XX — неизвестен день окончания
+  if (dt.includes("XX")) {
+    // следующего месяца или того же?
     const monTo =
-      monthNames[new Date(item.date_from).getMonth() + 1] || "месяца";
-    return `${dayFrom} ${monFrom} — ХХ ${monTo}`;
+      monthNames[from.getMonth() + 1] || monthNames[from.getMonth()];
+    return `${dayFrom} ${monFrom} — XX ${monTo}`;
   }
 
+  // оба валидны
+  const to = new Date(dt);
   const dayTo = to.getDate();
   const monTo = monthNames[to.getMonth()];
-
   if (monFrom === monTo) {
     return `${dayFrom}–${dayTo} ${monTo}`;
   }
@@ -163,15 +196,43 @@ const activeIndex = computed(() => {
 });
 
 // 10) Ширина заполненной части: contentPadding + ½ блока + (block+gap)*activeIndex
+
+const progressFraction = computed(() => {
+  const i = activeIndex.value;
+  // если ещё ни одно не началось или мы на последнем — нет дробной части
+  if (i < 0 || i >= items.value.length - 1) return 0;
+
+  // берём «сырые» строки, подставляем 01 вместо XX
+  const rawFrom = items.value[i].date_from.replace("XX", "01");
+  const rawTo = items.value[i + 1].date_from.replace("XX", "01");
+
+  const from = new Date(rawFrom);
+  const to = new Date(rawTo);
+  const now = new Date();
+
+  const frac = (now - from) / (to - from);
+  // корректируем, чтобы было в [0,1]
+  return Math.min(Math.max(frac, 0), 1);
+});
+
 const filledLineWidth = computed(() => {
   const i = activeIndex.value;
+  const pad = "var(--contentPadding)";
+  const w = "var(--timelineItemWidth)";
+  const g = "var(--timelineGap)";
+
+  // если ни одного не активировано — центр первой точки
   if (i < 0) {
-    return `calc(var(--contentPadding) + var(--timelineItemWidth)/2)`;
+    return `calc(${pad} + ${w} / 2)`;
   }
+
+  // базовый сдвиг до центра i-й точки
+  // + фракция между i и i+1
   return `calc(
-    var(--contentPadding)
-    + var(--timelineItemWidth)/2
-    + (var(--timelineItemWidth) + var(--timelineGap)) * ${i}
+    ${pad}
+    + ${w} / 2
+    + (${w} + ${g}) * ${i}
+    + (${w} + ${g}) * ${progressFraction.value}
   )`;
 });
 </script>
@@ -241,9 +302,11 @@ const filledLineWidth = computed(() => {
       padding: 10px;
       border-radius: 15px;
       font-size: 14px;
-      width: 100%;
+      width: fit-content;
 
       .title {
+        width: 100%;
+        text-align: center;
         font-family: YFF_RARE_GIGA_TRIAL;
         font-weight: 800;
         line-height: 1.25;
@@ -260,6 +323,7 @@ const filledLineWidth = computed(() => {
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
+        gap: 20px;
 
         .date {
           font-family: YFF_RARE_GIGA_TRIAL;

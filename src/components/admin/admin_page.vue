@@ -206,6 +206,7 @@ export default {
   border: 1px solid var(--nipigasColorMain);
   border-bottom: none;
   padding: 5px 10px;
+  margin: 0;
 }
 
 .content_table div.control-panel .btn {

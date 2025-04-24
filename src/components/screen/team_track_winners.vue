@@ -29,14 +29,14 @@ export default {
       delay: 0.25,
       ease: "sine",
     });
-    gsap.from(".img-animate-gsap", {
-      x: -100,
-      opacity: 0,
-      scale: 0.5,
-      duration: 0.25,
-      delay: 0.5,
-      ease: "sine",
-    });
+    // gsap.from(".img-animate-gsap", {
+    //   x: -100,
+    //   opacity: 0,
+    //   scale: 0.5,
+    //   duration: 0.25,
+    //   delay: 0.5,
+    //   ease: "sine",
+    // });
   },
   computed: {
     availableYears() {

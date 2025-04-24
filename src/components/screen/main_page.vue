@@ -4,7 +4,7 @@ import header_comp from "@/components/header.vue";
 import footer_comp from "@/components/footer.vue";
 import editable_text from "../editable_text.vue";
 
-import gsap from "gsap";
+// import gsap from "gsap";
 import Timeline from "../Timeline.vue";
 import Teamtrack from "../Teamtrack.vue";
 import { RouterLink } from "vue-router";
@@ -15,6 +15,11 @@ export default {
     let interaction = useGameStore();
     return {
       interaction: interaction,
+      sliderIndex: 0,
+      // для драга
+      isDragging: false,
+      startX: 0,
+      dragOffset: 0, // px
     };
   },
   components: {
@@ -24,23 +29,83 @@ export default {
     footer_comp,
     editable_text,
   },
-  methods: {},
-  mounted() {
-    gsap.from(".img-animate-gsap", {
-      x: 240,
-      opacity: 0,
-      duration: 0.5,
-      ease: "sine",
-    });
-    gsap.from(".text-animate-gsap", {
-      x: -100,
-      opacity: 0,
-      duration: 0.25,
-      stagger: 0.15,
-      delay: 0.25,
-    });
+  methods: {
+    nextSlide() {
+      // не выходим за границы
+      if (this.sliderIndex < this.interaction.news.length - 1) {
+        this.sliderIndex++;
+      }
+    },
+    prevSlide() {
+      if (this.sliderIndex > 0) {
+        this.sliderIndex--;
+      }
+    },
+
+    // ДРАГ
+    // вспомогалка: получить X из event
+    getX(e) {
+      return e.type.startsWith("touch") ? e.touches[0].clientX : e.clientX;
+    },
+    onDragStart(e) {
+      this.isDragging = true;
+      this.startX = this.getX(e);
+      // вешаем слушатели на окно
+      window.addEventListener("mousemove", this.onDragMove);
+      window.addEventListener("mouseup", this.onDragEnd);
+      window.addEventListener("touchmove", this.onDragMove);
+      window.addEventListener("touchend", this.onDragEnd);
+    },
+    onDragMove(e) {
+      if (!this.isDragging) return;
+      const currentX = this.getX(e);
+      this.dragOffset = currentX - this.startX;
+    },
+    onDragEnd() {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      // считаем, на сколько слайдов потащили:
+      const sliderEl = this.$refs.sliderBlock;
+      const style = getComputedStyle(sliderEl);
+      const itemW = parseFloat(style.getPropertyValue("--newsSliderItemWidth"));
+      const gap = parseFloat(style.getPropertyValue("--newsSliderGap"));
+      const step = itemW + gap;
+      // смещение в единицах слайдов (отрицательный offset -> вправо)
+      const moved = Math.round(-this.dragOffset / step);
+      this.sliderIndex = Math.min(
+        Math.max(0, this.sliderIndex + moved),
+        this.interaction.news.length - 1
+      );
+      this.dragOffset = 0;
+      // убираем слушатели
+      window.removeEventListener("mousemove", this.onDragMove);
+      window.removeEventListener("mouseup", this.onDragEnd);
+      window.removeEventListener("touchmove", this.onDragMove);
+      window.removeEventListener("touchend", this.onDragEnd);
+    },
   },
-  computed: {},
+  async mounted() {
+    // gsap.from(".img-animate-gsap", {
+    //   x: 240,
+    //   opacity: 0,
+    //   duration: 0.5,
+    //   ease: "sine",
+    // });
+    // gsap.from(".text-animate-gsap", {
+    //   x: -100,
+    //   opacity: 0,
+    //   duration: 0.25,
+    //   stagger: 0.15,
+    //   delay: 0.25,
+    // });
+
+    await this.interaction.loadNews(1);
+  },
+  computed: {
+    sliderTransform() {
+      return `translateX(calc((var(--newsSliderItemWidth) + var(--newsSliderGap)) * -${this.sliderIndex} + ${this.dragOffset}px))`;
+    },
+  },
   watch: {},
 };
 </script>
@@ -68,6 +133,13 @@ export default {
           <img src="/img/light.png" />
         </div>
       </div>
+
+      <div class="bannerTrack">
+        <div class="cup"></div>
+        <div class="line">
+          <div class="filledLine"></div>
+        </div>
+      </div>
     </div>
     <div class="newsBannerContainer contentBlock fullScreen z-1">
       <div class="newsBanner">
@@ -89,21 +161,34 @@ export default {
             </div>
           </div>
           <div class="arrowsBlock">
-            <div class="arrow prev"></div>
-            <div class="arrow next"></div>
+            <div class="arrow prev" @click="prevSlide"></div>
+            <div class="arrow next" @click="nextSlide"></div>
           </div>
         </div>
-        <div class="sliderBlock">
-          <div class="sliderItem">
+        <div
+          class="sliderBlock"
+          ref="sliderBlock"
+          :class="{ dragging: isDragging }"
+          @mousedown.prevent="onDragStart"
+          @touchstart.prevent="onDragStart"
+          :style="{ transform: sliderTransform }"
+        >
+          <div
+            class="sliderItem"
+            v-for="post in interaction.news"
+            :key="post.id"
+          >
             <div class="image">
-              <img src="" alt="" />
+              <img
+                :src="post.previewInfo.url"
+                :alt="post.previewInfo.originalName"
+              />
             </div>
-            <div class="title">Заголовок</div>
-            <div class="description">
-              Описание, описание, описание, описание, описание, описание,
-              описание, описание, описание, описание, описание
+            <div class="title">{{ post.title }}</div>
+            <div class="description">{{ post.content }}</div>
+            <div class="date">
+              {{ new Date(post.published_at).toLocaleDateString("ru-RU") }}
             </div>
-            <div class="date">31.12.2025</div>
           </div>
         </div>
       </div>
@@ -322,15 +407,25 @@ $logoWidth: 175px;
   }
 
   .sliderBlock {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
     width: 100%;
     height: fit-content;
     padding: 0px 0px 2vw 0px;
+    gap: var(--newsSliderGap);
+    transition: 0.5s;
+
+    &.dragging {
+      transition: none;
+    }
 
     .sliderItem {
       align-items: flex-start;
       justify-content: space-between;
       padding: 25px;
-      width: 100%;
+      width: var(--newsSliderItemWidth);
+      min-width: var(--newsSliderItemWidth);
       height: 685px;
       border-radius: 25px;
       background-color: white;
@@ -341,6 +436,7 @@ $logoWidth: 175px;
         height: 485px;
         width: 100%;
         border-radius: 25px;
+        overflow: hidden;
       }
 
       .title {
@@ -384,8 +480,43 @@ $logoWidth: 175px;
       font-size: 2vw;
     }
   }
+
+  .news {
+    .sliderBlock {
+      .sliderItem {
+        height: 40vw;
+
+        .image {
+          height: 27vw;
+        }
+
+        .title {
+          font-size: 32px;
+          margin: 20px 0px 0px 0px;
+        }
+
+        .description {
+          font-size: 16px;
+          margin: 10px 0px 0px 0px;
+        }
+      }
+    }
+  }
 }
 @media (max-width: 1280px) {
+  .news {
+    gap: 50px;
+
+    .sliderBlock {
+      .sliderItem {
+        height: 50vw;
+
+        .image {
+          height: 33vw;
+        }
+      }
+    }
+  }
 }
 @media (max-width: 1060px) {
   .wrapper {
@@ -397,6 +528,27 @@ $logoWidth: 175px;
     .logo {
       width: 15vw;
       height: 3vw;
+    }
+  }
+
+  .news {
+    gap: 25px;
+
+    .topBlock {
+      .arrowsBlock {
+        align-self: flex-end;
+      }
+    }
+
+    .sliderBlock {
+      .sliderItem {
+        padding: 3vw;
+        height: 55vw;
+
+        .image {
+          height: 33vw;
+        }
+      }
     }
   }
 }
@@ -417,6 +569,39 @@ $logoWidth: 175px;
 
     .title {
       font-size: 7vw;
+    }
+  }
+
+  .newsBanner {
+    .playIcon {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  .news {
+    .sliderBlock {
+      .sliderItem {
+        height: 65vw;
+        .image {
+          height: 100%;
+          min-height: 40vw;
+        }
+
+        .title {
+          font-size: 24px;
+        }
+
+        .description {
+          font-size: 14px;
+          margin: 15px 0px 0px 0px;
+        }
+
+        .date {
+          font-size: 12px;
+          margin: 10px 0px 0px 0px;
+        }
+      }
     }
   }
 }

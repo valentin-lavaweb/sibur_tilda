@@ -106,27 +106,28 @@ export const useGameStore = defineStore("interface", {
       apiClient.interceptors.response.use(
         (response) => {
           return response;
-        },
-        function (error) {
-          if (
-            error.response &&
-            [401, 419].includes(error.response.status) &&
-            Boolean(state.admin)
-          ) {
-            state.logout();
-          }
-          if (import.meta.env.DEV) {
-            console.warn(error.response);
-          }
-
-          if (error.response?.data?.message) {
-            return Promise.reject(new Error(error.response.data.message));
-          }
-          if (error.response) {
-            return Promise.reject(new Error(error.response.statusText));
-          }
-          return Promise.reject(error);
         }
+        // function (error) {
+        //   if (
+        //     error.response &&
+        //     [401, 419].includes(error.response.status) &&
+        //     Boolean(state.admin)
+        //   ) {
+        //     console.log(error);
+        //     state.logout();
+        //   }
+        //   if (import.meta.env.DEV) {
+        //     console.warn(error.response);
+        //   }
+
+        //   if (error.response?.data?.message) {
+        //     return Promise.reject(new Error(error.response.data.message));
+        //   }
+        //   if (error.response) {
+        //     return Promise.reject(new Error(error.response.statusText));
+        //   }
+        //   return Promise.reject(error);
+        // }
       );
 
       return api;
@@ -145,6 +146,16 @@ export const useGameStore = defineStore("interface", {
     },
   },
   actions: {
+    async ensureAuth() {
+      if (!this.admin) {
+        try {
+          await this.getAuthAdmin();
+        } catch {
+          throw new Error("Сначала выполните login(email, password)");
+        }
+      }
+    },
+
     openSlide(slide) {
       this.popupSlider = true;
       this.enableSlide = slide;
@@ -162,6 +173,21 @@ export const useGameStore = defineStore("interface", {
     async loadImages() {
       let images = await this.api.getGallery();
       this.images = images.data.data;
+    },
+
+    async createImage(data) {
+      await this.ensureAuth();
+      return api.createImage(data);
+    },
+
+    async updateImage(id, data) {
+      await this.ensureAuth();
+      return api.updateImage(id, data);
+    },
+
+    async deleteImage(id) {
+      await this.ensureAuth();
+      return api.deleteImage(id);
     },
 
     async loadDictionary() {
