@@ -12,6 +12,20 @@ export const authClient = axios.create({
   withCredentials: true,
 });
 
+const getTokenFromCookies = () => {
+  try {
+    const token = document.cookie
+      .split('; ')
+      .find(cookie => cookie.startsWith('sibur.token='))
+      ?.split('=')[1]
+
+    return token ? decodeURIComponent(token) : null
+  } catch (error) {
+    console.error('Ошибка при получении токена из куков:', error)
+    return null
+  }
+}
+
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api/",
   withCredentials: true,
@@ -24,11 +38,18 @@ apiClient.interceptors.request.use(
     // 1) Получаем свежую CSRF-куку
     // await apiClient.get("/sanctum/csrf-cookie");
 
-    // 2) Берём XSRF-токен из куки и кладём в заголовок
-    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-    if (match) {
-      config.headers["X-XSRF-TOKEN"] = decodeURIComponent(match[1]);
+    console.log(document.cookie);
+    const token = getTokenFromCookies()
+    console.log('token', token);
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
     }
+    // 2) Берём XSRF-токен из куки и кладём в заголовок
+    // const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+    // console.log('match', match);
+    // if (match) {
+    //   config.headers["X-XSRF-TOKEN"] = decodeURIComponent(match[1]);
+    // }
 
     return config;
   },
