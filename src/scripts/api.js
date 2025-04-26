@@ -45,11 +45,11 @@ apiClient.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${token}`
     }
     // 2) Берём XSRF-токен из куки и кладём в заголовок
-    // const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-    // console.log('match', match);
-    // if (match) {
-    //   config.headers["X-XSRF-TOKEN"] = decodeURIComponent(match[1]);
-    // }
+    const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+    console.log('match', match);
+    if (match) {
+      config.headers["X-XSRF-TOKEN"] = decodeURIComponent(match[1]);
+    }
 
     return config;
   },

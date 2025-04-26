@@ -270,10 +270,16 @@ export const useGameStore = defineStore("interface", {
 
     async login(email, password) {
       let adminData = await this.api.login({ email, password });
+      if (adminData.data.token) {
+        document.cookie = "sibur.token=" + adminData.data.token;
+      }
       this.admin = adminData.data;
     },
     async getAuthAdmin() {
       let adminData = await this.api.getAuthAdmin();
+      if (adminData.data.token) {
+        document.cookie = "sibur.token=" + adminData.data.token;
+      }
       this.admin = adminData.data;
     },
     async logout() {
