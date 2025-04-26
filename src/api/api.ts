@@ -1,4 +1,4 @@
-import { siburaward } from './swagger/siburaward';
+import { siburaward, CommandAwardInput, PersonalAwardInput, PersonalAwardSectionInput, NewsInput, TimelineItemInput, ImageInput, PersonalAwardFilter } from './swagger/siburaward';
 
 // Базовый URL API
 const API_BASE_URL = 'https://api.siburaward.com';
@@ -73,48 +73,48 @@ export const authApi = {
 // API для работы с командными наградами
 export const commandAwardsApi = {
   getAll: () => apiClient.commandAwards.getAllCommandAwards(),
-  create: (data: any) => apiClient.commandAwards.createCommandAward(data),
-  update: (id: number, data: any) => apiClient.commandAwards.updateCommandAward(id, data),
+  create: (data: CommandAwardInput) => apiClient.commandAwards.createCommandAward(data),
+  update: (id: number, data: CommandAwardInput) => apiClient.commandAwards.updateCommandAward(id, data),
   delete: (id: number) => apiClient.commandAwards.deleteCommandAward(id),
 };
 
 // API для работы с личными наградами
 export const personalAwardsApi = {
-  getAll: (params?: any) => apiClient.personalAwards.getPersonalAwards(params),
-  create: (data: any) => apiClient.personalAwards.createPersonalAward(data),
-  update: (id: number, data: any) => apiClient.personalAwards.updatePersonalAward(id, data),
+  getAll: (params?: PersonalAwardFilter) => apiClient.personalAwards.getPersonalAwards(params),
+  create: (data: PersonalAwardInput) => apiClient.personalAwards.createPersonalAward(data),
+  update: (id: number, data: PersonalAwardInput) => apiClient.personalAwards.updatePersonalAward(id, data),
   delete: (id: number) => apiClient.personalAwards.deletePersonalAward(id),
 };
 
 // API для работы с разделами личных наград
 export const personalAwardSectionsApi = {
   getAll: () => apiClient.personalAwardSections.getAllPersonalAwardSections(),
-  create: (data: any) => apiClient.personalAwardSections.createPersonalAwardSection(data),
-  update: (id: number, data: any) => apiClient.personalAwardSections.updatePersonalAwardSection(id, data),
+  create: (data: PersonalAwardSectionInput) => apiClient.personalAwardSections.createPersonalAwardSection(data),
+  update: (id: number, data: PersonalAwardSectionInput) => apiClient.personalAwardSections.updatePersonalAwardSection(id, data),
   delete: (id: number) => apiClient.personalAwardSections.deletePersonalAwardSection(id),
 };
 
 // API для работы с новостями
 export const newsApi = {
   getAll: () => apiClient.news.getNews(),
-  create: (data: any) => apiClient.news.createNews(data),
-  update: (id: number, data: any) => apiClient.news.updateNews(id, data),
+  create: (data: NewsInput) => apiClient.news.createNews(data),
+  update: (id: number, data: NewsInput) => apiClient.news.updateNews(id, data),
   delete: (id: number) => apiClient.news.deleteNews(id),
 };
 
 // API для работы с таймлайном
 export const timelineApi = {
   getAll: () => apiClient.timelineItems.getAllTimelineItems(),
-  create: (data: any) => apiClient.timelineItems.createTimelineItem(data),
-  update: (id: number, data: any) => apiClient.timelineItems.updateTimelineItem(id, data),
+  create: (data: TimelineItemInput) => apiClient.timelineItems.createTimelineItem(data),
+  update: (id: number, data: TimelineItemInput) => apiClient.timelineItems.updateTimelineItem(id, data),
   delete: (id: number) => apiClient.timelineItems.deleteTimelineItem(id),
 };
 
 // API для работы с изображениями
 export const imagesApi = {
   getAll: () => apiClient.images.getAllImages(),
-  create: (data: any) => apiClient.images.createImage(data),
-  update: (id: number, data: any) => apiClient.images.updateImage(id, data),
+  create: (data: ImageInput) => apiClient.images.createImage(data),
+  update: (id: number, data: ImageInput) => apiClient.images.updateImage(id, data),
   delete: (id: number) => apiClient.images.deleteImage(id),
 };
 
@@ -125,9 +125,9 @@ export const filesApi = {
     files.forEach(file => {
       formData.append('files[]', file);
     });
-    return apiClient.files.uploadFiles(formData as any);
+    return apiClient.files.uploadFiles({ "files[]": files });
   },
-  uploadChunked: (data: any) => apiClient.files.uploadChunkedFile(data),
+  uploadChunked: (data: unknown) => apiClient.files.uploadChunkedFile(data),
 };
 
 // API для работы с текстами
