@@ -1,5 +1,4 @@
 // src\stores\interface-interaction.js
-
 import { defineStore } from "pinia";
 // import auth, {authClient} from "../scripts/auth.js";
 import api, { apiClient } from "../scripts/api.js";
@@ -286,5 +285,6 @@ export const useGameStore = defineStore("interface", {
       await this.api.logout();
       this.admin = null;
     },
+
   },
 });
