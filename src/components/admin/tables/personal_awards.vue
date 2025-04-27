@@ -68,6 +68,21 @@ export default {
         );
         const awards = res?.data?.data ?? [];
 
+        // 🛠 Правильная обработка изображения
+        for (const award of awards) {
+          if (award.image && !award.image.startsWith("http")) {
+            award.image = new URL(
+              "files/" + award.image,
+              import.meta.env.VITE_VUE_APP_API_URL
+            ).toString();
+          }
+        }
+
+        console.log(
+          "✅ ПОСЛЕ загрузки данных с сервера",
+          JSON.parse(JSON.stringify(awards))
+        );
+
         this.serverItems = awards;
         this.serverTotalItemsLength = res?.data?.meta?.total ?? awards.length;
       } catch (e) {
@@ -129,6 +144,9 @@ export default {
     async updateItem(item) {
       let oldItem = this.serverItems.find((i) => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
+      if (item.imageInfo?.uuid && item.image?.startsWith("http")) {
+        item.image = item.imageInfo.uuid;
+      }
       try {
         let updateItem = {};
 
@@ -174,6 +192,7 @@ export default {
 
         Object.assign(oldItem, newItem);
 
+        console.log("Ответ сервера при обновлении", res.data);
         this.$toast.success("Данные обновлены");
 
         return oldItem;
@@ -186,6 +205,7 @@ export default {
       }
     },
     async updateImage(item, event) {
+      console.log("✅ ДО загрузки файла", JSON.parse(JSON.stringify(item)));
       let oldItem = this.serverItems.find((i) => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
 
@@ -203,19 +223,27 @@ export default {
           throw new Error("Не удалось загрузить файл");
         }
 
-        // 📥 Сохраняем новый UUID в item.image прямо перед отправкой
-        item.image = uploadedFile.uuid;
+        // 📥 Сохраняем новый UUID в item.image для БД
+        const newItem = {
+          ...item,
+          image: uploadedFile.uuid,
+          imageInfo: uploadedFile,
+        };
+        console.log("newItem", newItem);
 
         // 📥 Обновляем запись
-        const updated = await this.updateItem(item);
+        const updated = await this.updateItem(newItem);
 
         // 👀 Чтобы Vue обновил превьюшку картинки без F5
         if (updated) {
-          oldItem.image = uploadedFile.uuid; // вот это самое важное
+          oldItem.image = uploadedFile.url; // показываем загруженное изображение пользователю
+          oldItem.imageInfo = uploadedFile; // сохраняем инфу для последующих правок
         }
 
         this.$toast.success("Файл загружен и привязан!");
+        console.log("файл загружен!");
       } catch (e) {
+        console.log("ошибка", e);
         setTimeout(() => {
           let oldIdx = this.serverItems.findIndex((i) => i.id == item.id);
           this.serverItems[oldIdx] = oldItemRestore;
@@ -223,7 +251,6 @@ export default {
         this.$toast.error(e.message);
       }
     },
-
     async deleteItem(item) {
       if (!confirm(`Удалить ${item.name}?`)) return;
 
@@ -232,6 +259,10 @@ export default {
       let oldItemRestore = Object.assign({}, oldItem);
       try {
         let res = await this.interaction.api.deletePersonalAward(item.id);
+        console.log(
+          "✅ ПОСЛЕ загрузки и обновления",
+          JSON.parse(JSON.stringify(oldItem))
+        );
 
         this.serverItems.splice(oldIdx, 1);
 
@@ -270,32 +301,28 @@ export default {
     },
     imagePath() {
       return function (item) {
-        if (item.image) {
-          try {
-            let url = new URL(item.image);
-            return url;
-          } catch {
-            let url = new URL(
-              "files/" + item.image,
-              import.meta.env.VITE_VUE_APP_API_URL
-            );
-            return url;
-          }
-        } else {
-          if (item.gender) {
-            return new URL(
-              "storage/app/public/default_men.svg",
-              import.meta.env.VITE_VUE_APP_API_URL
-            );
-          } else {
-            return new URL(
-              "storage/app/public/default_women.svg",
-              import.meta.env.VITE_VUE_APP_API_URL
-            );
-          }
+        if (!item.image) {
+          return new URL(
+            item.gender
+              ? "storage/app/public/default_men.svg"
+              : "storage/app/public/default_women.svg",
+            import.meta.env.VITE_VUE_APP_API_URL
+          );
         }
+
+        // Если уже полный URL — просто вернуть его
+        if (item.image.startsWith("http")) {
+          return item.image;
+        }
+
+        // Иначе строим путь через /files/
+        return new URL(
+          "files/" + item.image,
+          import.meta.env.VITE_VUE_APP_API_URL
+        ).toString();
       };
     },
+
     debouncedSearch() {
       return debounce(this.loadData, 500);
     },
