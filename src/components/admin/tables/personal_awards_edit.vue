@@ -1,3 +1,5 @@
+<!-- src\components\admin\tables\personal_awards_edit.vue -->
+
 <script>
 import TextEdit from "../cells/textEdit.vue";
 
@@ -183,11 +185,24 @@ export default {
         </div>
 
         <div class="content">
-          <h2>Раздел</h2>
+          <h2>Первый раздел</h2>
           <select v-model="editItem.personal_award_section_id">
             <option
               v-for="section in availableSections"
               :key="section.id"
+              :value="section.id"
+            >
+              {{ section.title }}
+            </option>
+          </select>
+        </div>
+
+        <div class="content">
+          <h2>Второй раздел</h2>
+          <select v-model="editItem.second_personal_award_section_id">
+            <option
+              v-for="section in availableSections"
+              :key="'second_' + section.id"
               :value="section.id"
             >
               {{ section.title }}

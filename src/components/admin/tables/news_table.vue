@@ -1,220 +1,237 @@
 <template>
-  <div class="news_table">
-    <!-- Модалка создания/редактирования -->
-    <Teleport to="body">
-      <transition name="openPage" mode="out-in" appear>
-        <NewsEdit
-          v-if="editedItem"
-          :item="editedItem"
-          @done="onEditDone"
-          @cancel="editedItem = null"
-          ref="editForm"
-        />
-      </transition>
-    </Teleport>
-
-    <!-- Панель управления -->
-    <div class="control-panel">
-      <button class="btn" @click="addNews()">добавить новость</button>
+  <div class="newsTable">
+    <div class="news-list" style="margin-bottom: 40px">
+      <h1>Новости</h1>
+      <div v-if="newsList.length">
+        <div
+          v-for="item in newsList"
+          :key="item.id"
+          style="
+            padding: 12px;
+            border: 1px solid #ccc;
+            margin-bottom: 12px;
+            border-radius: 4px;
+          "
+        >
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.content }}</p>
+          <small
+            >Опубликовано:
+            {{ new Date(item.published_at).toLocaleString() }}</small
+          >
+        </div>
+      </div>
+      <div v-else>
+        <p>Новостей пока нет.</p>
+      </div>
     </div>
 
-    <!-- Таблица -->
-    <Vue3EasyDataTable
-      v-model:server-options="serverOptions"
-      :server-items-length="total"
-      :loading="isLoading"
-      :headers="headers"
-      :items="items"
-      border-cell
-      theme-color="rgb(0, 140, 149)"
-      buttons-pagination
+    <div
+      class="news-form"
+      style="
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-width: 600px;
+      "
     >
-      <template #item-title="{ item }">
-        <TextEdit :item="item" editProp="title" @updateItem="updateItem" />
-      </template>
-      <template #item-content="{ item }">
-        <TextEdit :item="item" editProp="content" @updateItem="updateItem" />
-      </template>
-      <template #item-published_at="{ item }">
-        <TextEdit
-          :item="item"
-          editProp="published_at"
-          @updateItem="updateItem"
-        />
-      </template>
-      <template #item-preview="{ item }">
-        <input
-          type="file"
-          accept="image/*"
-          @change="updatePreview(item, $event)"
-        />
-        <img
-          v-if="item.previewInfo?.url"
-          :src="item.previewInfo.url"
-          width="100"
-          alt="preview"
-        />
-      </template>
-      <template #item-gallery="{ item }">
-        <gallery_edit_many
-          :item="item"
-          @updated="updateGallery(item, $event)"
-        />
-      </template>
-      <template #item-actions="{ item }">
-        <button @click="editItem(item)" title="Редактировать">✏️</button>
-        <button @click="deleteItem(item)" title="Удалить">🗑️</button>
-      </template>
-    </Vue3EasyDataTable>
+      <h1 style="margin-bottom: 16px">Создать новость</h1>
+      <form @submit.prevent="submit">
+        <!-- Заголовок -->
+        <div style="margin-bottom: 12px">
+          <label style="display: block; margin-bottom: 4px">Заголовок</label>
+          <input
+            v-model="title"
+            type="text"
+            required
+            style="width: 100%; padding: 8px"
+          />
+        </div>
+
+        <!-- Содержимое -->
+        <div style="margin-bottom: 12px">
+          <label style="display: block; margin-bottom: 4px">Содержимое</label>
+          <textarea
+            v-model="content"
+            required
+            rows="5"
+            style="width: 100%; padding: 8px"
+          ></textarea>
+        </div>
+
+        <!-- Дата публикации -->
+        <div style="margin-bottom: 12px">
+          <label style="display: block; margin-bottom: 4px"
+            >Дата публикации</label
+          >
+          <input
+            v-model="publishedAt"
+            type="datetime-local"
+            required
+            style="padding: 8px"
+          />
+        </div>
+
+        <!-- Превью -->
+        <div style="margin-bottom: 12px">
+          <label style="display: block; margin-bottom: 4px">
+            Превью (файл, необязательно)
+          </label>
+          <input type="file" @change="handlePreviewChange" accept="image/*" />
+        </div>
+
+        <!-- Галерея -->
+        <div style="margin-bottom: 12px">
+          <label style="display: block; margin-bottom: 4px">
+            Галерея (можно выбрать несколько файлов)
+          </label>
+          <input
+            type="file"
+            @change="handleGalleryChange"
+            accept="image/*"
+            multiple
+          />
+        </div>
+
+        <!-- Кнопка -->
+        <div>
+          <button
+            type="submit"
+            :disabled="isSubmitting"
+            style="padding: 10px 20px; cursor: pointer"
+          >
+            {{ isSubmitting ? "Сохраняем..." : "Сохранить новость" }}
+          </button>
+        </div>
+
+        <!-- Ошибка -->
+        <div v-if="error" style="color: red; margin-top: 12px">
+          {{ error }}
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
-<script>
-import Vue3EasyDataTable from "vue3-easy-data-table";
-import "vue3-easy-data-table/dist/style.css";
-import { useGameStore } from "@/stores/interface-interaction.js";
-import TextEdit from "../cells/textEdit.vue";
-import gallery_edit_many from "@/components/admin/tables/gallery_edit_many.vue";
-import NewsEdit from "./news_edit.vue";
+<script setup>
+import { onMounted, ref } from "vue";
+const newsList = ref([]);
 
-const headers = [
-  { text: "Id", value: "id", width: 60 },
-  { text: "Заголовок", value: "title", width: 200 },
-  { text: "Контент", value: "content", width: 300 },
-  { text: "Дата публикации", value: "published_at", width: 180 },
-  { text: "Превью", value: "preview", width: 120 },
-  { text: "Галерея", value: "gallery", width: 120 },
-  { text: "Действия", value: "actions", fixed: true, width: 100 },
-];
+async function loadNews() {
+  try {
+    const { data } = await apiClient.get("v2/news");
+    newsList.value = data.data || [];
+  } catch (e) {
+    console.error("Ошибка загрузки новостей", e);
+  }
+}
 
-export default {
-  name: "news_table",
-  components: { Vue3EasyDataTable, TextEdit, gallery_edit_many, NewsEdit },
-  data() {
-    return {
-      interaction: useGameStore(),
-      isLoading: false,
-      items: [],
-      total: 0,
-      serverOptions: {
-        page: 1,
-        rowsPerPage: 25,
-        sortBy: "id",
-        sortType: "asc",
-      },
-      headers,
-      editedItem: null,
-      onEditDone: null,
+// Когда компонент загрузится
+onMounted(() => {
+  loadNews();
+});
+// Важно: берем authClient для CSRF и apiClient для остальных запросов
+import { authClient, apiClient } from "@/scripts/api";
+
+const title = ref("");
+const content = ref("");
+const publishedAt = ref(new Date().toISOString().slice(0, 16));
+
+const preview = ref(null);
+const gallery = ref([]);
+
+const isSubmitting = ref(false);
+const error = ref("");
+
+function handlePreviewChange(e) {
+  preview.value = e.target.files[0] || null;
+}
+
+function handleGalleryChange(e) {
+  gallery.value = Array.from(e.target.files);
+}
+
+async function submit() {
+  error.value = "";
+  isSubmitting.value = true;
+
+  try {
+    // 0) Обновляем CSRF-token по sanctum
+    await authClient.get("/sanctum/csrf-cookie");
+
+    // 1) Загрузка превью (если есть)
+    let previewUuid = null;
+    if (preview.value) {
+      const fdPrev = new FormData();
+      fdPrev.append("files[]", preview.value);
+      // Логируем содержимое FormData превью
+      console.group("FormData /v2/files (preview)");
+      for (let pair of fdPrev.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      console.groupEnd();
+
+      const { data: respPrev } = await apiClient.post("v2/files", fdPrev);
+      previewUuid = respPrev.data[0]?.uuid || respPrev.data.data[0].uuid;
+    }
+
+    // 2) Загрузка галереи (если есть)
+    let galleryUuids = [];
+    if (gallery.value.length) {
+      const fdGal = new FormData();
+      gallery.value.forEach((f) => fdGal.append("files[]", f));
+      // Логируем содержимое FormData галереи
+      console.group("FormData /v2/files (gallery)");
+      for (let pair of fdGal.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      console.groupEnd();
+
+      const { data: respGal } = await apiClient.post("v2/files", fdGal);
+      console.log("Response /v2/files (gallery)", respGal);
+      galleryUuids = respGal.data.map((item) => item.uuid);
+    }
+
+    // 3) Формируем JSON-пейлоад по схеме NewsInput
+    const payload = {
+      title: title.value,
+      content: content.value,
+      published_at: new Date(publishedAt.value).toISOString(),
+      ...(previewUuid && { preview: previewUuid }),
+      ...(galleryUuids.length && { gallery: galleryUuids }),
     };
-  },
-  methods: {
-    async loadData() {
-      this.isLoading = true;
-      // только page передаем в getNews
-      const res = await this.interaction.api.getNews(this.serverOptions.page);
-      this.items = res.data.data;
-      this.total = res.data.meta.total;
-      this.isLoading = false;
-    },
-    addNews() {
-      this.editedItem = {
-        title: "",
-        content: "",
-        published_at: new Date().toISOString(),
-        preview: null,
-        gallery: [],
-      };
-      this.onEditDone = async (newItem) => {
-        const formData = new FormData();
-        formData.append("title", newItem.title);
-        formData.append("content", newItem.content);
-        formData.append("published_at", newItem.published_at);
-        if (newItem.preview) {
-          formData.append("preview", newItem.preview);
-        }
-        if (Array.isArray(newItem.gallery)) {
-          newItem.gallery.forEach((f, i) => {
-            formData.append(`gallery[${i}]`, f);
-          });
-        }
 
-        const res = await this.interaction.api.createNews(formData);
-        this.items.unshift(res.data.data);
-        this.editedItem = null;
-      };
-    },
+    // Логируем JSON-пейлоад перед отправкой
+    console.group("JSON payload /v2/news");
+    console.log(JSON.stringify(payload, null, 2));
+    console.groupEnd();
 
-    editItem(item) {
-      // клонируем для модального окна
-      this.editedItem = { ...item };
-      this.onEditDone = async (updated) => {
-        const res = await this.interaction.api.updateNews(item.id, updated);
-        Object.assign(item, res.data.data);
-        this.editedItem = null;
-      };
-      // передаем в форму
-      this.$refs.editForm.setItem(this.editedItem);
-    },
-    async deleteItem(item) {
-      if (!confirm(`Удалить новость «${item.title}»?`)) return;
-      await this.interaction.api.deleteNews(item.id);
-      this.items = this.items.filter((i) => i.id !== item.id);
-    },
-    async updateItem(item) {
-      // TextEdit эмитит измененный item целиком
-      const res = await this.interaction.api.updateNews(item.id, {
-        title: item.title,
-        content: item.content,
-        published_at: item.published_at,
-      });
-      Object.assign(item, res.data.data);
-      return item;
-    },
-    async updatePreview(item, e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const form = new FormData();
-      form.append("preview", file);
-      const res = await this.interaction.api.updateNews(item.id, form);
-      Object.assign(item, res.data.data);
-    },
-    async updateGallery(item, files) {
-      const form = new FormData();
-      files.forEach((f, i) => form.append(`gallery[${i}]`, f));
-      const res = await this.interaction.api.updateNews(item.id, form);
-      Object.assign(item, res.data.data);
-    },
-  },
-  watch: {
-    serverOptions: {
-      handler: "loadData",
-      deep: true,
-    },
-  },
-  created() {
-    this.loadData();
-  },
-};
+    // 4) Создаем новость
+    await apiClient.post("v2/news", payload);
+
+    alert("✅ Новость успешно создана");
+    // Сброс формы
+    title.value = "";
+    content.value = "";
+    publishedAt.value = new Date().toISOString().slice(0, 16);
+    preview.value = null;
+    gallery.value = [];
+  } catch (e) {
+    console.error(e);
+    if (e.response?.data?.errors) {
+      // Показываем первую ошибку
+      error.value = Object.values(e.response.data.errors)[0][0];
+    } else {
+      error.value = e.response?.data?.message || "Ошибка при создании новости";
+    }
+  } finally {
+    isSubmitting.value = false;
+  }
+}
 </script>
 
-<style scoped>
-.news_table {
-  width: 100%;
-}
-.control-panel {
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: flex-end;
-}
-.control-panel .btn {
-  background-color: var(--nipigasColorMain);
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-}
-.control-panel .btn:hover {
-  background-color: var(--nipigasColorMain-hover);
+<style scoped lang="scss">
+.newsTable {
+  color: var(--textColorBlack);
 }
 </style>

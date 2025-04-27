@@ -1,4 +1,5 @@
 // src\stores\interface-interaction.js
+
 import { defineStore } from "pinia";
 // import auth, {authClient} from "../scripts/auth.js";
 import api, { apiClient } from "../scripts/api.js";
@@ -192,7 +193,6 @@ export const useGameStore = defineStore("interface", {
     async loadDictionary() {
       let res = await this.api.getDictionary();
       let dictionary = res.data.data;
-      console.log("Dictionary API response:", res.data);
 
       let result = {};
       if (Array.isArray(dictionary)) {
@@ -285,6 +285,5 @@ export const useGameStore = defineStore("interface", {
       await this.api.logout();
       this.admin = null;
     },
-
   },
 });

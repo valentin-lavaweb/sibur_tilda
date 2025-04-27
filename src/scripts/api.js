@@ -1,7 +1,8 @@
+// src\scripts\api.js
+
 /*
  * This is the initial API interface
  * we set the base URL for the API
- * src\scripts\api.js
  */
 
 import axios from "axios";
@@ -15,16 +16,16 @@ export const authClient = axios.create({
 const getTokenFromCookies = () => {
   try {
     const token = document.cookie
-      .split('; ')
-      .find(cookie => cookie.startsWith('sibur.token='))
-      ?.split('=')[1]
+      .split("; ")
+      .find((cookie) => cookie.startsWith("sibur.token="))
+      ?.split("=")[1];
 
-    return token ? decodeURIComponent(token) : null
+    return token ? decodeURIComponent(token) : null;
   } catch (error) {
-    console.error('Ошибка при получении токена из куков:', error)
-    return null
+    console.error("Ошибка при получении токена из куков:", error);
+    return null;
   }
-}
+};
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_VUE_APP_API_URL + "/api/",
@@ -38,15 +39,15 @@ apiClient.interceptors.request.use(
     // 1) Получаем свежую CSRF-куку
     // await apiClient.get("/sanctum/csrf-cookie");
 
-    console.log(document.cookie);
-    const token = getTokenFromCookies()
-    console.log('token', token);
+    // console.log(document.cookie);
+    const token = getTokenFromCookies();
+    // console.log("token", token);
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     // 2) Берём XSRF-токен из куки и кладём в заголовок
     const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
-    console.log('match', match);
+    // console.log("match", match);
     if (match) {
       config.headers["X-XSRF-TOKEN"] = decodeURIComponent(match[1]);
     }
@@ -124,7 +125,7 @@ export default {
     searchParams.append("page", page);
 
     // return apiClient.get("/v2/personal-awards?" + searchParams);
-    return apiClient.get("/personal_awards?" + searchParams);
+    return apiClient.get("/v2/personal-awards?" + searchParams);
   },
 
   getPersonalAwardSections() {
@@ -151,7 +152,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/v2/personal-award", payload);
+    return apiClient.post("/v2/personal-awards", payload);
   },
   /**
    * Description
@@ -165,7 +166,7 @@ export default {
     for (let prop in data) {
       payload.append(prop, data[prop]);
     }
-    return apiClient.post("/v2/personal-award/" + id, payload);
+    return apiClient.post("/v2/personal-awards/" + id, payload);
   },
 
   /**
@@ -174,7 +175,7 @@ export default {
    * @returns {Promise}
    */
   deletePersonalAward(id) {
-    return apiClient.delete("/v2/personal-award/" + id);
+    return apiClient.delete("/v2/personal-awards/" + id);
   },
 
   /**
@@ -219,11 +220,7 @@ export default {
    * @returns {Promise}
    */
   createPersonalAwardSection(data) {
-    let payload = new FormData();
-    for (let prop in data) {
-      payload.append(prop, data[prop]);
-    }
-    return apiClient.post("/v2/personal-award-section", payload);
+    return apiClient.post("/v2/personal-award-sections", data);
   },
   /**
    * Description
@@ -232,12 +229,7 @@ export default {
    * @returns {Promise}
    */
   updatePersonalAwardSection(id, data) {
-    let payload = new FormData();
-    payload.append("_method", "PUT");
-    for (let prop in data) {
-      payload.append(prop, data[prop]);
-    }
-    return apiClient.post("/v2/personal-award-section/" + id, payload);
+    return apiClient.put("/v2/personal-award-sections/" + id, data);
   },
 
   /**
@@ -246,7 +238,7 @@ export default {
    * @returns {Promise}
    */
   deletePersonalAwardSection(id) {
-    return apiClient.delete("/v2/personal-award-section/" + id);
+    return apiClient.delete("/v2/personal-award-sections/" + id);
   },
 
   /**
@@ -255,12 +247,9 @@ export default {
    * @returns {Promise}
    */
   createImage(data) {
-    const payload = new FormData();
-    for (const prop in data) {
-      payload.append(prop, data[prop]);
-    }
-    return apiClient.post("/image", payload);
+    return apiClient.post("/v2/images", data);
   },
+
   /**
    * Description
    * @param {number} id
@@ -268,12 +257,7 @@ export default {
    * @returns {Promise}
    */
   updateImage(id, data) {
-    const payload = new FormData();
-    payload.append("_method", "PUT");
-    for (const prop in data) {
-      payload.append(prop, data[prop]);
-    }
-    return apiClient.post(`/image/${id}`, payload);
+    return apiClient.put(`/v2/images/${id}`, data); // Обычный JSON-пакет
   },
 
   /**
@@ -283,7 +267,7 @@ export default {
    */
   deleteImage(id) {
     // удаление по /api/image/:id
-    return apiClient.delete(`/image/${id}`);
+    return apiClient.delete(`/v2/images/${id}`);
   },
 
   /**
@@ -299,52 +283,11 @@ export default {
     return apiClient.post("/dictionary/" + key, payload);
   },
 
-  /**
-   * Получить список новостей с пагинацией
-   * @param {number} page
-   */
-  getNews(page = 1) {
-    return apiClient.get(`/v2/news?page=${page}`);
-  },
-
-  /**
-   * Получить одну новость по id
-   * @param {number|string} id
-   */
-  getNewsById(id) {
-    return apiClient.get(`/v2/news/${id}`);
-  },
-
-  /**
-   * Создать новость
-   * @param {Object} data
-   */
-  createNews(data) {
+  uploadFile(file) {
     const payload = new FormData();
-    for (let prop in data) payload.append(prop, data[prop]);
-    return apiClient.post("/v2/news", payload);
+    payload.append("files[]", file);
+    return apiClient.post("/v2/files", payload);
   },
-
-  /**
-   * Обновить новость
-   * @param {number|string} id
-   * @param {Object} data
-   */
-  updateNews(id, data) {
-    const payload = new FormData();
-    payload.append("_method", "PUT");
-    for (let prop in data) payload.append(prop, data[prop]);
-    return apiClient.post(`/v2/news/${id}`, payload);
-  },
-
-  /**
-   * Удалить новость
-   * @param {number|string} id
-   */
-  deleteNews(id) {
-    return apiClient.delete(`/v2/news/${id}`);
-  },
-
   // Авторизация
   async login({ email, password }) {
     // 1) получаем CSRF-cookie с основного домена

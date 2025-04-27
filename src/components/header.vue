@@ -12,10 +12,14 @@ export default {
   },
   components: {},
   methods() {},
-  mounted() {},
+  mounted() {
+    console.log("Personal sections:", this.personalSections);
+  },
   computed: {
     personalSections() {
-      return this.interaction.personalSections;
+      return (this.interaction.personalSections ?? []).filter(
+        (section) => section.is_visible
+      );
     },
   },
   watch: {},

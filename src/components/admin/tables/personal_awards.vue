@@ -1,3 +1,5 @@
+<!-- src\components\admin\tables\personal_awards.vue -->
+
 <script>
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";
@@ -81,17 +83,24 @@ export default {
         let updateItem = {};
 
         for (let prop in item) {
-          if (prop == "image") {
-            if (item[prop] instanceof File) {
+          if (prop === "image") {
+            if (item[prop] instanceof File || typeof item[prop] === "string") {
               updateItem[prop] = item[prop];
-            } else {
-              continue;
             }
+            continue;
+          }
+
+          // Если поле second_personal_award_section_id пустое или null — не добавлять его вообще
+          if (
+            prop === "second_personal_award_section_id" &&
+            (item[prop] === null || item[prop] === undefined)
+          ) {
+            continue;
           }
 
           switch (item[prop]) {
             case null:
-              updateItem[prop] = "";
+              updateItem[prop] = null;
               break;
             case true:
               updateItem[prop] = 1;
@@ -106,7 +115,7 @@ export default {
         }
 
         let res = await this.interaction.api.createPersonalAward(updateItem);
-        let newItem = res.data.data;
+        let newItem = res.data;
 
         this.serverItems.unshift(newItem);
 
@@ -123,29 +132,35 @@ export default {
       try {
         let updateItem = {};
 
-        for (let prop in oldItem) {
-          if (prop == "image") {
+        for (let prop in item) {
+          if (prop === "image") {
             if (item[prop] instanceof File) {
               updateItem[prop] = item[prop];
-            } else {
-              continue;
             }
+            continue;
           }
-          if (oldItem[prop] != item[prop]) {
-            switch (item[prop]) {
-              case null:
-                updateItem[prop] = "";
-                break;
-              case true:
-                updateItem[prop] = 1;
-                break;
-              case false:
-                updateItem[prop] = 0;
-                break;
-              default:
-                updateItem[prop] = item[prop];
-                break;
-            }
+
+          // Если поле second_personal_award_section_id пустое или null — не добавлять его вообще
+          if (
+            prop === "second_personal_award_section_id" &&
+            (item[prop] === null || item[prop] === undefined)
+          ) {
+            continue;
+          }
+
+          switch (item[prop]) {
+            case null:
+              updateItem[prop] = null;
+              break;
+            case true:
+              updateItem[prop] = 1;
+              break;
+            case false:
+              updateItem[prop] = 0;
+              break;
+            default:
+              updateItem[prop] = item[prop];
+              break;
           }
         }
 
@@ -173,17 +188,33 @@ export default {
     async updateImage(item, event) {
       let oldItem = this.serverItems.find((i) => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
+
       try {
         let files = event.target.files || event.dataTransfer.files;
         if (!files.length) return;
 
-        let res = await this.interaction.api.updatePersonalAward(item.id, {
-          image: files[0],
-        });
-        let newItem = res.data.data;
-        Object.assign(oldItem, newItem);
+        const file = files[0];
 
-        this.$toast.success("Изображение обновлено");
+        // ⏳ Загружаем файл на сервер
+        let uploadResponse = await this.interaction.api.uploadFile(file);
+        let uploadedFile = uploadResponse.data?.data?.[0];
+
+        if (!uploadedFile || !uploadedFile.uuid) {
+          throw new Error("Не удалось загрузить файл");
+        }
+
+        // 📥 Сохраняем новый UUID в item.image прямо перед отправкой
+        item.image = uploadedFile.uuid;
+
+        // 📥 Обновляем запись
+        const updated = await this.updateItem(item);
+
+        // 👀 Чтобы Vue обновил превьюшку картинки без F5
+        if (updated) {
+          oldItem.image = uploadedFile.uuid; // вот это самое важное
+        }
+
+        this.$toast.success("Файл загружен и привязан!");
       } catch (e) {
         setTimeout(() => {
           let oldIdx = this.serverItems.findIndex((i) => i.id == item.id);
@@ -192,6 +223,7 @@ export default {
         this.$toast.error(e.message);
       }
     },
+
     async deleteItem(item) {
       if (!confirm(`Удалить ${item.name}?`)) return;
 
@@ -308,6 +340,7 @@ export default {
             gender: null,
             image: null,
             personal_award_section_id: availableSections[0]?.id,
+            second_personal_award_section_id: availableSections[0]?.id,
             year: new Date().getFullYear(),
           })
         "
@@ -440,18 +473,32 @@ export default {
       </template>
 
       <template #item-section="item">
-        <select
-          v-model="item.personal_award_section_id"
-          @change="updateItem(item)"
-        >
-          <option
-            v-for="section in availableSections"
-            :key="section.id"
-            :value="section.id"
+        <div class="select-section-block">
+          <select
+            v-model="item.personal_award_section_id"
+            @change="updateItem(item)"
           >
-            {{ section.title }}
-          </option>
-        </select>
+            <option
+              v-for="section in availableSections"
+              :key="section.id"
+              :value="section.id"
+            >
+              {{ section.title }}
+            </option>
+          </select>
+          <select
+            v-model="item.second_personal_award_section_id"
+            @change="updateItem(item)"
+          >
+            <option
+              v-for="section in availableSections"
+              :key="'second_' + section.id"
+              :value="section.id"
+            >
+              {{ section.title }}
+            </option>
+          </select>
+        </div>
       </template>
 
       <template #item-actions="item">
