@@ -120,12 +120,21 @@ export default {
       }
     }
 
-    let searchParams = new URLSearchParams(filter);
+    let searchParams = new URLSearchParams();
+
+    for (let key in filter) {
+      if (Array.isArray(filter[key])) {
+        filter[key].forEach((val) => {
+          searchParams.append(`${key}[]`, val);
+        });
+      } else {
+        searchParams.append(key, filter[key]);
+      }
+    }
 
     searchParams.append("page", page);
 
-    // return apiClient.get("/v2/personal-awards?" + searchParams);
-    return apiClient.get("/v2/personal-awards?" + searchParams);
+    return apiClient.get("/v2/personal-awards?" + searchParams.toString());
   },
 
   getPersonalAwardSections() {
@@ -287,6 +296,12 @@ export default {
     const payload = new FormData();
     payload.append("files[]", file);
     return apiClient.post("/v2/files", payload);
+  },
+
+  // ===> НОВОСТИ
+  getNews(page = 1) {
+    const params = new URLSearchParams({ page });
+    return apiClient.get("/v2/news?" + params.toString());
   },
   // Авторизация
   async login({ email, password }) {

@@ -31,7 +31,15 @@ const formatDate = (iso) => {
 
 const loadNews = async () => {
   try {
+    // Сначала загружаем весь список новостей, если он пустой
+    if (!store.news || store.news.length === 0) {
+      await store.loadNews(1);
+    }
+
+    // Потом загружаем новость по id
     await store.loadNewsById(currentId.value);
+
+    // Если новость не найдена — ошибка
     if (!store.currentNews) {
       throw new Error("Новость не найдена");
     }
@@ -51,6 +59,33 @@ watch(
     await loadNews();
   }
 );
+
+const totalNews = computed(() => store.newsMeta?.total || 1);
+const prevNewsId = computed(() => {
+  const newsList = store.news || [];
+  const currentIndex = newsList.findIndex(
+    (item) => item.id === currentId.value
+  );
+  if (currentIndex > 0) {
+    return newsList[currentIndex - 1].id;
+  }
+  return null;
+});
+
+const nextNewsId = computed(() => {
+  const newsList = store.news || [];
+  const currentIndex = newsList.findIndex(
+    (item) => item.id === currentId.value
+  );
+  if (currentIndex !== -1 && currentIndex < newsList.length - 1) {
+    return newsList[currentIndex + 1].id;
+  }
+  return null;
+});
+
+const isFakeNews = computed(() => {
+  return store.news?.some((item) => item.id <= 15); // если id маленькие — значит фейковые
+});
 </script>
 
 <template>
@@ -74,8 +109,10 @@ watch(
           <h1 class="newsTitle">{{ store.currentNews.title }}</h1>
           <div class="image">
             <img
-              v-if="store.currentNews.previewInfo?.url"
-              :src="store.currentNews.previewInfo.url"
+              :src="
+                store.currentNews.previewInfo?.url ||
+                '/img/newsPlaceholder1.png'
+              "
               class="newsImage"
               :alt="store.currentNews.title"
             />
@@ -87,16 +124,16 @@ watch(
           <!-- Навигация между новостями -->
           <div class="newsNavigation">
             <router-link
-              v-if="hasPrev"
-              :to="{ name: 'news_item', params: { id: currentId - 1 } }"
+              v-if="prevNewsId"
+              :to="{ name: 'news_item', params: { id: prevNewsId } }"
               class="navButton prev"
             >
               ← Предыдущая новость
             </router-link>
 
             <router-link
-              v-if="hasNext"
-              :to="{ name: 'news_item', params: { id: currentId + 1 } }"
+              v-if="nextNewsId"
+              :to="{ name: 'news_item', params: { id: nextNewsId } }"
               class="navButton next"
             >
               Следующая новость →

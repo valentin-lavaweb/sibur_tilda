@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 // import { defineAsyncComponent } from 'vue'
 import { useGameStore } from "@/stores/interface-interaction.js";
+import timelines_table from "./components/admin/tables/timelines_table.vue";
 
 const main_page = () => import("@/components/screen/main_page.vue");
 const types_of_awards_page = () =>
@@ -97,6 +98,12 @@ const routes = [
         path: "news",
         component: news_table,
         name: "news_table",
+        meta: { requiresAuth: true },
+      },
+      {
+        path: "timelines",
+        component: timelines_table,
+        name: "timelines",
         meta: { requiresAuth: true },
       },
     ],

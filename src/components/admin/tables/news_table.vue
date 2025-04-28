@@ -1,237 +1,417 @@
 <template>
-  <div class="newsTable">
-    <div class="news-list" style="margin-bottom: 40px">
-      <h1>Новости</h1>
-      <div v-if="newsList.length">
-        <div
-          v-for="item in newsList"
-          :key="item.id"
-          style="
-            padding: 12px;
-            border: 1px solid #ccc;
-            margin-bottom: 12px;
-            border-radius: 4px;
-          "
-        >
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.content }}</p>
-          <small
-            >Опубликовано:
-            {{ new Date(item.published_at).toLocaleString() }}</small
-          >
-        </div>
-      </div>
-      <div v-else>
-        <p>Новостей пока нет.</p>
-      </div>
+  <div class="newsTableContainer">
+    <div class="buttonBlock">
+      <button @click="addNewsRow">Добавить новость</button>
     </div>
 
-    <div
-      class="news-form"
-      style="
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        max-width: 600px;
-      "
+    <table
+      border="1"
+      cellspacing="0"
+      cellpadding="8"
+      style="width: 100%; border-collapse: collapse"
     >
-      <h1 style="margin-bottom: 16px">Создать новость</h1>
-      <form @submit.prevent="submit">
-        <!-- Заголовок -->
-        <div style="margin-bottom: 12px">
-          <label style="display: block; margin-bottom: 4px">Заголовок</label>
-          <input
-            v-model="title"
-            type="text"
-            required
-            style="width: 100%; padding: 8px"
-          />
-        </div>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Заголовок</th>
+          <th>Содержание</th>
+          <th>Предпросмотр</th>
+          <th>Галерея</th>
+          <th @click="toggleSort" style="cursor: pointer; user-select: none">
+            Дата публикации
+            <span v-if="sortDirection === 'asc'">▲</span>
+            <span v-else>▼</span>
+          </th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Редактируемые новые строки (без id) -->
+        <tr
+          v-for="(row, idx) in newRows"
+          :key="'new-' + idx"
+          style="background: #f9f9f9"
+        >
+          <!-- title, content, preview, gallery, date, actions -->
+          <td>-</td>
+          <td>
+            <input
+              v-model="row.title"
+              type="text"
+              placeholder="Заголовок"
+              style="width: 100%"
+            />
+          </td>
+          <td>
+            <textarea
+              v-model="row.content"
+              rows="2"
+              placeholder="Содержимое"
+              style="width: 100%"
+            ></textarea>
+          </td>
+          <td>
+            <input type="file" @change="onPreviewChange($event, row)" />
+          </td>
+          <td>
+            <input type="file" @change="onGalleryChange($event, row)" />
+          </td>
+          <td>
+            <input
+              v-model="row.published_at"
+              type="datetime-local"
+              style="width: 100%"
+            />
+          </td>
+          <td>
+            <button
+              @click="saveNews(row, editingRows.indexOf(row))"
+              :disabled="row.isSaving"
+              style="margin: 0px 10px 0px 0px; cursor: pointer"
+            >
+              {{ row.isSaving ? "Сохраняем..." : "Сохранить" }}
+            </button>
+            <button
+              @click="cancelEdit(editingRows.indexOf(row))"
+              :disabled="row.isSaving"
+            >
+              Отменить
+            </button>
+          </td>
+        </tr>
 
-        <!-- Содержимое -->
-        <div style="margin-bottom: 12px">
-          <label style="display: block; margin-bottom: 4px">Содержимое</label>
-          <textarea
-            v-model="content"
-            required
-            rows="5"
-            style="width: 100%; padding: 8px"
-          ></textarea>
-        </div>
+        <!-- Существующие новости, отсортированные -->
+        <tr v-for="item in sortedNews" :key="item.id">
+          <!-- если для этой новости есть запись в editingMap -->
+          <template v-if="editingMap[item.id]">
+            <td>{{ item.id }}</td>
+            <td>
+              <input
+                v-model="editingMap[item.id].row.title"
+                type="text"
+                style="width: 100%"
+              />
+            </td>
+            <td>
+              <textarea
+                v-model="editingMap[item.id].row.content"
+                rows="2"
+                style="width: 100%"
+              ></textarea>
+            </td>
+            <td>
+              <div v-if="editingMap[item.id].row.previewInfo?.url">
+                <img
+                  :src="editingMap[item.id].row.previewInfo.url"
+                  style="max-width: 100px; margin-bottom: 4px"
+                />
+              </div>
+              <input
+                type="file"
+                @change="onPreviewChange($event, editingMap[item.id].row)"
+              />
+            </td>
+            <td>
+              <div v-if="editingMap[item.id].row.gallery?.length">
+                <img
+                  v-for="(g, i) in editingMap[item.id].row.gallery"
+                  :key="i"
+                  :src="g.url"
+                  style="max-width: 80px; margin-right: 4px; margin-bottom: 4px"
+                />
+              </div>
+              <input
+                type="file"
+                @change="onGalleryChange($event, editingMap[item.id].row)"
+              />
+            </td>
+            <td>
+              <input
+                v-model="editingMap[item.id].row.published_at"
+                type="datetime-local"
+                style="width: 100%"
+              />
+            </td>
+            <td>
+              <button
+                @click="
+                  saveNews(editingMap[item.id].row, editingMap[item.id].index)
+                "
+                :disabled="editingMap[item.id].row.isSaving"
+                style="margin: 0px 10px 0px 0px; cursor: pointer"
+              >
+                {{
+                  editingMap[item.id].row.isSaving
+                    ? "Сохраняем..."
+                    : "Сохранить"
+                }}
+              </button>
+              <button
+                @click="cancelEdit(editingMap[item.id].index)"
+                :disabled="editingMap[item.id].row.isSaving"
+              >
+                Отменить
+              </button>
+            </td>
+          </template>
 
-        <!-- Дата публикации -->
-        <div style="margin-bottom: 12px">
-          <label style="display: block; margin-bottom: 4px"
-            >Дата публикации</label
-          >
-          <input
-            v-model="publishedAt"
-            type="datetime-local"
-            required
-            style="padding: 8px"
-          />
-        </div>
+          <!-- если не редактируется -->
+          <template v-else>
+            <td>{{ item.id }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.content }}</td>
+            <td>
+              <img
+                v-if="item.previewInfo?.url"
+                :src="item.previewInfo.url"
+                style="max-width: 100px"
+              />
+            </td>
+            <td>
+              <img
+                v-for="(g, i) in item.gallery"
+                :key="i"
+                :src="g.url"
+                style="max-width: 80px; margin-right: 4px"
+              />
+            </td>
+            <td>{{ new Date(item.published_at).toLocaleString() }}</td>
+            <td>
+              <button
+                @click="deleteNews(item)"
+                style="margin: 0px 10px 0px 0px; cursor: pointer"
+              >
+                Удалить
+              </button>
+              <button @click="startEdit(item)">Редактировать</button>
+            </td>
+          </template>
+        </tr>
 
-        <!-- Превью -->
-        <div style="margin-bottom: 12px">
-          <label style="display: block; margin-bottom: 4px">
-            Превью (файл, необязательно)
-          </label>
-          <input type="file" @change="handlePreviewChange" accept="image/*" />
-        </div>
-
-        <!-- Галерея -->
-        <div style="margin-bottom: 12px">
-          <label style="display: block; margin-bottom: 4px">
-            Галерея (можно выбрать несколько файлов)
-          </label>
-          <input
-            type="file"
-            @change="handleGalleryChange"
-            accept="image/*"
-            multiple
-          />
-        </div>
-
-        <!-- Кнопка -->
-        <div>
-          <button
-            type="submit"
-            :disabled="isSubmitting"
-            style="padding: 10px 20px; cursor: pointer"
-          >
-            {{ isSubmitting ? "Сохраняем..." : "Сохранить новость" }}
-          </button>
-        </div>
-
-        <!-- Ошибка -->
-        <div v-if="error" style="color: red; margin-top: 12px">
-          {{ error }}
-        </div>
-      </form>
-    </div>
+        <tr v-if="newsList.length === 0 && newRows.length === 0">
+          <td colspan="6" style="text-align: center; padding: 16px">
+            Новостей пока нет.
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-const newsList = ref([]);
+import { ref, onMounted, computed } from "vue";
+import { authClient, apiClient } from "@/scripts/api";
+import api from "@/scripts/api";
 
+const newsList = ref([]);
+const editingRows = ref([]);
+const sortDirection = ref("desc");
+
+// 1) Сортировка
+const sortedNews = computed(() => {
+  return [...newsList.value].sort((a, b) => {
+    const da = new Date(a.published_at).getTime();
+    const db = new Date(b.published_at).getTime();
+    return sortDirection.value === "asc" ? da - db : db - da;
+  });
+});
+function toggleSort() {
+  sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
+}
+
+// 2) Для новых строк и для мапы редактирования
+const newRows = computed(() => editingRows.value.filter((r) => !r.id));
+const editingMap = computed(() => {
+  const map = {};
+  editingRows.value.forEach((r, i) => {
+    if (r.id) map[r.id] = { row: r, index: i };
+  });
+  return map;
+});
+
+// 3) Загрузка
 async function loadNews() {
   try {
     const { data } = await apiClient.get("v2/news");
-    newsList.value = data.data || [];
+    // Возможно, оборачивает в data.data:
+    newsList.value = data.data ?? data;
   } catch (e) {
     console.error("Ошибка загрузки новостей", e);
   }
 }
 
-// Когда компонент загрузится
-onMounted(() => {
-  loadNews();
-});
-// Важно: берем authClient для CSRF и apiClient для остальных запросов
-import { authClient, apiClient } from "@/scripts/api";
-
-const title = ref("");
-const content = ref("");
-const publishedAt = ref(new Date().toISOString().slice(0, 16));
-
-const preview = ref(null);
-const gallery = ref([]);
-
-const isSubmitting = ref(false);
-const error = ref("");
-
-function handlePreviewChange(e) {
-  preview.value = e.target.files[0] || null;
+// 4) Создание новой строки
+function addNewsRow() {
+  editingRows.value.unshift({
+    title: "",
+    content: "",
+    published_at: new Date().toISOString().slice(0, 16),
+    previewFile: null,
+    galleryFiles: [],
+    isSaving: false,
+  });
 }
 
-function handleGalleryChange(e) {
-  gallery.value = Array.from(e.target.files);
+// 5) Начать редактирование существующей
+function startEdit(item) {
+  editingRows.value.unshift({
+    id: item.id,
+    title: item.title,
+    content: item.content,
+    published_at: new Date(item.published_at).toISOString().slice(0, 16),
+    // кладём текущие info, чтобы показать превью и галерею
+    previewInfo: item.previewInfo || {},
+    gallery: item.gallery || [],
+    previewFile: null,
+    galleryFiles: [],
+    isSaving: false,
+  });
 }
 
-async function submit() {
-  error.value = "";
-  isSubmitting.value = true;
+// 6) Отменить
+function cancelEdit(index) {
+  editingRows.value.splice(index, 1);
+}
 
+// 7) Обработчики выбора файлов
+function onPreviewChange(e, row) {
+  const f = e.target.files[0];
+  if (f) row.previewFile = f;
+}
+function onGalleryChange(e, row) {
+  const f = e.target.files[0];
+  row.galleryFiles = f ? [f] : [];
+}
+
+// 8) Сохранение (POST / PUT)
+async function saveNews(row, index) {
+  row.isSaving = true;
   try {
-    // 0) Обновляем CSRF-token по sanctum
+    // CSRF для Sanctum
     await authClient.get("/sanctum/csrf-cookie");
 
-    // 1) Загрузка превью (если есть)
-    let previewUuid = null;
-    if (preview.value) {
-      const fdPrev = new FormData();
-      fdPrev.append("files[]", preview.value);
-      // Логируем содержимое FormData превью
-      console.group("FormData /v2/files (preview)");
-      for (let pair of fdPrev.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-      console.groupEnd();
-
-      const { data: respPrev } = await apiClient.post("v2/files", fdPrev);
-      previewUuid = respPrev.data[0]?.uuid || respPrev.data.data[0].uuid;
+    // собираем FormData
+    const form = new FormData();
+    form.append("title", row.title);
+    form.append("content", row.content);
+    form.append("published_at", new Date(row.published_at).toISOString());
+    if (row.previewFile) {
+      const pf = new FormData();
+      pf.append("files[]", row.previewFile);
+      const prRes = await apiClient.post("v2/files", pf);
+      form.append("preview", prRes.data.data[0].uuid);
+    } else if (row.previewInfo?.uuid) {
+      form.append("preview", row.previewInfo.uuid);
     }
 
-    // 2) Загрузка галереи (если есть)
-    let galleryUuids = [];
-    if (gallery.value.length) {
-      const fdGal = new FormData();
-      gallery.value.forEach((f) => fdGal.append("files[]", f));
-      // Логируем содержимое FormData галереи
-      console.group("FormData /v2/files (gallery)");
-      for (let pair of fdGal.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-      console.groupEnd();
+    let galleryIds = [];
 
-      const { data: respGal } = await apiClient.post("v2/files", fdGal);
-      console.log("Response /v2/files (gallery)", respGal);
-      galleryUuids = respGal.data.map((item) => item.uuid);
+    if (row.galleryFiles?.length) {
+      for (const file of row.galleryFiles) {
+        const fileForm = new FormData();
+        fileForm.append("files[]", file);
+        const uploadRes = await apiClient.post("v2/files", fileForm);
+        galleryIds.push(uploadRes.data.data[0].uuid);
+      }
+    } else if (row.gallery?.length) {
+      // Берём старые ID из существующей галереи
+      galleryIds = row.gallery.map((g) => g.uuid);
     }
 
-    // 3) Формируем JSON-пейлоад по схеме NewsInput
-    const payload = {
-      title: title.value,
-      content: content.value,
-      published_at: new Date(publishedAt.value).toISOString(),
-      ...(previewUuid && { preview: previewUuid }),
-      ...(galleryUuids.length && { gallery: galleryUuids }),
-    };
+    galleryIds.forEach((id) => form.append("gallery[]", id));
 
-    // Логируем JSON-пейлоад перед отправкой
-    console.group("JSON payload /v2/news");
-    console.log(JSON.stringify(payload, null, 2));
-    console.groupEnd();
-
-    // 4) Создаем новость
-    await apiClient.post("v2/news", payload);
-
-    alert("✅ Новость успешно создана");
-    // Сброс формы
-    title.value = "";
-    content.value = "";
-    publishedAt.value = new Date().toISOString().slice(0, 16);
-    preview.value = null;
-    gallery.value = [];
-  } catch (e) {
-    console.error(e);
-    if (e.response?.data?.errors) {
-      // Показываем первую ошибку
-      error.value = Object.values(e.response.data.errors)[0][0];
+    let resp;
+    if (row.id) {
+      // добавляем Laravel-спуфер
+      form.append("_method", "PUT");
+      resp = await apiClient.post(`v2/news/${row.id}`, form);
     } else {
-      error.value = e.response?.data?.message || "Ошибка при создании новости";
+      resp = await apiClient.post("v2/news", form);
     }
+
+    // извлекаем объект новости из ответа
+    const item = resp.data.data ?? resp.data ?? resp;
+    if (row.id) {
+      const i = newsList.value.findIndex((n) => n.id === row.id);
+      if (i !== -1) newsList.value.splice(i, 1, item);
+    } else {
+      newsList.value.unshift(item);
+    }
+
+    // закрываем режим редактирования
+    cancelEdit(index);
+  } catch (e) {
+    console.error("Ошибка при сохранении", e);
+    alert("Не удалось сохранить новость");
   } finally {
-    isSubmitting.value = false;
+    row.isSaving = false;
   }
 }
+
+// 9) Удаление
+async function deleteNews(item) {
+  if (!window.confirm("Вы точно хотите удалить эту новость?")) return;
+  try {
+    await apiClient.delete(`v2/news/${item.id}`);
+    newsList.value = newsList.value.filter((n) => n.id !== item.id);
+  } catch (e) {
+    console.error("Ошибка при удалении", e);
+    alert("Не удалось удалить новость");
+  }
+}
+
+onMounted(loadNews);
 </script>
 
 <style scoped lang="scss">
-.newsTable {
+.newsTableContainer {
+  //   border: 1px solid black;
   color: var(--textColorBlack);
+  th {
+    background: #f0f0f0;
+    color: var(--nipigasColorMain);
+  }
+  img {
+    display: block;
+  }
+
+  tr {
+    td {
+      &:last-child {
+        margin: auto;
+        text-align: center;
+      }
+    }
+  }
+
+  button {
+    margin: 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: 1px solid var(--nipigasColorMain);
+    color: var(--nipigasColorMain);
+    background-color: white;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-family: ArticulatCF;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: 0.25s;
+
+    &:hover {
+      background-color: var(--nipigasColorMain);
+      color: white;
+    }
+  }
+}
+
+.buttonBlock {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid black;
+  border-bottom: 0px solid transparent;
+  padding: 10px;
 }
 </style>

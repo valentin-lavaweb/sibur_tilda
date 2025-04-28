@@ -9,6 +9,7 @@
       <component
         :is="getTag(item)"
         :href="getHref(item)"
+        :target="isExternal(item.url) ? '_blank' : undefined"
         v-for="(item, idx) in items"
         :key="item.id"
         class="item"
@@ -21,6 +22,7 @@
         <component
           :is="getTag(item)"
           :href="getHref(item)"
+          :target="isExternal(item.url) ? '_blank' : undefined"
           class="dot"
           @click="
             () => {
@@ -74,6 +76,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { apiClient } from "@/scripts/api";
+
 const items = ref([
   {
     id: 1,
@@ -123,6 +127,42 @@ const items = ref([
     opened: false,
   },
 ]);
+async function loadTeamtrackItems() {
+  try {
+    const response = await apiClient.get("/v2/timeline-items");
+    const fetchedItems = response.data.data || [];
+
+    const secondSix = fetchedItems.slice(6, 12);
+
+    secondSix.forEach((itemFromServer, index) => {
+      if (items.value[index]) {
+        items.value[index].title =
+          itemFromServer.title || items.value[index].title;
+        items.value[index].url = itemFromServer.link || items.value[index].url;
+        items.value[index].active =
+          itemFromServer.is_active ?? items.value[index].active;
+
+        if (itemFromServer.date) {
+          const dateOnly = itemFromServer.date.split("T")[0];
+          items.value[index].date_from = dateOnly + "T00:00:00Z";
+        }
+
+        // Теперь внимание:
+        if (index === 1) {
+          // Только для второго айтема принудительно ставим XX
+          items.value[index].date_from = "2025-05-XXT00:00:00Z";
+        } else if (itemFromServer.date_to) {
+          // А для остальных ставим date_to из базы
+          const dateToOnly = itemFromServer.date_to.split("T")[0];
+          items.value[index].date_to = dateToOnly + "T00:00:00Z";
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Ошибка загрузки командного таймлайна:", error);
+  }
+}
+
 const isMobile = ref(window.innerWidth <= 980);
 function getTag(item) {
   if (isMobile.value) return "div";
@@ -131,7 +171,17 @@ function getTag(item) {
 
 function getHref(item) {
   if (isMobile.value) return undefined;
-  return isDatePassed(item) || item.active ? item.url : undefined;
+  if (!item.url) return undefined;
+
+  // если событие не прошло и не активно — ссылки быть не должно
+  if (!isDatePassed(item) && !item.active) {
+    return undefined;
+  }
+
+  return item.url;
+}
+function isExternal(url) {
+  return /^https?:\/\//.test(url);
 }
 
 function onItemClick(item) {
@@ -146,8 +196,9 @@ function updateIsMobile() {
   isMobile.value = window.innerWidth <= 980;
 }
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener("resize", updateIsMobile);
+  await loadTeamtrackItems();
 });
 
 onUnmounted(() => {

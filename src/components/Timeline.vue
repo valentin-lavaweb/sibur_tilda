@@ -5,6 +5,7 @@
       <component
         :is="getTag(item)"
         :href="getHref(item)"
+        :target="isExternal(item.url) ? '_blank' : undefined"
         v-for="(item, idx) in items"
         :key="item.id"
         class="item"
@@ -17,6 +18,7 @@
         <component
           :is="getTag(item)"
           :href="getHref(item)"
+          :target="isExternal(item.url) ? '_blank' : undefined"
           class="dot"
           @click="
             () => {
@@ -74,6 +76,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { apiClient } from "@/scripts/api"; // Добавь это в импортах сверху
+
 const items = ref([
   {
     id: 1,
@@ -131,9 +135,20 @@ function getTag(item) {
   return isDatePassed(item) || item.active ? "a" : "div";
 }
 
+function isExternal(url) {
+  return /^https?:\/\//.test(url);
+}
+
 function getHref(item) {
   if (isMobile.value) return undefined;
-  return isDatePassed(item) || item.active ? item.url : undefined;
+  if (!item.url) return undefined;
+
+  // если событие не прошло и не активно — ссылки быть не должно
+  if (!isDatePassed(item) && !item.active) {
+    return undefined;
+  }
+
+  return item.url;
 }
 
 function onItemClick(item) {
@@ -148,8 +163,37 @@ function updateIsMobile() {
   isMobile.value = window.innerWidth <= 980;
 }
 
-onMounted(() => {
+async function loadTimelineItems() {
+  try {
+    const response = await apiClient.get("/v2/timeline-items");
+    const fetchedItems = response.data.data || [];
+
+    // Только первые 6
+    const firstSix = fetchedItems.slice(0, 6);
+
+    firstSix.forEach((itemFromServer, index) => {
+      if (items.value[index]) {
+        items.value[index].title =
+          itemFromServer.title || items.value[index].title;
+        items.value[index].url = itemFromServer.link || items.value[index].url;
+        items.value[index].active =
+          itemFromServer.is_active ?? items.value[index].active;
+
+        // НОВОЕ: заменить только date_from
+        if (itemFromServer.date) {
+          const dateOnly = itemFromServer.date.split("T")[0]; // оставляем только дату без времени
+          items.value[index].date_from = dateOnly + "T00:00:00Z";
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Ошибка загрузки таймлайна:", error);
+  }
+}
+
+onMounted(async () => {
   window.addEventListener("resize", updateIsMobile);
+  await loadTimelineItems();
 });
 
 onUnmounted(() => {

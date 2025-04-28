@@ -51,21 +51,17 @@ export default {
         ...this.queryFilter,
         personal_award_section_id: this.thisSection.id,
       };
-
-      // Специально: issuers должен быть массивом
-      if (filter.issuers && !Array.isArray(filter.issuers)) {
-        filter.issuers = [filter.issuers];
-      }
-
       this.searching = true;
+
       let res = await this.interaction.api.getPersonalAwards(filter, this.page);
-      console.log(res);
+
       let awards = res.data.data;
       this.meta = res.data.meta;
+      console.log(this.meta);
+
       this.awardsList = awards;
       this.searching = false;
     },
-
     changePage(button) {
       if (button.type === "button" && !button.active) {
         this.page = button.page;
@@ -106,17 +102,17 @@ export default {
     },
     queryFilter() {
       let query = this.$route.query;
-
-      return {
+      let filter = {
         name: query.name,
         companies: query.companies,
-        issuers: query.issuer ? [query.issuer] : undefined, // оборачиваем В МАССИВ здесь!
+        issuers: query.issuer ? [query.issuer] : undefined,
+        // issuers: query.issuers,
         grade: query.grade,
         year: query.year,
         limit: 32,
       };
+      return filter;
     },
-
     filterYear: {
       get() {
         return this.$route.query.year ?? undefined;
@@ -151,16 +147,22 @@ export default {
     },
     filterIssuers: {
       get() {
-        const issuer = this.$route.query.issuer;
-        return issuer ?? undefined; // всегда строка или undefined
+        return this.$route.query.issuer ?? undefined;
+        // let issuers = this.$route.query.issuers;
+        // if(issuers){
+        //     return String(issuers).split(',');
+        // }else{
+        //     return [];
+        // }
       },
       set(value) {
         this.$router.replace({
-          query: { ...this.$route.query, issuer: value || undefined },
+          query: { ...this.$route.query, issuer: value },
         });
+        // let string = issuers.length > 0 ? issuers.join(',') : undefined;
+        // this.$router.replace({query:{...this.$route.query, issuers: string}})
       },
     },
-
     filterGrade: {
       get() {
         return this.$route.query.grade ?? undefined;
@@ -353,6 +355,9 @@ export default {
 <template>
   <div class="wrapper">
     <header_comp />
+    <!-- <div class="bg-element img-animate-gsap">
+      <img src="/img/background_page/team_track_winners.svg" alt="" />
+    </div> -->
     <Timeline />
     <Teamtrack />
     <div class="wrapper-block personal">

@@ -13,7 +13,7 @@ export default {
   components: {},
   methods() {},
   mounted() {
-    console.log("Personal sections:", this.personalSections);
+    // console.log("Personal sections:", this.personalSections);
   },
   computed: {
     personalSections() {

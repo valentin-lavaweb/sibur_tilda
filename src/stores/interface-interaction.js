@@ -206,40 +206,64 @@ export const useGameStore = defineStore("interface", {
       this.dictionary = result;
     },
 
-    // async loadNews(page = 1) {
-    //   const res = await this.api.getNews(page);
-    //   this.news = res.data.data;
-    //   this.newsMeta = res.data.meta;
-    // },
+    async loadAllNews() {
+      this.news = [];
+      const perPage = this.newsMeta.perPage || 5;
+      const lastPage = this.newsMeta.lastPage || 1;
 
+      for (let page = 1; page <= lastPage; page++) {
+        const res = await this.api.getNews(page);
+        if (Array.isArray(res.data.data)) {
+          this.news.push(...res.data.data);
+        }
+      }
+    },
     async loadNews(page = 1) {
-      const totalItems = 15;
-      const perPage = this.newsMeta.perPage;
+      try {
+        this.news = null; // очищаем старое
+        const res = await this.api.getNews(page);
+        const realNews = res.data.data;
+        const meta = res.data.meta;
+        console.log(meta);
 
+        if (Array.isArray(realNews) && realNews.length > 0) {
+          this.news = realNews;
+          this.newsMeta = meta;
+          return;
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки реальных новостей", error);
+      }
+
+      // --- ЕСЛИ НЕ ПОЛУЧИЛОСЬ ЗАГРУЗИТЬ ---
+
+      // Параметры фейковых новостей
+      const totalItems = 15;
+      const perPage = 5;
+      const lastPage = Math.ceil(totalItems / perPage);
+
+      // Генерация всех фейковых новостей
       const fakeNews = Array.from({ length: totalItems }, (_, i) => ({
-        id: i,
+        id: i + 1,
         title: `Новость ${i + 1}`,
         content: `Содержимое новости ${i + 1}`,
-        published_at: new Date().toISOString(),
-        preview: `Превью для новости ${i + 1}`,
+        published_at: new Date(Date.now() - i * 86400000).toISOString(),
         previewInfo: {
-          uuid: "uuid",
           url: `/img/newsPlaceholder${(i + 1) % 2}.png`,
-          originalName: "preview.jpg",
-          extension: "jpg",
-          size: 12345,
         },
         gallery: [],
       }));
 
+      // Оставляем только нужную страницу
       const start = (page - 1) * perPage;
       const end = start + perPage;
+      const paginatedNews = fakeNews.slice(start, end);
 
-      this.news = fakeNews.slice(start, end);
+      this.news = paginatedNews;
       this.newsMeta = {
-        perPage,
+        perPage: perPage,
         currentPage: page,
-        lastPage: Math.ceil(totalItems / perPage),
+        lastPage: lastPage,
         total: totalItems,
         from: start + 1,
         to: Math.min(end, totalItems),
@@ -249,22 +273,35 @@ export const useGameStore = defineStore("interface", {
     /** загрузить одну новость */
     async loadNewsById(id) {
       const newsId = parseInt(id);
-      const fakeNews = Array.from({ length: 15 }, (_, i) => ({
-        id: i + 1,
-        title: `Новость ${i + 1}`,
-        content: `
-				<p>Это подробное описание новости с ID №${
-          i + 1
-        }. Здесь можно писать текст. Можно писать много текста. Всё это сделано для того, чтобы протестировать как будет выглядеть данный блок, если описание новости будет длинной.
-			`,
-        published_at: new Date(Date.now() - i * 86400000).toISOString(), // разная дата
-        previewInfo: {
-          url: "/img/newsPlaceholder.png",
-        },
-        gallery: [],
-      }));
 
-      this.currentNews = fakeNews.find((item) => item.id === newsId) || null;
+      // Если новостей нет или их меньше чем общее количество — подгружаем все страницы
+      if (!this.news || this.news.length < this.newsMeta.total) {
+        await this.loadAllNews();
+      }
+
+      // Пытаемся найти новость среди загруженных
+      this.currentNews = this.news.find((item) => item.id === newsId) || null;
+
+      // Если всё равно не нашли — пробуем среди фейковых (если надо)
+      if (!this.currentNews) {
+        const totalItems = 15;
+        const fakeNews = Array.from({ length: totalItems }, (_, i) => ({
+          id: i + 1,
+          title: `Новость ${i + 1}`,
+          content: `
+					<p>Это подробное описание новости с ID №${
+            i + 1
+          }. Здесь можно писать текст для проверки отображения длинного описания.</p>
+				`,
+          published_at: new Date(Date.now() - i * 86400000).toISOString(),
+          previewInfo: {
+            url: `/img/newsPlaceholder${(i + 1) % 2}.png`,
+          },
+          gallery: [],
+        }));
+
+        this.currentNews = fakeNews.find((item) => item.id === newsId) || null;
+      }
     },
 
     async login(email, password) {

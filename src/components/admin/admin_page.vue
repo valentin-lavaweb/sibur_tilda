@@ -142,6 +142,13 @@ export default {
           >
             галерея
           </div>
+          <div
+            class="tab"
+            :class="{ active: this.$route.name == 'timelines' }"
+            @click="this.$router.push({ name: 'timelines' })"
+          >
+            Таймлайны
+          </div>
         </section>
         <section class="content_table" ref="tableContainer">
           <RouterView :search="searchValue" />

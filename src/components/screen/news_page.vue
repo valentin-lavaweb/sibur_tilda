@@ -8,24 +8,24 @@ import Teamtrack from "../Teamtrack.vue";
 export default {
   name: "news_page",
   components: { header_comp, footer_comp, Timeline, Teamtrack },
+  data() {
+    return {
+      interaction: useGameStore(),
+      page: parseInt(this.$route.query.page) || 1,
+    };
+  },
   computed: {
     paginationPages() {
       const total = this.interaction.newsMeta.lastPage;
       const current = this.page;
-      const delta = 1; // сколько соседей показывать слева/справа
-
+      const delta = 1;
       const pages = [];
 
       if (total <= 7) {
-        // если мало страниц — показываем все
         for (let i = 1; i <= total; i++) pages.push(i);
       } else {
         pages.push(1);
-
-        if (current - delta > 2) {
-          pages.push("...");
-        }
-
+        if (current - delta > 2) pages.push("...");
         for (
           let i = Math.max(2, current - delta);
           i <= Math.min(total - 1, current + delta);
@@ -33,22 +33,12 @@ export default {
         ) {
           pages.push(i);
         }
-
-        if (current + delta < total - 1) {
-          pages.push("...");
-        }
-
+        if (current + delta < total - 1) pages.push("...");
         pages.push(total);
       }
 
       return pages;
     },
-  },
-  data() {
-    return {
-      interaction: useGameStore(),
-      page: parseInt(this.$route.query.page) || 1,
-    };
   },
   methods: {
     formatDate(iso) {
@@ -94,16 +84,19 @@ export default {
       <!-- список новостей -->
       <div v-else class="newsList">
         <router-link
-          :to="{ name: 'news_item', params: { id: item.id + 1 } }"
           v-for="item in interaction.news"
           :key="item.id"
+          :to="{ name: 'news_item', params: { id: item.id } }"
           class="newsItem"
         >
           <div class="imageBlock">
-            <img :src="item.previewInfo.url" :alt="item.title" />
+            <img
+              :src="item.previewInfo?.url || '/img/newsPlaceholder1.png'"
+              :alt="item.title"
+            />
           </div>
           <div class="newsTitle">{{ item.title }}</div>
-          <div class="newsDescription">{{ item.preview }}</div>
+          <div class="newsDescription">{{ item.content }}</div>
           <div class="newsDate">{{ formatDate(item.published_at) }}</div>
         </router-link>
       </div>
@@ -112,7 +105,6 @@ export default {
       <div v-if="interaction.newsMeta.lastPage > 1" class="pagination">
         <button :disabled="page === 1" @click="goTo(page - 1)">‹ Назад</button>
 
-        <!-- динамичные кнопки -->
         <button
           v-for="p in paginationPages"
           :key="p + '_'"
@@ -144,7 +136,7 @@ export default {
 .wrapper-block {
   width: 100%;
   max-width: 1326px;
-  padding: 0px 0px 0px 0px;
+  padding: 0px 0px 50px 0px;
 }
 
 .pageTitle {

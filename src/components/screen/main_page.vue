@@ -23,6 +23,7 @@ export default {
 
       // прогресс текущий у командного трека
       progress: 0,
+      showBannerTrack: false,
       isMobile: window.innerWidth <= 480,
     };
   },
@@ -34,6 +35,9 @@ export default {
     editable_text,
   },
   methods: {
+    checkScreenWidth() {
+      this.isMobile = window.innerWidth <= 480;
+    },
     nextSlide() {
       // не выходим за границы
       if (this.sliderIndex < this.interaction.news.length - 1) {
@@ -114,6 +118,23 @@ export default {
       window.removeEventListener("touchmove", this.onDragMove);
       window.removeEventListener("touchend", this.onDragEnd);
     },
+
+    checkBannerTrackVisibility() {
+      const teamTrackElement = this.$el.querySelector(".energyContainer"); // находим energyContainer
+      if (!teamTrackElement) return;
+
+      const rect = teamTrackElement.getBoundingClientRect();
+      const offsetTop = rect.top + window.scrollY; // позиция элемента от начала страницы
+
+      const scrollPosition = window.scrollY; // сколько мы проскроллили сейчас
+
+      // если мы проскроллили больше чем 600px ОТ energyContainer
+      if (scrollPosition > offsetTop - 500) {
+        this.showBannerTrack = true;
+      } else {
+        this.showBannerTrack = false;
+      }
+    },
   },
   async mounted() {
     // gsap.from(".img-animate-gsap", {
@@ -133,9 +154,12 @@ export default {
     await this.interaction.loadNews(1);
     window.addEventListener("resize", this.checkScreenWidth);
     this.checkScreenWidth();
+
+    window.addEventListener("scroll", this.checkBannerTrackVisibility);
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.checkScreenWidth);
+    window.removeEventListener("scroll", this.checkBannerTrackVisibility);
   },
   computed: {
     sliderTransform() {
@@ -178,22 +202,6 @@ export default {
           <img src="/img/light.png" />
         </div>
       </div>
-
-      <div class="bannerTrack">
-        <div class="cup"></div>
-        <div class="line">
-          <div
-            class="filledLine"
-            :style="
-              isMobile
-                ? { width: filledWidthPercent }
-                : { height: filledHeightPercent }
-            "
-          >
-            {{ Math.round(progress * 100) }}%
-          </div>
-        </div>
-      </div>
     </div>
     <div class="newsBannerContainer contentBlock fullScreen z-1">
       <div class="newsBanner">
@@ -234,10 +242,14 @@ export default {
           >
             <div class="image">
               <img
-                :src="post.previewInfo.url"
-                :alt="post.previewInfo.originalName"
+                :src="post.previewInfo?.url || '/img/newsPlaceholder1.png'"
+                :alt="post.previewInfo?.originalName || 'Новость'"
               />
-              <div class="goToBlock">Перейти</div>
+              <RouterLink
+                :to="{ name: 'news_item', params: { id: post.id } }"
+                class="goToBlock"
+                >Перейти</RouterLink
+              >
             </div>
             <div class="title">{{ post.title }}</div>
             <div class="description">{{ post.content }}</div>
@@ -249,6 +261,21 @@ export default {
       </div>
     </div>
     <footer_comp />
+    <div class="bannerTrack" :class="{ active: !showBannerTrack }">
+      <div class="cup"></div>
+      <div class="line">
+        <div
+          class="filledLine"
+          :style="
+            isMobile
+              ? { width: filledWidthPercent }
+              : { height: filledHeightPercent }
+          "
+        >
+          {{ Math.round(progress * 100) }}%
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -360,9 +387,9 @@ $logoWidth: 175px;
 }
 
 .bannerTrack {
-  //   display: none;
-  position: absolute;
-  right: 5vw;
+  position: fixed;
+  right: calc(var(--contentPadding) * 0.5);
+  bottom: 60px;
   width: 45px;
   background-color: white;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.25);
@@ -370,7 +397,13 @@ $logoWidth: 175px;
   height: 375px;
   padding: 16px;
   gap: 16px;
-  z-index: 0;
+  z-index: 5;
+  transform: translate(calc(50% + 0px), calc(0% + 0px));
+  transition: 1s;
+
+  &.active {
+    transform: translate(calc(100% + 120px), calc(100% + 120px));
+  }
 
   .cup {
     width: 27px;
@@ -540,7 +573,8 @@ $logoWidth: 175px;
       &:hover {
         .image {
           .goToBlock {
-            transform: translate(0px, 0%);
+            opacity: 1;
+            pointer-events: auto;
           }
         }
       }
@@ -554,16 +588,20 @@ $logoWidth: 175px;
 
         .goToBlock {
           flex-direction: row;
-          padding: 10px 20px;
+          padding: 30px 40px;
           position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          transform: translate(0px, 101%);
+          bottom: 25px;
+          right: 25px;
+          width: fit-content;
+          font-family: ArticulatCF;
+          font-size: 26px;
+          opacity: 0;
+          pointer-events: none;
           transition: 0.25s;
           color: white;
           cursor: pointer;
           background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 15px;
           justify-content: flex-start;
           transition: 0.25s;
 
@@ -601,17 +639,10 @@ $logoWidth: 175px;
   }
 }
 @media (max-width: 1880px) {
-  .bannerTrack {
-    right: 0;
-    left: 2vw;
-    z-index: 1;
-  }
 }
 
 @media (max-width: 1680px) {
   .bannerTrack {
-    left: var(--contentPadding);
-    transform: translate(-50%, 0);
   }
 }
 @media (max-width: 1440px) {
@@ -645,6 +676,11 @@ $logoWidth: 175px;
 
         .image {
           height: 27vw;
+
+          .goToBlock {
+            font-size: 1.8vw;
+            padding: 2vw 3vw;
+          }
         }
 
         .title {
@@ -679,6 +715,10 @@ $logoWidth: 175px;
   .wrapper {
     padding: 130px 0px 0px 0px;
   }
+
+  .bannerTrack {
+    right: var(--contentPadding);
+  }
 }
 @media (max-width: 980px) {
   .banner {
@@ -688,22 +728,22 @@ $logoWidth: 175px;
     }
   }
 
-  .bannerTrack {
-    width: 5vw;
-    padding: 0.9vw 1.7vw;
-    gap: 1.2vw;
+  //   .bannerTrack {
+  //     width: 5vw;
+  //     padding: 0.9vw 1.7vw;
+  //     gap: 1.2vw;
 
-    .cup {
-      width: 3vw;
-      height: 3vw;
-    }
+  //     .cup {
+  //       width: 3vw;
+  //       height: 3vw;
+  //     }
 
-    .line {
-      .filledLine {
-        font-size: 15px;
-      }
-    }
-  }
+  //     .line {
+  //       .filledLine {
+  //         font-size: 15px;
+  //       }
+  //     }
+  //   }
 
   .news {
     gap: 25px;
@@ -721,6 +761,11 @@ $logoWidth: 175px;
 
         .image {
           height: 33vw;
+
+          .goToBlock {
+            font-size: 20px;
+            padding: 20px 25px;
+          }
         }
       }
     }
@@ -770,6 +815,15 @@ $logoWidth: 175px;
           height: 30vw;
           min-height: 30vw;
           border-radius: 4vw;
+
+          .goToBlock {
+            opacity: 1;
+            pointer-events: auto;
+            padding: 3vw 25px;
+            right: 2vw;
+            bottom: 2vw;
+            border-radius: 2vw;
+          }
         }
 
         .title {
@@ -788,21 +842,21 @@ $logoWidth: 175px;
       }
     }
   }
-}
-@media (max-width: 480px) {
-  .energyContainer {
-    margin: 0px 0px 20px 0px;
-  }
+
   .bannerTrack {
-    position: absolute;
     flex-direction: row-reverse;
     width: 70vw;
-    height: 27px;
+    height: 35px;
+    right: unset;
     left: 50%;
-    bottom: 0;
-    padding: 10px;
-    transform: translate(-50%, calc(-2.5vw + 50%));
+    bottom: 4dvh;
+    padding: 12px;
+    transform: translate(-50%, calc(0%));
     margin: 10px 0px 0px 0px;
+
+    &.active {
+      transform: translate(-50%, calc(0%));
+    }
 
     .cup {
       width: 22px;
@@ -823,9 +877,14 @@ $logoWidth: 175px;
         left: 0;
         padding: 0;
         writing-mode: lr;
-        font-size: 13px;
+        font-size: 15px;
       }
     }
+  }
+}
+@media (max-width: 480px) {
+  .energyContainer {
+    margin: 0px 0px 20px 0px;
   }
 
   .news {

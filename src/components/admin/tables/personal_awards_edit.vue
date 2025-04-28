@@ -5,7 +5,7 @@ import TextEdit from "../cells/textEdit.vue";
 
 export default {
   name: "personal_awards_edit",
-  emits: ["done", "cancel"],
+  emits: ["done", "cancel", "upload-image"],
   props: {
     item: Object,
     availableSections: Array,
@@ -19,16 +19,17 @@ export default {
     TextEdit,
   },
   methods: {
-    endEdit(event) {
-      this.$emit("done", this.editItem);
+    uploadImageFile(event) {
+      // 1) достаём выбранный файл из события
+      const file = event.target.files?.[0] || null;
+      // 2) сохраняем его в локальном editItem
+      this.editItem.image = file;
+      // 3) шлём наружу и сам editItem, и сам event
+      this.$emit("upload-image", this.editItem, event);
     },
-    async updateImage(event) {
-      let files = event.target.files || event.dataTransfer.files;
-      if (!files.length) {
-        this.editItem.image = null;
-      } else {
-        this.editItem.image = files[0];
-      }
+
+    endEdit() {
+      this.$emit("done", this.editItem);
     },
     setItem(item) {
       this.editItem = Object.assign({}, item);
@@ -36,32 +37,35 @@ export default {
   },
   computed: {
     imagePath() {
+      // 1) если это File — всегда создаём blob-url
+      if (this.editItem.image instanceof File) {
+        return URL.createObjectURL(this.editItem.image);
+      }
+      // 2) если пришёл info от сервера и там есть url/preview — его можно показать
+      if (this.editItem.imageInfo?.url) {
+        return this.editItem.imageInfo.url;
+      }
+      // 3) если это строка (UUID или полный URL) — как раньше
       if (typeof this.editItem.image === "string") {
         try {
-          let url = new URL(this.editItem.image);
-          return url;
+          return new URL(this.editItem.image);
         } catch {
-          let url = new URL(
+          return new URL(
             "files/" + this.editItem.image,
             import.meta.env.VITE_VUE_APP_API_URL
           );
-          return url;
         }
-      } else if (this.editItem.image === null) {
-        if (this.editItem.gender) {
-          return new URL(
+      }
+      // 4) дефолтный аватар
+      return this.editItem.gender
+        ? new URL(
             "storage/app/public/default_men.svg",
             import.meta.env.VITE_VUE_APP_API_URL
-          );
-        } else {
-          return new URL(
-            "storage/app/public/default_women.svg",
+          )
+        : new URL(
+            "storage/app/public/default.svg",
             import.meta.env.VITE_VUE_APP_API_URL
           );
-        }
-      } else {
-        return URL.createObjectURL(this.editItem.image);
-      }
     },
   },
 };
@@ -153,7 +157,7 @@ export default {
                 :id="`input_edit_${editItem.id}`"
                 class="input input__file"
                 :multiple="false"
-                @change="updateImage($event)"
+                @change="uploadImageFile"
               />
               <label
                 :for="`input_edit_${editItem.id}`"
@@ -200,6 +204,7 @@ export default {
         <div class="content">
           <h2>Второй раздел</h2>
           <select v-model="editItem.second_personal_award_section_id">
+            <option :value="null">Не указано</option>
             <option
               v-for="section in availableSections"
               :key="'second_' + section.id"

@@ -78,11 +78,6 @@ export default {
           }
         }
 
-        console.log(
-          "✅ ПОСЛЕ загрузки данных с сервера",
-          JSON.parse(JSON.stringify(awards))
-        );
-
         this.serverItems = awards;
         this.serverTotalItemsLength = res?.data?.meta?.total ?? awards.length;
       } catch (e) {
@@ -99,9 +94,16 @@ export default {
 
         for (let prop in item) {
           if (prop === "image") {
-            if (item[prop] instanceof File || typeof item[prop] === "string") {
-              updateItem[prop] = item[prop];
+            if (typeof item[prop] === "string") {
+              updateItem[prop] = item[prop]; // UUID уже строкой
+            } else if (item.imageInfo?.uuid) {
+              updateItem[prop] = item.imageInfo.uuid; // если что-то не так, возьми UUID из imageInfo
             }
+            continue;
+          }
+
+          if (prop === "gender") {
+            updateItem[prop] = item[prop] ? 1 : 0;
             continue;
           }
 
@@ -113,19 +115,11 @@ export default {
             continue;
           }
 
-          switch (item[prop]) {
-            case null:
-              updateItem[prop] = null;
-              break;
-            case true:
-              updateItem[prop] = 1;
-              break;
-            case false:
-              updateItem[prop] = 0;
-              break;
-            default:
-              updateItem[prop] = item[prop];
-              break;
+          // Все остальные — null как есть, всё остальное — без изменений
+          if (item[prop] === null) {
+            updateItem[prop] = null;
+          } else {
+            updateItem[prop] = item[prop];
           }
         }
 
@@ -138,27 +132,37 @@ export default {
 
         return newItem;
       } catch (e) {
+        console.error(e);
         this.$toast.error(e.message);
       }
     },
     async updateItem(item) {
       let oldItem = this.serverItems.find((i) => i.id == item.id);
       let oldItemRestore = Object.assign({}, oldItem);
-      if (item.imageInfo?.uuid && item.image?.startsWith("http")) {
-        item.image = item.imageInfo.uuid;
-      }
+
       try {
         let updateItem = {};
 
         for (let prop in item) {
+          if (prop === "imageInfo") {
+            continue; // вообще не отправлять это поле на сервер
+          }
+
           if (prop === "image") {
-            if (item[prop] instanceof File) {
-              updateItem[prop] = item[prop];
+            // отправляем поле image только когда есть новый файл с uuid
+            if (item.imageInfo?.uuid) {
+              updateItem.image = item.imageInfo.uuid;
             }
+            // во всех остальных случаях — пропускаем
             continue;
           }
 
-          // Если поле second_personal_award_section_id пустое или null — не добавлять его вообще
+          if (prop === "gender") {
+            updateItem[prop] = item[prop] ? 1 : 0;
+            continue;
+          }
+
+          // Поле second_personal_award_section_id пропускаем, если пустое
           if (
             prop === "second_personal_award_section_id" &&
             (item[prop] === null || item[prop] === undefined)
@@ -166,37 +170,27 @@ export default {
             continue;
           }
 
-          switch (item[prop]) {
-            case null:
-              updateItem[prop] = null;
-              break;
-            case true:
-              updateItem[prop] = 1;
-              break;
-            case false:
-              updateItem[prop] = 0;
-              break;
-            default:
-              updateItem[prop] = item[prop];
-              break;
+          if (item[prop] === null) {
+            updateItem[prop] = null;
+          } else {
+            updateItem[prop] = item[prop];
           }
         }
-
-        console.log(updateItem);
 
         let res = await this.interaction.api.updatePersonalAward(
           item.id,
           updateItem
         );
-        let newItem = res.data.data;
+        let newItem = res.data;
 
         Object.assign(oldItem, newItem);
 
-        console.log("Ответ сервера при обновлении", res.data);
         this.$toast.success("Данные обновлены");
+        console.log(newItem);
 
         return oldItem;
       } catch (e) {
+        console.log(e);
         setTimeout(() => {
           let oldIdx = this.serverItems.findIndex((i) => i.id == item.id);
           this.serverItems[oldIdx] = oldItemRestore;
@@ -210,7 +204,7 @@ export default {
       let oldItemRestore = Object.assign({}, oldItem);
 
       try {
-        let files = event.target.files || event.dataTransfer.files;
+        const files = event.target.files || event.dataTransfer.files;
         if (!files.length) return;
 
         const file = files[0];
@@ -223,23 +217,10 @@ export default {
           throw new Error("Не удалось загрузить файл");
         }
 
-        // 📥 Сохраняем новый UUID в item.image для БД
-        const newItem = {
-          ...item,
-          image: uploadedFile.uuid,
-          imageInfo: uploadedFile,
-        };
-        console.log("newItem", newItem);
+        item.image = uploadedFile.uuid; // сохраняем UUID
+        item.imageInfo = uploadedFile; // вся информация о файле
 
-        // 📥 Обновляем запись
-        const updated = await this.updateItem(newItem);
-
-        // 👀 Чтобы Vue обновил превьюшку картинки без F5
-        if (updated) {
-          oldItem.image = uploadedFile.url; // показываем загруженное изображение пользователю
-          oldItem.imageInfo = uploadedFile; // сохраняем инфу для последующих правок
-        }
-
+        await this.updateItem(item); // отправляем весь item, не выдёргивая только id и image
         this.$toast.success("Файл загружен и привязан!");
         console.log("файл загружен!");
       } catch (e) {
@@ -251,7 +232,40 @@ export default {
         this.$toast.error(e.message);
       }
     },
+    async handleUploadImage(item, event) {
+      console.log("gg");
+      let oldItem = this.serverItems.find((i) => i.id == item.id);
+      let oldItemRestore = Object.assign({}, oldItem);
+
+      try {
+        const files = event.target.files || event.dataTransfer.files;
+        if (!files.length) return;
+
+        const file = files[0];
+
+        // ⏳ Загружаем файл на сервер
+        let uploadResponse = await this.interaction.api.uploadFile(file);
+        let uploadedFile = uploadResponse.data?.data?.[0];
+
+        if (!uploadedFile || !uploadedFile.uuid) {
+          throw new Error("Не удалось загрузить файл");
+        }
+
+        // item.image = uploadedFile.uuid; // сохраняем UUID
+        item.imageInfo = uploadedFile; // вся информация о файле
+        this.$toast.success("Файл загружен!");
+        console.log("файл загружен!");
+      } catch (e) {
+        console.log("ошибка", e);
+        setTimeout(() => {
+          let oldIdx = this.serverItems.findIndex((i) => i.id == item.id);
+          this.serverItems[oldIdx] = oldItemRestore;
+        }, 500);
+        this.$toast.error(e.message);
+      }
+    },
     async deleteItem(item) {
+      console.log("gg");
       if (!confirm(`Удалить ${item.name}?`)) return;
 
       let oldIdx = this.serverItems.findIndex((i) => i.id == item.id);
@@ -276,9 +290,13 @@ export default {
     },
     async editItem(item) {
       this.onEditDone = async (item) => {
-        let updItem = await this.updateItem(item);
-        if (!updItem) return;
-        this.editItem(updItem);
+        // 🛠 Если есть загруженное новое изображение — подставляем UUID
+        console.log(item);
+        if (item.imageInfo?.uuid) {
+          item.image = item.imageInfo.uuid;
+        }
+        await this.updateItem(item);
+        this.editedItem = null;
       };
       this.editedItem = item;
       this.$refs.editForm?.setItem(item);
@@ -289,7 +307,14 @@ export default {
         if (!newItem) return;
         this.editItem(newItem);
       };
-      this.editedItem = Object.assign({}, item, { id: undefined, image: null });
+      this.editedItem = Object.assign({}, item, {
+        id: undefined,
+        image: null,
+        // вместо availableSections[0]?.id делаем null
+        personal_award_section_id: availableSections[0]?.id,
+        second_personal_award_section_id: null,
+        year: new Date().getFullYear(),
+      });
     },
   },
   created() {
@@ -346,6 +371,7 @@ export default {
           :item="editedItem"
           @done="onEditDone"
           @cancel="editedItem = null"
+          @upload-image="(item, ev) => handleUploadImage(item, ev)"
           v-if="editedItem"
           ref="editForm"
           :availableSections="availableSections"
@@ -513,10 +539,14 @@ export default {
               {{ section.title }}
             </option>
           </select>
+          <!-- Второй раздел: добавляем «пустой» вариант -->
           <select
             v-model="item.second_personal_award_section_id"
             @change="updateItem(item)"
           >
+            <!-- Пустой вариант -->
+            <option :value="null">Не указан</option>
+            <!-- Сами разделы -->
             <option
               v-for="section in availableSections"
               :key="'second_' + section.id"
