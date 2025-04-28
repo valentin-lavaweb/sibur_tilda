@@ -83,9 +83,12 @@ const nextNewsId = computed(() => {
   return null;
 });
 
-const isFakeNews = computed(() => {
-  return store.news?.some((item) => item.id <= 15); // если id маленькие — значит фейковые
-});
+const isVideo = (url) => {
+  return (
+    url &&
+    (url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg"))
+  );
+};
 </script>
 
 <template>
@@ -108,14 +111,25 @@ const isFakeNews = computed(() => {
         <div class="whiteBlock">
           <h1 class="newsTitle">{{ store.currentNews.title }}</h1>
           <div class="image">
-            <img
-              :src="
-                store.currentNews.previewInfo?.url ||
-                '/img/newsPlaceholder1.png'
-              "
-              class="newsImage"
-              :alt="store.currentNews.title"
-            />
+            <template v-if="isVideo(store.currentNews.gallery[0]?.url)">
+              <video
+                :src="store.currentNews.gallery[0]?.url"
+                controls
+                muted
+                playsinline
+                class="newsImage"
+              ></video>
+            </template>
+            <template v-else>
+              <img
+                :src="
+                  store.currentNews.gallery[0]?.url ||
+                  '/img/newsPlaceholder1.png'
+                "
+                class="newsImage"
+                :alt="store.currentNews.title"
+              />
+            </template>
           </div>
           <div class="newsContent" v-html="store.currentNews.content" />
           <div class="newsDate">
@@ -180,11 +194,28 @@ const isFakeNews = computed(() => {
   width: 100%;
   height: 575px;
 
-  img {
+  img,
+  video {
     position: absolute;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  video {
+    &:fullscreen,
+    &:-webkit-full-screen,
+    &:-moz-full-screen,
+    &:-ms-fullscreen,
+    &::backdrop {
+      object-fit: contain;
+      &::backdrop {
+        object-fit: contain;
+      }
+    }
+  }
+  video:where(:fullscreen) {
+    object-fit: contain;
   }
 }
 .newsTitle {

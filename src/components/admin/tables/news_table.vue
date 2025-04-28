@@ -15,8 +15,8 @@
           <th>ID</th>
           <th>Заголовок</th>
           <th>Содержание</th>
-          <th>Предпросмотр</th>
-          <th>Галерея</th>
+          <th>Изображение на гл. странице</th>
+          <th>Изображение</th>
           <th @click="toggleSort" style="cursor: pointer; user-select: none">
             Дата публикации
             <span v-if="sortDirection === 'asc'">▲</span>
@@ -50,10 +50,10 @@
               style="width: 100%"
             ></textarea>
           </td>
-          <td>
+          <td class="center">
             <input type="file" @change="onPreviewChange($event, row)" />
           </td>
-          <td>
+          <td class="center">
             <input type="file" @change="onGalleryChange($event, row)" />
           </td>
           <td>
@@ -99,26 +99,41 @@
                 style="width: 100%"
               ></textarea>
             </td>
-            <td>
+            <td class="center">
               <div v-if="editingMap[item.id].row.previewInfo?.url">
-                <img
-                  :src="editingMap[item.id].row.previewInfo.url"
-                  style="max-width: 100px; margin-bottom: 4px"
-                />
+                <template
+                  v-if="isVideo(editingMap[item.id].row.previewInfo.url)"
+                >
+                  <video
+                    :src="editingMap[item.id].row.previewInfo.url"
+                    muted
+                    playsinline
+                    style="max-width: 100px; margin-bottom: 4px"
+                  ></video>
+                </template>
+                <template v-else>
+                  <img
+                    :src="editingMap[item.id].row.previewInfo.url"
+                    style="max-width: 100px; margin-bottom: 4px"
+                  />
+                </template>
               </div>
               <input
                 type="file"
                 @change="onPreviewChange($event, editingMap[item.id].row)"
               />
             </td>
-            <td>
+            <td class="center">
               <div v-if="editingMap[item.id].row.gallery?.length">
-                <img
-                  v-for="(g, i) in editingMap[item.id].row.gallery"
-                  :key="i"
-                  :src="g.url"
-                  style="max-width: 80px; margin-right: 4px; margin-bottom: 4px"
-                />
+                <template v-for="(g, i) in item.gallery" :key="i">
+                  <video
+                    v-if="isVideo(g.url)"
+                    :src="g.url"
+                    muted
+                    playsinline
+                  ></video>
+                  <img v-else :src="g.url" />
+                </template>
               </div>
               <input
                 type="file"
@@ -160,20 +175,28 @@
             <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
-            <td>
-              <img
-                v-if="item.previewInfo?.url"
-                :src="item.previewInfo.url"
-                style="max-width: 100px"
-              />
+            <td class="center">
+              <template v-if="item.previewInfo?.url">
+                <video
+                  v-if="isVideo(item.previewInfo.url)"
+                  :src="item.previewInfo.url"
+                  controls
+                  muted
+                  playsinline
+                ></video>
+                <img v-else :src="item.previewInfo.url" />
+              </template>
             </td>
-            <td>
-              <img
-                v-for="(g, i) in item.gallery"
-                :key="i"
-                :src="g.url"
-                style="max-width: 80px; margin-right: 4px"
-              />
+            <td class="center">
+              <template v-for="(g, i) in item.gallery" :key="i">
+                <video
+                  v-if="isVideo(g.url)"
+                  :src="g.url"
+                  muted
+                  playsinline
+                ></video>
+                <img v-else :src="g.url" />
+              </template>
             </td>
             <td>{{ new Date(item.published_at).toLocaleString() }}</td>
             <td>
@@ -195,19 +218,54 @@
         </tr>
       </tbody>
     </table>
+    <div v-if="totalPages > 1" class="pagination">
+      <button @click="prevPage" :disabled="currentPage <= 1">‹ Назад</button>
+
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        @click="goToPage(page)"
+        :class="{ active: page === currentPage }"
+        style="margin: 0 4px"
+      >
+        {{ page }}
+      </button>
+
+      <button @click="nextPage" :disabled="currentPage >= totalPages">
+        Вперёд ›
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { authClient, apiClient } from "@/scripts/api";
 import api from "@/scripts/api";
 
 const newsList = ref([]);
 const editingRows = ref([]);
 const sortDirection = ref("desc");
+const currentPage = ref(
+  parseInt(new URLSearchParams(window.location.search).get("page")) || 1
+);
+const totalPages = ref(1);
 
-// 1) Сортировка
+const isVideo = (url) => {
+  return (
+    url &&
+    (url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg"))
+  );
+};
+
+function formatDateForInput(date) {
+  const d = new Date(date);
+  const offset = d.getTimezoneOffset();
+  d.setMinutes(d.getMinutes() - offset);
+  return d.toISOString().slice(0, 16);
+}
+
+// 1) Сортировка новостей
 const sortedNews = computed(() => {
   return [...newsList.value].sort((a, b) => {
     const da = new Date(a.published_at).getTime();
@@ -215,11 +273,12 @@ const sortedNews = computed(() => {
     return sortDirection.value === "asc" ? da - db : db - da;
   });
 });
+
 function toggleSort() {
   sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
 }
 
-// 2) Для новых строк и для мапы редактирования
+// 2) Новые строки (добавляем новости) и редактируемые строки
 const newRows = computed(() => editingRows.value.filter((r) => !r.id));
 const editingMap = computed(() => {
   const map = {};
@@ -229,18 +288,22 @@ const editingMap = computed(() => {
   return map;
 });
 
-// 3) Загрузка
-async function loadNews() {
+// 3) Загрузка новостей
+async function loadNews(page = 1) {
   try {
-    const { data } = await apiClient.get("v2/news");
-    // Возможно, оборачивает в data.data:
-    newsList.value = data.data ?? data;
+    const { data } = await apiClient.get(`v2/news?page=${page}`);
+    newsList.value = data.data ?? [];
+    currentPage.value = data.meta?.currentPage ?? 1;
+    totalPages.value = data.meta?.lastPage ?? 1;
+    console.log("Новости:", data.data);
+    console.log("Мета:", data.meta);
+    console.log(totalPages);
   } catch (e) {
     console.error("Ошибка загрузки новостей", e);
   }
 }
 
-// 4) Создание новой строки
+// 4) Добавить новую новость
 function addNewsRow() {
   editingRows.value.unshift({
     title: "",
@@ -252,14 +315,13 @@ function addNewsRow() {
   });
 }
 
-// 5) Начать редактирование существующей
+// 5) Начать редактирование
 function startEdit(item) {
   editingRows.value.unshift({
     id: item.id,
     title: item.title,
     content: item.content,
-    published_at: new Date(item.published_at).toISOString().slice(0, 16),
-    // кладём текущие info, чтобы показать превью и галерею
+    published_at: formatDateForInput(item.published_at),
     previewInfo: item.previewInfo || {},
     gallery: item.gallery || [],
     previewFile: null,
@@ -268,12 +330,12 @@ function startEdit(item) {
   });
 }
 
-// 6) Отменить
+// 6) Отменить редактирование
 function cancelEdit(index) {
   editingRows.value.splice(index, 1);
 }
 
-// 7) Обработчики выбора файлов
+// 7) Изменение файлов
 function onPreviewChange(e, row) {
   const f = e.target.files[0];
   if (f) row.previewFile = f;
@@ -283,18 +345,17 @@ function onGalleryChange(e, row) {
   row.galleryFiles = f ? [f] : [];
 }
 
-// 8) Сохранение (POST / PUT)
+// 8) Сохранение новости
 async function saveNews(row, index) {
   row.isSaving = true;
   try {
-    // CSRF для Sanctum
     await authClient.get("/sanctum/csrf-cookie");
 
-    // собираем FormData
     const form = new FormData();
     form.append("title", row.title);
     form.append("content", row.content);
     form.append("published_at", new Date(row.published_at).toISOString());
+
     if (row.previewFile) {
       const pf = new FormData();
       pf.append("files[]", row.previewFile);
@@ -314,7 +375,6 @@ async function saveNews(row, index) {
         galleryIds.push(uploadRes.data.data[0].uuid);
       }
     } else if (row.gallery?.length) {
-      // Берём старые ID из существующей галереи
       galleryIds = row.gallery.map((g) => g.uuid);
     }
 
@@ -322,14 +382,12 @@ async function saveNews(row, index) {
 
     let resp;
     if (row.id) {
-      // добавляем Laravel-спуфер
       form.append("_method", "PUT");
       resp = await apiClient.post(`v2/news/${row.id}`, form);
     } else {
       resp = await apiClient.post("v2/news", form);
     }
 
-    // извлекаем объект новости из ответа
     const item = resp.data.data ?? resp.data ?? resp;
     if (row.id) {
       const i = newsList.value.findIndex((n) => n.id === row.id);
@@ -338,7 +396,6 @@ async function saveNews(row, index) {
       newsList.value.unshift(item);
     }
 
-    // закрываем режим редактирования
     cancelEdit(index);
   } catch (e) {
     console.error("Ошибка при сохранении", e);
@@ -348,7 +405,7 @@ async function saveNews(row, index) {
   }
 }
 
-// 9) Удаление
+// 9) Удаление новости
 async function deleteNews(item) {
   if (!window.confirm("Вы точно хотите удалить эту новость?")) return;
   try {
@@ -360,7 +417,34 @@ async function deleteNews(item) {
   }
 }
 
-onMounted(loadNews);
+// --- Новая логика переходов между страницами ---
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    const query = new URLSearchParams(window.location.search);
+    query.set("page", page);
+    window.history.pushState(null, "", `${window.location.pathname}?${query}`);
+    loadNews(page);
+  }
+}
+
+function prevPage() {
+  goToPage(currentPage.value - 1);
+}
+
+function nextPage() {
+  goToPage(currentPage.value + 1);
+}
+
+// Когда юзер нажал назад/вперед в браузере
+window.addEventListener("popstate", () => {
+  const page =
+    parseInt(new URLSearchParams(window.location.search).get("page")) || 1;
+  loadNews(page);
+});
+
+// При открытии компонента
+onMounted(() => loadNews(currentPage.value));
 </script>
 
 <style scoped lang="scss">
@@ -371,8 +455,20 @@ onMounted(loadNews);
     background: #f0f0f0;
     color: var(--nipigasColorMain);
   }
-  img {
+  img,
+  video {
+    max-width: 100px;
     display: block;
+    margin: auto;
+  }
+
+  video {
+    &:fullscreen,
+    &:-webkit-full-screen,
+    &:-moz-full-screen,
+    &:-ms-fullscreen {
+      object-fit: contain;
+    }
   }
 
   tr {
@@ -380,6 +476,11 @@ onMounted(loadNews);
       &:last-child {
         margin: auto;
         text-align: center;
+      }
+
+      &.center {
+        text-align: center;
+        margin: auto;
       }
     }
   }
@@ -404,6 +505,12 @@ onMounted(loadNews);
       color: white;
     }
   }
+}
+
+.pagination {
+  flex-direction: row;
+  gap: 2px;
+  margin: 20px 0px 0px 0px;
 }
 
 .buttonBlock {

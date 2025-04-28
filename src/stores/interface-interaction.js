@@ -164,6 +164,7 @@ export const useGameStore = defineStore("interface", {
     async loadSections() {
       let sections = await this.api.getPersonalAwardSections();
       this.personalSections = sections.data.data;
+      console.log(this.personalSections);
     },
     async loadCommandAwards() {
       let awards = await this.api.getCommandAwards();
@@ -224,10 +225,12 @@ export const useGameStore = defineStore("interface", {
         const res = await this.api.getNews(page);
         const realNews = res.data.data;
         const meta = res.data.meta;
-        console.log(meta);
+        console.log(realNews);
 
         if (Array.isArray(realNews) && realNews.length > 0) {
-          this.news = realNews;
+          this.news = realNews.sort(
+            (a, b) => new Date(b.published_at) - new Date(a.published_at)
+          );
           this.newsMeta = meta;
           return;
         }

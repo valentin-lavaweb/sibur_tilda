@@ -85,7 +85,7 @@ const items = ref([
     date_from: "2025-04-16T00:00:00Z",
     date_to: "2025-05-16T00:00:00Z",
     active: false,
-    opened: false,
+    opened: true,
   },
   {
     id: 2,
@@ -145,6 +145,10 @@ async function loadTeamtrackItems() {
         if (itemFromServer.date) {
           const dateOnly = itemFromServer.date.split("T")[0];
           items.value[index].date_from = dateOnly + "T00:00:00Z";
+        }
+        if (itemFromServer.date_end) {
+          const dateOnlyEnd = itemFromServer.date_end.split("T")[0];
+          items.value[index].date_to = dateOnlyEnd + "T00:00:00Z";
         }
 
         // Теперь внимание:

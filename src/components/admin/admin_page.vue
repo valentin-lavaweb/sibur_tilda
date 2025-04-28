@@ -64,6 +64,10 @@ export default {
     });
 
     this.checkAuth();
+
+    if (this.$route.name === "admin_page") {
+      this.$router.replace({ name: "news_table" });
+    }
   },
   computed: {},
   watch: {},
@@ -103,7 +107,7 @@ export default {
           />
         </div>
         <section class="section_tabs">
-          <div
+          <!-- <div
             class="tab"
             :class="{ active: this.$route.name == 'command_awards_table' }"
             @click="this.$router.push({ name: 'command_awards_table' })"
@@ -130,17 +134,17 @@ export default {
           </div>
           <div
             class="tab"
-            :class="{ active: this.$route.name == 'news_table' }"
-            @click="this.$router.push({ name: 'news_table' })"
-          >
-            новости
-          </div>
-          <div
-            class="tab"
             :class="{ active: this.$route.name == 'gallery_table' }"
             @click="this.$router.push({ name: 'gallery_table' })"
           >
             галерея
+          </div> -->
+          <div
+            class="tab"
+            :class="{ active: this.$route.name == 'news_table' }"
+            @click="this.$router.push({ name: 'news_table' })"
+          >
+            Новости
           </div>
           <div
             class="tab"

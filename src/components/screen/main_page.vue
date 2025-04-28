@@ -261,7 +261,7 @@ export default {
       </div>
     </div>
     <footer_comp />
-    <div class="bannerTrack" :class="{ active: !showBannerTrack }">
+    <div class="bannerTrack" :class="{ active: showBannerTrack }">
       <div class="cup"></div>
       <div class="line">
         <div
@@ -398,11 +398,11 @@ $logoWidth: 175px;
   padding: 16px;
   gap: 16px;
   z-index: 5;
-  transform: translate(calc(50% + 0px), calc(0% + 0px));
   transition: 1s;
+  transform: translate(calc(100% + 120px), calc(100% + 120px));
 
   &.active {
-    transform: translate(calc(100% + 120px), calc(100% + 120px));
+    transform: translate(calc(50% + 0px), calc(0% + 0px));
   }
 
   .cup {
@@ -648,6 +648,8 @@ $logoWidth: 175px;
 @media (max-width: 1440px) {
   .bannerTrack {
     max-height: 70%;
+    right: var(--contentPadding);
+    // transform: calc();
   }
   .contentBlock {
     max-width: unset;

@@ -24,7 +24,7 @@
 
               <div class="inputBlock">
                 <label class="inputLabel">ДО</label>
-                <input v-model="item.date_to" type="date" readonly />
+                <input v-model="item.date_to" type="date" />
               </div>
             </div>
 
@@ -68,15 +68,11 @@
             <div class="dateBlock">
               <div class="inputBlock">
                 <label class="inputLabel">ОТ</label>
-                <input
-                  v-model="item.date"
-                  type="date"
-                  :readonly="index === 1"
-                />
+                <input v-model="item.date" type="date" />
               </div>
               <div class="inputBlock">
                 <label class="inputLabel">до</label>
-                <input v-model="item.date_to" type="date" readonly />
+                <input v-model="item.date_to" type="date" />
               </div>
             </div>
 
@@ -124,6 +120,8 @@ async function loadTimelineItems() {
     timelineItems.value = items.map((item) => ({
       ...item,
       date: item.date ? item.date.split("T")[0] : "",
+      date_to: item.date_end ? item.date_end.split("T")[0] : "", // ДЛЯ ИНПУТА
+      date_end: item.date_end ? item.date_end.split("T")[0] : "", // ДЛЯ СОХРАНЕНИЯ
     }));
 
     // Копируем оригинальные данные
@@ -135,10 +133,12 @@ async function loadTimelineItems() {
 
 async function saveItem(item) {
   try {
+    item.date_end = item.date_to;
     const payload = {
       title: item.title,
       link: item.link,
       date: item.date ? item.date + "T00:00:00+03:00" : null,
+      date_end: item.date_end ? item.date_end + "T00:00:00+03:00" : null, // <== добавляем
       is_active: item.is_active,
       description: item.description ?? "",
     };
@@ -167,12 +167,13 @@ async function saveItem(item) {
 // Функция сравнения айтема с оригиналом
 function isItemChanged(item) {
   const original = originalItems.value.find((i) => i.id === item.id);
-  if (!original) return true; // Если нет оригинала, считаем изменённым
+  if (!original) return true;
 
   return (
     item.title !== original.title ||
     item.link !== original.link ||
     item.date !== original.date ||
+    item.date_to !== original.date_to ||
     item.is_active !== original.is_active
   );
 }

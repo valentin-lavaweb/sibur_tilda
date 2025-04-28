@@ -59,7 +59,6 @@ export default {
 
       this.searching = true;
       let res = await this.interaction.api.getPersonalAwards(filter, this.page);
-      console.log(res);
       let awards = res.data.data;
       this.meta = res.data.meta;
       this.awardsList = awards;
@@ -98,6 +97,7 @@ export default {
   },
   computed: {
     thisSection() {
+      console.log(this.$route);
       let sectionId = this.$route.params.sectionId;
       let section =
         this.interaction.personalSections.find((s) => s.id == sectionId) ??
@@ -106,11 +106,12 @@ export default {
     },
     queryFilter() {
       let query = this.$route.query;
-
       return {
         name: query.name,
-        companies: query.companies,
-        issuers: query.issuer ? [query.issuer] : undefined, // оборачиваем В МАССИВ здесь!
+        companies: query.companies
+          ? String(query.companies).split(",") // ← разделяем по запятым в массив
+          : undefined,
+        issuers: query.issuer ? [query.issuer] : undefined,
         grade: query.grade,
         year: query.year,
         limit: 32,
@@ -580,6 +581,7 @@ export default {
 .years-container {
   width: fit-content;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
   gap: 20px;

@@ -179,10 +179,17 @@ async function loadTimelineItems() {
         items.value[index].active =
           itemFromServer.is_active ?? items.value[index].active;
 
+        console.log(itemFromServer);
+
         // НОВОЕ: заменить только date_from
         if (itemFromServer.date) {
-          const dateOnly = itemFromServer.date.split("T")[0]; // оставляем только дату без времени
+          const dateOnly = itemFromServer.date.split("T")[0];
           items.value[index].date_from = dateOnly + "T00:00:00Z";
+        }
+
+        if (itemFromServer.date_end) {
+          const dateOnlyEnd = itemFromServer.date_end.split("T")[0];
+          items.value[index].date_to = dateOnlyEnd + "T00:00:00Z";
         }
       }
     });

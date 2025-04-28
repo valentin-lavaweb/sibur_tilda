@@ -51,6 +51,12 @@ export default {
     goTo(newPage) {
       this.$router.push({ name: "news", query: { page: newPage } });
     },
+    isVideo(url) {
+      return (
+        url &&
+        (url.endsWith(".mp4") || url.endsWith(".webm") || url.endsWith(".ogg"))
+      );
+    },
   },
   async beforeRouteEnter(to, from, next) {
     const page = parseInt(to.query.page) || 1;
@@ -90,11 +96,23 @@ export default {
           class="newsItem"
         >
           <div class="imageBlock">
-            <img
-              :src="item.previewInfo?.url || '/img/newsPlaceholder1.png'"
-              :alt="item.title"
-            />
+            <template v-if="isVideo(item.gallery[0]?.url)">
+              <video
+                :src="item.gallery[0]?.url"
+                muted
+                playsinline
+                class="media"
+              ></video>
+            </template>
+            <template v-else>
+              <img
+                :src="item.gallery[0]?.url || '/img/newsPlaceholder1.png'"
+                :alt="item.title"
+                class="media"
+              />
+            </template>
           </div>
+
           <div class="newsTitle">{{ item.title }}</div>
           <div class="newsDescription">{{ item.content }}</div>
           <div class="newsDate">{{ formatDate(item.published_at) }}</div>
@@ -189,7 +207,8 @@ export default {
       border-radius: 25px;
       overflow: hidden;
 
-      img {
+      img,
+      video {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -296,7 +315,7 @@ export default {
 
 @media (max-width: 1060px) {
   .wrapper {
-    padding: 150px 0px 0px 0px;
+    padding: 120px 0px 0px 0px;
   }
 }
 

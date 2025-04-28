@@ -1,13 +1,8 @@
 <template>
-  <div class="news-list" style="margin-bottom: 40px">
-    <h1>Новости</h1>
-
-    <button
-      @click="addNewsRow"
-      style="margin-bottom: 12px; padding: 8px 16px; cursor: pointer"
-    >
-      Добавить новость
-    </button>
+  <div class="newsTableContainer">
+    <div class="buttonBlock">
+      <button @click="addNewsRow">Добавить новость</button>
+    </div>
 
     <table
       border="1"
@@ -17,24 +12,33 @@
     >
       <thead>
         <tr>
+          <th>ID</th>
           <th>Заголовок</th>
           <th>Содержание</th>
-          <th>Дата публикации</th>
+          <th>Изображение на гл. странице</th>
+          <th>Изображение</th>
+          <th @click="toggleSort" style="cursor: pointer; user-select: none">
+            Дата публикации
+            <span v-if="sortDirection === 'asc'">▲</span>
+            <span v-else>▼</span>
+          </th>
           <th>Действия</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Новые строки (без id) -->
+        <!-- Редактируемые новые строки (без id) -->
         <tr
           v-for="(row, idx) in newRows"
           :key="'new-' + idx"
           style="background: #f9f9f9"
         >
+          <!-- title, content, preview, gallery, date, actions -->
+          <td>-</td>
           <td>
             <input
               v-model="row.title"
               type="text"
-              placeholder="Введите заголовок"
+              placeholder="Заголовок"
               style="width: 100%"
             />
           </td>
@@ -42,9 +46,15 @@
             <textarea
               v-model="row.content"
               rows="2"
-              placeholder="Введите содержимое"
+              placeholder="Содержимое"
               style="width: 100%"
             ></textarea>
+          </td>
+          <td>
+            <input type="file" @change="onPreviewChange($event, row)" />
+          </td>
+          <td>
+            <input type="file" @change="onGalleryChange($event, row)" />
           </td>
           <td>
             <input
@@ -57,6 +67,7 @@
             <button
               @click="saveNews(row, editingRows.indexOf(row))"
               :disabled="row.isSaving"
+              style="margin: 0px 10px 0px 0px; cursor: pointer"
             >
               {{ row.isSaving ? "Сохраняем..." : "Сохранить" }}
             </button>
@@ -69,10 +80,11 @@
           </td>
         </tr>
 
-        <!-- Существующие новости -->
-        <tr v-for="item in newsList" :key="item.id">
-          <!-- Если эту новость редактируют -->
+        <!-- Существующие новости, отсортированные -->
+        <tr v-for="item in sortedNews" :key="item.id">
+          <!-- если для этой новости есть запись в editingMap -->
           <template v-if="editingMap[item.id]">
+            <td>{{ item.id }}</td>
             <td>
               <input
                 v-model="editingMap[item.id].row.title"
@@ -88,6 +100,32 @@
               ></textarea>
             </td>
             <td>
+              <div v-if="editingMap[item.id].row.previewInfo?.url">
+                <img
+                  :src="editingMap[item.id].row.previewInfo.url"
+                  style="max-width: 100px; margin-bottom: 4px"
+                />
+              </div>
+              <input
+                type="file"
+                @change="onPreviewChange($event, editingMap[item.id].row)"
+              />
+            </td>
+            <td>
+              <div v-if="editingMap[item.id].row.gallery?.length">
+                <img
+                  v-for="(g, i) in editingMap[item.id].row.gallery"
+                  :key="i"
+                  :src="g.url"
+                  style="max-width: 80px; margin-right: 4px; margin-bottom: 4px"
+                />
+              </div>
+              <input
+                type="file"
+                @change="onGalleryChange($event, editingMap[item.id].row)"
+              />
+            </td>
+            <td>
               <input
                 v-model="editingMap[item.id].row.published_at"
                 type="datetime-local"
@@ -100,6 +138,7 @@
                   saveNews(editingMap[item.id].row, editingMap[item.id].index)
                 "
                 :disabled="editingMap[item.id].row.isSaving"
+                style="margin: 0px 10px 0px 0px; cursor: pointer"
               >
                 {{
                   editingMap[item.id].row.isSaving
@@ -116,31 +155,41 @@
             </td>
           </template>
 
-          <!-- В обычном режиме -->
+          <!-- если не редактируется -->
           <template v-else>
+            <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
+            <td>
+              <img
+                v-if="item.previewInfo?.url"
+                :src="item.previewInfo.url"
+                style="max-width: 100px"
+              />
+            </td>
+            <td>
+              <img
+                v-for="(g, i) in item.gallery"
+                :key="i"
+                :src="g.url"
+                style="max-width: 80px; margin-right: 4px"
+              />
+            </td>
             <td>{{ new Date(item.published_at).toLocaleString() }}</td>
             <td>
               <button
                 @click="deleteNews(item)"
-                style="padding: 4px 8px; cursor: pointer"
+                style="margin: 0px 10px 0px 0px; cursor: pointer"
               >
                 Удалить
               </button>
-              <button
-                @click="startEdit(item)"
-                style="margin-left: 8px; padding: 4px 8px; cursor: pointer"
-              >
-                Редактировать
-              </button>
+              <button @click="startEdit(item)">Редактировать</button>
             </td>
           </template>
         </tr>
 
-        <!-- Заглушка, если нет ни новых, ни существующих -->
         <tr v-if="newsList.length === 0 && newRows.length === 0">
-          <td colspan="4" style="text-align: center; padding: 16px">
+          <td colspan="6" style="text-align: center; padding: 16px">
             Новостей пока нет.
           </td>
         </tr>
@@ -152,11 +201,26 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { authClient, apiClient } from "@/scripts/api";
+import api from "@/scripts/api";
 
 const newsList = ref([]);
 const editingRows = ref([]);
+const sortDirection = ref("desc");
 
-// Вычисляемые списки:
+// 1) Сортировка новостей
+const sortedNews = computed(() => {
+  return [...newsList.value].sort((a, b) => {
+    const da = new Date(a.published_at).getTime();
+    const db = new Date(b.published_at).getTime();
+    return sortDirection.value === "asc" ? da - db : db - da;
+  });
+});
+
+function toggleSort() {
+  sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
+}
+
+// 2) Новые строки (добавляем новости) и редактируемые строки
 const newRows = computed(() => editingRows.value.filter((r) => !r.id));
 const editingMap = computed(() => {
   const map = {};
@@ -166,90 +230,195 @@ const editingMap = computed(() => {
   return map;
 });
 
-// Загрузить новости
+// 3) Загрузка всех новостей
 async function loadNews() {
   try {
-    const { data } = await apiClient.get("v2/news");
-    newsList.value = data.data ?? data;
+    const { data } = await apiClient.get(`v2/news?page=1`);
+    const firstPage = data.data ?? [];
+    const meta = data.meta;
+
+    newsList.value = firstPage;
+
+    const lastPage = meta?.last_page || 1;
+
+    // Если больше одной страницы — подгружаем остальные
+    for (let page = 2; page <= lastPage; page++) {
+      const { data: more } = await apiClient.get(`v2/news?page=${page}`);
+      const moreNews = more.data ?? [];
+      newsList.value.push(...moreNews);
+    }
   } catch (e) {
     console.error("Ошибка загрузки новостей", e);
   }
 }
 
-// Добавить новую строку
+// 4) Добавить новую новость
 function addNewsRow() {
   editingRows.value.unshift({
     title: "",
     content: "",
     published_at: new Date().toISOString().slice(0, 16),
+    previewFile: null,
+    galleryFiles: [],
     isSaving: false,
   });
 }
 
-// Начать редактирование существующей
+// 5) Начать редактирование
 function startEdit(item) {
   editingRows.value.unshift({
     id: item.id,
     title: item.title,
     content: item.content,
     published_at: new Date(item.published_at).toISOString().slice(0, 16),
+    previewInfo: item.previewInfo || {},
+    gallery: item.gallery || [],
+    previewFile: null,
+    galleryFiles: [],
     isSaving: false,
   });
 }
 
-// Отменить редактирование
+// 6) Отменить редактирование
 function cancelEdit(index) {
   editingRows.value.splice(index, 1);
 }
 
-// Сохранить (POST или PUT)
+// 7) Изменение файлов
+function onPreviewChange(e, row) {
+  const f = e.target.files[0];
+  if (f) row.previewFile = f;
+}
+function onGalleryChange(e, row) {
+  const f = e.target.files[0];
+  row.galleryFiles = f ? [f] : [];
+}
+
+// 8) Сохранение новости
 async function saveNews(row, index) {
   row.isSaving = true;
   try {
     await authClient.get("/sanctum/csrf-cookie");
-    const payload = {
-      title: row.title,
-      content: row.content,
-      published_at: new Date(row.published_at).toISOString(),
-    };
 
+    const form = new FormData();
+    form.append("title", row.title);
+    form.append("content", row.content);
+    form.append("published_at", new Date(row.published_at).toISOString());
+
+    if (row.previewFile) {
+      const pf = new FormData();
+      pf.append("files[]", row.previewFile);
+      const prRes = await apiClient.post("v2/files", pf);
+      form.append("preview", prRes.data.data[0].uuid);
+    } else if (row.previewInfo?.uuid) {
+      form.append("preview", row.previewInfo.uuid);
+    }
+
+    let galleryIds = [];
+
+    if (row.galleryFiles?.length) {
+      for (const file of row.galleryFiles) {
+        const fileForm = new FormData();
+        fileForm.append("files[]", file);
+        const uploadRes = await apiClient.post("v2/files", fileForm);
+        galleryIds.push(uploadRes.data.data[0].uuid);
+      }
+    } else if (row.gallery?.length) {
+      galleryIds = row.gallery.map((g) => g.uuid);
+    }
+
+    galleryIds.forEach((id) => form.append("gallery[]", id));
+
+    let resp;
     if (row.id) {
-      const { data: resp } = await apiClient.put(`v2/news/${row.id}`, payload);
-      const updated = resp.data ?? resp;
-      const idx = newsList.value.findIndex((n) => n.id === row.id);
-      if (idx !== -1) newsList.value.splice(idx, 1, updated);
+      form.append("_method", "PUT");
+      resp = await apiClient.post(`v2/news/${row.id}`, form);
     } else {
-      const { data: respNew } = await apiClient.post("v2/news", payload);
-      const created = respNew.data ?? respNew;
-      newsList.value.unshift(created);
+      resp = await apiClient.post("v2/news", form);
+    }
+
+    const item = resp.data.data ?? resp.data ?? resp;
+    if (row.id) {
+      const i = newsList.value.findIndex((n) => n.id === row.id);
+      if (i !== -1) newsList.value.splice(i, 1, item);
+    } else {
+      newsList.value.unshift(item);
     }
 
     cancelEdit(index);
   } catch (e) {
-    console.error("Ошибка при сохранении новости", e);
+    console.error("Ошибка при сохранении", e);
     alert("Не удалось сохранить новость");
   } finally {
     row.isSaving = false;
   }
 }
 
-// Удалить новость
+// 9) Удаление новости
 async function deleteNews(item) {
-  if (!window.confirm("Вы уверены, что хотите удалить эту новость?")) return;
+  if (!window.confirm("Вы точно хотите удалить эту новость?")) return;
   try {
     await apiClient.delete(`v2/news/${item.id}`);
     newsList.value = newsList.value.filter((n) => n.id !== item.id);
   } catch (e) {
-    console.error("Ошибка при удалении новости", e);
+    console.error("Ошибка при удалении", e);
     alert("Не удалось удалить новость");
   }
 }
 
+// При открытии компонента загружаем все новости
 onMounted(loadNews);
 </script>
 
 <style scoped lang="scss">
-.news-list {
+.newsTableContainer {
+  //   border: 1px solid black;
   color: var(--textColorBlack);
+  th {
+    background: #f0f0f0;
+    color: var(--nipigasColorMain);
+  }
+  img {
+    display: block;
+  }
+
+  tr {
+    td {
+      &:last-child {
+        margin: auto;
+        text-align: center;
+      }
+    }
+  }
+
+  button {
+    margin: 0;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: 1px solid var(--nipigasColorMain);
+    color: var(--nipigasColorMain);
+    background-color: white;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-family: ArticulatCF;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: 0.25s;
+
+    &:hover {
+      background-color: var(--nipigasColorMain);
+      color: white;
+    }
+  }
+}
+
+.buttonBlock {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid black;
+  border-bottom: 0px solid transparent;
+  padding: 10px;
 }
 </style>

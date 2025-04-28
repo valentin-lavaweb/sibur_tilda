@@ -175,7 +175,8 @@ export default {
     <div class="wrapper-block">
       <div class="titleBlock">
         <h1 class="title text-animate-gsap">
-          <editable_text dictionary_key="awards_title" />
+          <!-- <editable_text dictionary_key="awards_title" /> -->
+          ВИДЫ НАГРАД
         </h1>
         <span class="description text-animate-gsap">
           <!-- <editable_text dictionary_key="awards_desc" /> -->

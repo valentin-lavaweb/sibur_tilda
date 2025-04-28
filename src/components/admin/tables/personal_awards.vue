@@ -311,7 +311,7 @@ export default {
         id: undefined,
         image: null,
         // вместо availableSections[0]?.id делаем null
-        personal_award_section_id: availableSections[0]?.id,
+        personal_award_section_id: this.availableSections[0]?.id,
         second_personal_award_section_id: null,
         year: new Date().getFullYear(),
       });

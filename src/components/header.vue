@@ -30,10 +30,7 @@ export default {
   <div class="header">
     <div class="header-content">
       <div class="header-link" v-if="interaction.isAdmin">
-        <RouterLink
-          :to="{ name: 'command_awards_table' }"
-          active-class="active"
-        >
+        <RouterLink :to="{ name: 'news_table' }" active-class="active">
           Админка
         </RouterLink>
       </div>
