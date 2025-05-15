@@ -89,13 +89,6 @@ const items = ref([
   },
   {
     id: 2,
-    title: "Вебинар по подготовке к защитам с приглашаемым спикером",
-    date_from: "2025-05-XXT00:00:00Z",
-    active: false,
-    opened: false,
-  },
-  {
-    id: 3,
     title: "Подготовка команд к защитам",
     date_from: "2025-05-19T00:00:00Z",
     date_to: "2025-05-23T00:00:00Z",
@@ -103,7 +96,7 @@ const items = ref([
     opened: false,
   },
   {
-    id: 4,
+    id: 3,
     title: "Защита проектов",
     date_from: "2025-05-26T00:00:00Z",
     date_to: "2025-06-06T00:00:00Z",
@@ -111,7 +104,7 @@ const items = ref([
     opened: false,
   },
   {
-    id: 5,
+    id: 4,
     title: "Оценка проектов и защит экспертным жюри, утверждение победителей",
     date_from: "2025-06-09T00:00:00Z",
     date_to: "2025-06-11T00:00:00Z",
@@ -119,7 +112,7 @@ const items = ref([
     opened: false,
   },
   {
-    id: 6,
+    id: 5,
     title: "Подготовка к церемонии награждения и объявлению победителей",
     date_from: "2025-06-16T00:00:00Z",
     date_to: "2025-07-04T00:00:00Z",
@@ -132,7 +125,7 @@ async function loadTeamtrackItems() {
     const response = await apiClient.get("/v2/timeline-items");
     const fetchedItems = response.data.data || [];
 
-    const secondSix = fetchedItems.slice(6, 12);
+    const secondSix = fetchedItems.slice(6, 11);
 
     secondSix.forEach((itemFromServer, index) => {
       if (items.value[index]) {
@@ -154,7 +147,7 @@ async function loadTeamtrackItems() {
         // Теперь внимание:
         if (index === 1) {
           // Только для второго айтема принудительно ставим XX
-          items.value[index].date_from = "2025-05-XXT00:00:00Z";
+          //   items.value[index].date_from = "2025-05-XXT00:00:00Z";
         } else if (itemFromServer.date_to) {
           // А для остальных ставим date_to из базы
           const dateToOnly = itemFromServer.date_to.split("T")[0];
@@ -312,10 +305,11 @@ const itemsCount = computed(() => items.value.length);
 const lineWidth = computed(() => {
   const n = itemsCount.value;
   return `calc(
-	  2 * var(--contentPadding)
-	  + ${n} * var(--timelineItemWidth)
-	  + ${n} * var(--timelineGap)
-	)`;
+  	  2 * var(--contentPadding)
+  	  + ${n} * var(--teamtrackItemWidth)
+  	  + ${n} * var(--timelineGap)
+  	)`;
+  //   return `100dvw`;
 });
 
 // Добавляем это — чтобы в шаблоне не было «undefined»
@@ -488,7 +482,7 @@ watchEffect(() => {
 
     &:hover {
       .block {
-        border-radius: 15px 15px 0px 0px;
+        border-radius: 15px 15px 15px 15px;
         transition: 0.25s 0s;
         .separator {
           margin: 10px 0px;
@@ -777,7 +771,7 @@ watchEffect(() => {
       &.opened {
         &:hover {
           .block {
-            border-radius: 15px 15px 0px 0px;
+            border-radius: 15px 15px 15px 15px;
             transition: 0.25s 0s;
             .title {
               padding: 10px 5px;
@@ -799,7 +793,7 @@ watchEffect(() => {
           }
         }
         .block {
-          border-radius: 15px 15px 0px 0px;
+          border-radius: 15px 15px 15px 15px;
           transition: 0.25s 0s;
           .title {
             padding: 10px 5px;

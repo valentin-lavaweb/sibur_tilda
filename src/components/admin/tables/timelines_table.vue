@@ -59,7 +59,7 @@
         <h3>Командный трек</h3>
         <div class="timelineRow">
           <div
-            v-for="(item, index) in timelineItems.slice(6, 12)"
+            v-for="(item, index) in timelineItems.slice(6, 11)"
             :key="item.id || index"
             class="timelineItem"
           >

@@ -37,7 +37,7 @@ export default {
       <div class="header-logo">
         <div class="logo">
           <RouterLink :to="{ name: 'main_page' }" active-class="active">
-            <img src="/img/header_logo_new.svg" alt="logo" />
+            <img src="/img/logo-new.svg" alt="logo" />
           </RouterLink>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default {
       <div class="header-logo mobile_left">
         <div class="logo">
           <RouterLink :to="{ name: 'main_page' }" active-class="active">
-            <img src="/img/header_logo_new.svg" alt="logo" />
+            <img src="/img/logo-new.svg" alt="logo" />
           </RouterLink>
         </div>
       </div>
@@ -119,7 +119,7 @@ export default {
         <div class="header-logo mobile">
           <div class="logo">
             <RouterLink :to="{ name: 'main_page' }" active-class="active">
-              <img src="/img/header_logo_new.svg" alt="logo" />
+              <img src="/img/logo-new.svg" alt="logo" />
             </RouterLink>
           </div>
           <!-- <div class="logo-text">

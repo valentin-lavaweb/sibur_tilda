@@ -86,7 +86,7 @@ export default {
         <nav>
           <div class="logo" @click="checkAuth">
             <RouterLink :to="{ name: 'main_page' }" active-class="active">
-              <img src="/img/header_logo_new.svg" alt="logo" />
+              <img src="/img/logo-new.svg" alt="logo" />
             </RouterLink>
           </div>
           <div
