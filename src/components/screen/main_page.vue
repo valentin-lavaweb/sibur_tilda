@@ -205,7 +205,12 @@ export default {
     </div>
     <div class="newsBannerContainer contentBlock fullScreen z-1">
       <div class="newsBanner">
-        <video src=""></video>
+        <video
+          src="/video/Sibur_ep_rev_qr.mp4"
+          playsinline
+          controls
+          poster="/video/videoPlaceholder.png"
+        ></video>
         <div class="playIcon"></div>
       </div>
     </div>
@@ -437,10 +442,34 @@ $logoWidth: 175px;
 
 .newsBanner {
   width: 100%;
-  height: 42vw;
+  height: 46vw;
   background-image: url("/img/newsBannerTemplate.png");
   background-position: center;
   background-size: cover;
+
+  video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  video {
+    &:fullscreen,
+    &:-webkit-full-screen,
+    &:-moz-full-screen,
+    &:-ms-fullscreen,
+    &::backdrop {
+      object-fit: contain;
+      &::backdrop {
+        object-fit: contain;
+      }
+    }
+  }
+  video:where(:fullscreen) {
+    object-fit: contain;
+  }
 
   .playIcon {
     position: absolute;

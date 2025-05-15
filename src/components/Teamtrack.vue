@@ -41,7 +41,7 @@
               <div class="icon"></div>
             </div>
           </div>
-          <!-- <div class="separator"></div> -->
+          <div class="separator"></div>
           <div class="title">{{ item.title }}</div>
         </div>
       </component>
@@ -497,7 +497,7 @@ watchEffect(() => {
         }
 
         .title {
-          top: calc(100%);
+          //   top: calc(100%);
           max-height: 300px;
           border-radius: 0px 0px 15px 15px;
           padding: 10px 5px;
@@ -539,8 +539,8 @@ watchEffect(() => {
       transition: 0.25s 0.25s;
 
       .title {
-        position: absolute;
-        top: calc(100% - 0px);
+        // position: absolute;
+        // top: calc(100% - 0px);
         width: 100%;
         padding: 0px 5px;
         left: 0;

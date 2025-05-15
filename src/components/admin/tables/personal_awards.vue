@@ -38,7 +38,7 @@ export default {
       serverTotalItemsLength: 0,
       serverOptions: {
         page: 1,
-        rowsPerPage: 25,
+        rowsPerPage: 10,
         sortBy: "id",
         sortType: "asc",
       },
@@ -66,6 +66,7 @@ export default {
           filter,
           this.serverOptions.page
         );
+        console.log(res);
         const awards = res?.data?.data ?? [];
 
         // 🛠 Правильная обработка изображения
@@ -80,6 +81,7 @@ export default {
 
         this.serverItems = awards;
         this.serverTotalItemsLength = res?.data?.meta?.total ?? awards.length;
+        this.serverOptions.rowsPerPage = res?.data?.meta.rowsPerPage;
       } catch (e) {
         this.$toast.error("Ошибка загрузки данных: " + e.message);
         console.warn("Ошибка в loadData", e);
@@ -353,8 +355,11 @@ export default {
     },
   },
   watch: {
-    serverOptions() {
-      this.loadData();
+    serverOptions: {
+      handler() {
+        this.loadData();
+      },
+      deep: true,
     },
     search() {
       this.debouncedSearch();

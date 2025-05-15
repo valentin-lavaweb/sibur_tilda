@@ -502,7 +502,7 @@ function goHome() {
         transition: 0.25s;
         background-color: white;
         color: var(--textColorBlack);
-        // padding: 15px;
+        padding: 0px 2px;
         border-radius: 10px;
         // width: 100%;
         // left: 0;
@@ -524,6 +524,7 @@ function goHome() {
         width: 100%;
         height: fit-content;
         // max-height: 0;
+        padding: 0px 2px;
         overflow: hidden;
 
         .date {
