@@ -251,7 +251,7 @@ export default {
       </div>
       <div class="separator"></div>
       <div class="nominationsContainer">
-        <div class="nominationsBlock whiteBlock">
+        <!-- <div class="nominationsBlock whiteBlock">
           <h3 class="title orange text-animate-gsap">Командные номинации</h3>
           <div class="nominations">
             <span
@@ -273,7 +273,7 @@ export default {
               </div>
             </span>
           </div>
-        </div>
+        </div> -->
 
         <div class="nominationsBlock whiteBlock">
           <h3 class="title text-animate-gsap">
@@ -286,9 +286,12 @@ export default {
               v-for="(nomination, key) in command_nomination_2025"
               :key="nomination"
             >
-              <!-- <div class="icon">
-                <img :src="`/img/types_of_award/${key + 1}_3.svg`" alt="icon" />
-              </div> -->
+              <div class="icon">
+                <img
+                  :src="`/img/types_of_award/2025_${key + 1}.svg`"
+                  alt="icon"
+                />
+              </div>
               <div class="textBlock">
                 <div class="title">
                   {{ nomination.nomination }}
