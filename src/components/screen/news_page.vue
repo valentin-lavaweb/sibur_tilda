@@ -114,7 +114,7 @@ export default {
           </div>
 
           <div class="newsTitle">{{ item.title }}</div>
-          <div class="newsDescription">{{ item.content }}</div>
+          <div class="newsDescription" v-html="item.content"></div>
           <div class="newsDate">{{ formatDate(item.published_at) }}</div>
         </router-link>
       </div>
@@ -226,11 +226,21 @@ export default {
     }
 
     .newsDescription {
+      display: block;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      height: fit-content;
+      max-height: 45px;
+      overflow: hidden;
+      white-space: pre-line;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+
       font-family: ArticulatCF;
       font-size: 16px;
       font-weight: 300;
       color: var(--textColorBlack);
-      margin: 10px 0px 0px 0px;
     }
 
     .newsDate {
@@ -357,6 +367,7 @@ export default {
       }
 
       .newsDescription {
+        max-height: 40px;
         font-size: 15px;
         line-height: 1.25;
       }

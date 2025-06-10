@@ -236,6 +236,7 @@ const isVideo = (url) => {
   font-weight: 600;
   line-height: 1.35;
   margin: 35px 0px 0px 0px;
+  white-space: pre-line;
 }
 
 .newsDate {

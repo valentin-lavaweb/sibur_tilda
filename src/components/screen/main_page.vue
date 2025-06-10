@@ -257,7 +257,7 @@ export default {
               >
             </div>
             <div class="title">{{ post.title }}</div>
-            <div class="description">{{ post.content }}</div>
+            <div class="description" v-html="post.content"></div>
             <div class="date">
               {{ new Date(post.published_at).toLocaleDateString("ru-RU") }}
             </div>
@@ -594,7 +594,7 @@ $logoWidth: 175px;
       padding: 25px;
       width: var(--newsSliderItemWidth);
       min-width: var(--newsSliderItemWidth);
-      height: 685px;
+      //   height: 695px;
       border-radius: 25px;
       background-color: white;
       box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.06);
@@ -611,6 +611,7 @@ $logoWidth: 175px;
       .image {
         background-color: #77e2c3;
         height: 485px;
+        min-height: 485px;
         width: 100%;
         border-radius: 25px;
         overflow: hidden;
@@ -647,6 +648,17 @@ $logoWidth: 175px;
       }
 
       .description {
+        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        height: fit-content;
+        max-height: 45px;
+        overflow: hidden;
+        white-space: pre-line;
+        line-height: 1.4;
+        text-overflow: ellipsis;
+
         font-family: ArticulatCF;
         font-size: 16px;
         color: black;
@@ -703,10 +715,11 @@ $logoWidth: 175px;
   .news {
     .sliderBlock {
       .sliderItem {
-        height: 40vw;
+        // height: 43vw;
 
         .image {
           height: 27vw;
+          min-height: 27vw;
 
           .goToBlock {
             font-size: 1.8vw;
@@ -733,10 +746,11 @@ $logoWidth: 175px;
 
     .sliderBlock {
       .sliderItem {
-        height: 50vw;
+        // height: 53vw;
 
         .image {
           height: 33vw;
+          min-height: 33vw;
         }
       }
     }
@@ -788,10 +802,11 @@ $logoWidth: 175px;
     .sliderBlock {
       .sliderItem {
         padding: 3vw;
-        height: 55vw;
+        // height: 55vw;
 
         .image {
           height: 33vw;
+          min-height: 33vw;
 
           .goToBlock {
             font-size: 20px;

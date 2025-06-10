@@ -21,6 +21,7 @@
             v-model="localItem.content"
             rows="4"
             placeholder="Текст новости..."
+            style="white-space: pre-line"
           ></textarea>
         </div>
 
