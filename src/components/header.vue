@@ -50,7 +50,7 @@ export default {
             Виды наград
           </RouterLink>
         </div>
-        <div
+        <!-- <div
           class="header-link hover_link"
           :class="{ active: this.$route.name == 'team_track_winners' }"
         >
@@ -85,7 +85,7 @@ export default {
               </RouterLink>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="header-link">
           <RouterLink :to="{ name: 'news' }" active-class="active">
             Новости
@@ -138,10 +138,10 @@ export default {
         >
           Виды наград
         </RouterLink>
-        <RouterLink :to="{ name: 'team_track_winners' }" active-class="active">
+        <!-- <RouterLink :to="{ name: 'team_track_winners' }" active-class="active">
           Победители и лауреаты
-        </RouterLink>
-        <RouterLink
+        </RouterLink> -->
+        <!-- <RouterLink
           class="sub_a"
           v-for="section in personalSections"
           :key="section.id"
@@ -150,7 +150,7 @@ export default {
           active-class="active"
         >
           {{ section.title }}
-        </RouterLink>
+        </RouterLink> -->
         <RouterLink :to="{ name: 'news' }" active-class="active">
           Новости
         </RouterLink>

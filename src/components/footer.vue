@@ -55,15 +55,15 @@ export default {
           </div>
         </div>
         <div class="footer-block-link">
-          <div class="link underline">
+          <!-- <div class="link underline">
             <RouterLink
               :to="{ name: 'team_track_winners' }"
               active-class="active"
             >
               Победители командного трека
             </RouterLink>
-          </div>
-          <div
+          </div> -->
+          <!-- <div
             class="link underline"
             v-for="section in personalSections"
             :key="section.id"
@@ -77,7 +77,7 @@ export default {
             >
               {{ section.title }}
             </RouterLink>
-          </div>
+          </div> -->
           <!-- <div class="link underline">
                     <RouterLink :to="{name: 'corporate_rewards'}" active-class="active">
                         Лауреаты ведомственных наград
